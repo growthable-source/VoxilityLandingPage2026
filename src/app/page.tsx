@@ -7,7 +7,6 @@ import { VoxAI } from "@/components/sections/VoxAI";
 import { Proof } from "@/components/sections/Proof";
 import { Fit } from "@/components/sections/Fit";
 import { Onboarding } from "@/components/sections/Onboarding";
-import { Pricing } from "@/components/sections/Pricing";
 import { AgenciesBlock } from "@/components/sections/AgenciesBlock";
 import { FAQ } from "@/components/sections/FAQ";
 import { CTA } from "@/components/sections/CTA";
@@ -26,7 +25,6 @@ export default function HomePage() {
         <Proof />
         <Fit />
         <Onboarding />
-        <Pricing />
         <AgenciesBlock />
         <FAQ />
         <CTA />

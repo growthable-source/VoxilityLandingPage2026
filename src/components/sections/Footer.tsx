@@ -16,7 +16,6 @@ const cols = [
       { l: "Meta ads", h: "#system" },
       { l: "Landing pages", h: "#system" },
       { l: "Voxility AI", h: "#voxai" },
-      { l: "Pricing", h: "#pricing" },
     ],
   },
   {

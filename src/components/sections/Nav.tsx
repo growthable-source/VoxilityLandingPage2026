@@ -7,7 +7,6 @@ const navItems = [
   { label: "System", href: "#system" },
   { label: "Voxility AI", href: "#voxai" },
   { label: "Proof", href: "#proof" },
-  { label: "Pricing", href: "#pricing" },
   { label: "Agencies", href: "/agencies" },
 ];
 
