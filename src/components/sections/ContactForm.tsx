@@ -257,7 +257,6 @@ export function ContactForm() {
               onBlur={() => blur("firstName")}
               error={touched.firstName ? errors.firstName : undefined}
               autoComplete="given-name"
-              autoFocus
             />
             <Field
               id={firstFieldId + "-co"}
