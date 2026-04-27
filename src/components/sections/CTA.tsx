@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/Button";
+import { ContactForm } from "./ContactForm";
 
 export function CTA() {
   return (
@@ -20,7 +20,7 @@ export function CTA() {
       <div className="noise absolute inset-0 -z-0" aria-hidden />
 
       <div className="container relative mx-auto max-w-[1320px] px-5 md:px-8">
-        <div className="mx-auto max-w-[820px] text-center">
+        <div className="mx-auto max-w-[760px] text-center">
           <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-border/60 bg-card/50 px-3 py-1.5 backdrop-blur-md">
             <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-primary-glow">
               30 minutes · Conversational · No slide deck required
@@ -41,30 +41,18 @@ export function CTA() {
           </h2>
 
           <p className="mx-auto mt-6 max-w-[58ch] text-balance text-lg leading-relaxed text-muted-foreground">
-            Share your last 30 days of ad spend, your booking volume, and
-            your missed-call number, and we&rsquo;ll talk through the gap,
-            the build timeline, and a conservative estimate of what we&rsquo;d
-            expect to add to bookings within 90 days.
-          </p>
-
-          <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
-            <Button variant="hero" size="xl" href="https://cal.com/voxility/strategy" external>
-              Book a 30-min strategy call
-            </Button>
-            <Button
-              variant="glass"
-              size="xl"
-              href="mailto:hello@voxility.com"
-              external
-            >
-              Or email us directly
-            </Button>
-          </div>
-
-          <p className="mt-8 font-mono text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
-            Senior on the call · No SDR · Quote within 48 hours
+            Share a few details below and someone senior on our team will
+            reach out within 24 hours to set up a 30-minute call.
           </p>
         </div>
+
+        <div className="mx-auto mt-12 max-w-[560px]">
+          <ContactForm />
+        </div>
+
+        <p className="mx-auto mt-8 max-w-[60ch] text-center font-mono text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
+          Senior on the call · No SDR · Quote within 48 hours
+        </p>
       </div>
     </section>
   );
