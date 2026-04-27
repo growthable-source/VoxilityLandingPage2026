@@ -39,10 +39,9 @@ const cols = [
   {
     title: "Legal",
     links: [
-      { l: "Privacy", h: "#" },
-      { l: "Terms", h: "#" },
-      { l: "Acceptable use", h: "#" },
-      { l: "GDPR / Privacy Act", h: "#" },
+      { l: "Privacy", h: "/privacy" },
+      { l: "Terms", h: "/terms" },
+      { l: "Acceptable use", h: "/acceptable-use" },
     ],
   },
 ];
