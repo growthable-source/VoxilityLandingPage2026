@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import Script from "next/script";
 import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
 const SITE_URL = "https://voxility.com";
@@ -148,6 +149,7 @@ export default function RootLayout({
       </head>
       <body className="min-h-screen bg-background text-foreground antialiased">
         {children}
+        <Analytics />
         <Script
           src="https://app.voxility.ai/widget.js"
           data-widget-id="cmoh5l1c8000004l4yp6k1m4y"
