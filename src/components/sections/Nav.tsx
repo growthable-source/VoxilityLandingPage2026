@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { Logo } from "@/components/ui/Logo";
 import { Button } from "@/components/ui/Button";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 const navItems = [
   { label: "System", href: "#system" },
@@ -12,7 +13,7 @@ const navItems = [
 
 export function Nav() {
   return (
-    <header className="fixed inset-x-0 top-0 z-50 border-b border-border/40 bg-background/70 backdrop-blur-xl">
+    <header className="glass-surface fixed inset-x-0 top-0 z-50 border-b border-border/40">
       <div className="container mx-auto flex h-16 max-w-[1320px] items-center justify-between px-5 md:px-8">
         <Link href="/" aria-label="Voxility home">
           <Logo />
@@ -31,6 +32,7 @@ export function Nav() {
         </nav>
 
         <div className="flex items-center gap-2">
+          <ThemeToggle className="hidden md:inline-flex" />
           <a
             href="https://go.voxility.ai/"
             target="_blank"

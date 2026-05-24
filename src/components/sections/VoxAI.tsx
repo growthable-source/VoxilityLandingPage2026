@@ -45,10 +45,10 @@ const capabilities = [
 export function VoxAI() {
   return (
     <Section id="voxai" className="relative overflow-hidden">
-      {/* Mesh + waveform */}
-      <div className="absolute inset-0 -z-10 mesh-bg opacity-40" aria-hidden />
+      {/* Mesh + waveform — waveform is a dark-screenshot asset, shown only in dark mode */}
+      <div className="absolute inset-0 -z-10 mesh-bg opacity-50 dark:opacity-40" aria-hidden />
       <div
-        className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[120%] opacity-30"
+        className="pointer-events-none absolute inset-x-0 top-0 -z-10 hidden h-[120%] opacity-30 dark:block"
         aria-hidden
       >
         <Image
@@ -131,7 +131,7 @@ function Stat({
   hot?: boolean;
 }) {
   return (
-    <div className="rounded-md border border-border/50 bg-card/60 p-4 backdrop-blur-md">
+    <div className="rounded-md border border-border/50 bg-card/80 p-4 backdrop-blur-md">
       <div
         className={`text-2xl font-semibold tracking-tight md:text-[28px] ${hot ? "heat-text" : "text-foreground"}`}
         style={{ fontVariantNumeric: "tabular-nums" }}

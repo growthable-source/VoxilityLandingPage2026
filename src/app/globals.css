@@ -2,6 +2,13 @@
 
 @layer base {
   :root {
+    --radius: 0.875rem;
+    --transition-smooth: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* ---------- DARK (canonical) ---------- */
+  html.dark {
     --background: 222 47% 3%;
     --foreground: 210 40% 98%;
     --card: 222 40% 6%;
@@ -26,8 +33,6 @@
     --destructive: 0 84% 60%;
     --success: 142 76% 36%;
     --warning: 38 92% 50%;
-
-    --radius: 0.875rem;
 
     --gradient-primary: linear-gradient(
       135deg,
@@ -61,8 +66,88 @@
     --shadow-accent: 0 10px 40px -10px hsl(var(--accent) / 0.35);
     --shadow-card: 0 4px 30px -4px hsl(0 0% 0% / 0.6);
 
-    --transition-smooth: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    /* Mode-aware tokens for utilities/components */
+    --glass-bg: hsl(var(--background) / 0.7);
+    --orb-glow-primary: hsl(var(--primary) / 0.5);
+    --orb-glow-amber: hsl(var(--primary-glow) / 0.45);
+    --ambient-glow-primary: hsl(var(--primary-glow) / 0.15);
+    --ambient-glow-deep: hsl(var(--primary-deep) / 0.18);
+    --grid-line: hsl(var(--border) / 0.45);
+    --noise-opacity: 0.04;
+    --noise-blend: overlay;
+    --ring-soft: hsl(var(--primary-glow) / 0.3);
+    --hero-bg-stop: hsl(222 47% 2%);
+  }
+
+  /* ---------- LIGHT (warm ivory paper) ---------- */
+  html.light {
+    --background: 30 25% 97%;
+    --foreground: 20 14% 12%;
+    --card: 30 30% 99%;
+    --card-foreground: 20 14% 12%;
+    --popover: 30 30% 99%;
+    --popover-foreground: 20 14% 12%;
+    --muted: 30 20% 94%;
+    --muted-foreground: 25 8% 38%;
+    --secondary: 30 20% 92%;
+    --secondary-foreground: 20 14% 12%;
+    --border: 30 15% 86%;
+    --input: 30 25% 95%;
+
+    --primary: 9 95% 52%;
+    --primary-foreground: 30 30% 99%;
+    --primary-glow: 22 95% 50%;
+    --primary-deep: 358 78% 38%;
+    --accent: 22 95% 50%;
+    --accent-foreground: 30 30% 99%;
+    --ring: 9 95% 52%;
+
+    --destructive: 0 78% 50%;
+    --success: 142 70% 32%;
+    --warning: 38 92% 44%;
+
+    --gradient-primary: linear-gradient(
+      135deg,
+      hsl(var(--primary-deep)) 0%,
+      hsl(var(--primary)) 55%,
+      hsl(var(--primary-glow)) 100%
+    );
+    --gradient-hero:
+      radial-gradient(60% 60% at 18% 12%, hsl(var(--primary) / 0.12) 0%, transparent 60%),
+      radial-gradient(50% 50% at 88% 90%, hsl(var(--primary-glow) / 0.10) 0%, transparent 60%),
+      linear-gradient(180deg, hsl(var(--background)) 0%, hsl(30 25% 95%) 100%);
+    --gradient-mesh:
+      radial-gradient(45% 45% at 20% 30%, hsl(var(--primary) / 0.10) 0%, transparent 60%),
+      radial-gradient(40% 40% at 80% 20%, hsl(var(--primary-glow) / 0.09) 0%, transparent 60%),
+      radial-gradient(50% 50% at 50% 80%, hsl(var(--primary-deep) / 0.08) 0%, transparent 60%);
+    --gradient-border: linear-gradient(
+      135deg,
+      hsl(var(--primary)) 0%,
+      hsl(var(--primary-glow)) 50%,
+      hsl(var(--primary) / 0) 100%
+    );
+    --gradient-subtle: radial-gradient(
+      80% 60% at 50% 0%,
+      hsl(var(--primary) / 0.06) 0%,
+      transparent 70%
+    );
+
+    --shadow-glow: 0 0 60px hsl(var(--primary) / 0.22);
+    --shadow-glow-soft: 0 0 100px hsl(var(--primary-glow) / 0.12);
+    --shadow-primary: 0 10px 30px -10px hsl(var(--primary) / 0.30);
+    --shadow-accent: 0 10px 30px -10px hsl(var(--accent) / 0.22);
+    --shadow-card: 0 4px 30px -8px hsl(20 30% 20% / 0.10);
+
+    --glass-bg: hsl(var(--background) / 0.78);
+    --orb-glow-primary: hsl(var(--primary) / 0.18);
+    --orb-glow-amber: hsl(var(--primary-glow) / 0.16);
+    --ambient-glow-primary: hsl(var(--primary-glow) / 0.08);
+    --ambient-glow-deep: hsl(var(--primary-deep) / 0.07);
+    --grid-line: hsl(20 14% 30% / 0.10);
+    --noise-opacity: 0.035;
+    --noise-blend: multiply;
+    --ring-soft: hsl(var(--primary-glow) / 0.45);
+    --hero-bg-stop: hsl(30 25% 95%);
   }
 
   html {
@@ -306,6 +391,21 @@
   transition: all var(--transition-fast);
 }
 
+/* Glassmorphic surface for nav and floating chrome */
+.glass-surface {
+  background-color: var(--glass-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+/* Hero / CTA atmospheric orbs */
+.orb-primary {
+  background: radial-gradient(circle, var(--orb-glow-primary) 0%, transparent 70%);
+}
+.orb-amber {
+  background: radial-gradient(circle, var(--orb-glow-amber) 0%, transparent 70%);
+}
+
 /* Glowing 1px ring border via mask-composite */
 .gradient-border {
   position: relative;
@@ -336,7 +436,7 @@
   background-color: hsl(var(--background));
 }
 
-/* SVG fractal-noise grain at 4% opacity */
+/* SVG fractal-noise grain — opacity + blend mode adapt per theme */
 .noise {
   position: relative;
 }
@@ -345,8 +445,8 @@
   position: absolute;
   inset: 0;
   pointer-events: none;
-  opacity: 0.04;
-  mix-blend-mode: overlay;
+  opacity: var(--noise-opacity);
+  mix-blend-mode: var(--noise-blend);
   background-image: url("data:image/svg+xml;utf8,<svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.5 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
   background-size: 200px 200px;
   z-index: 2;
@@ -355,8 +455,8 @@
 /* Faint geometric grid overlay for hero/section depth */
 .grid-overlay {
   background-image:
-    linear-gradient(to right, hsl(var(--border) / 0.45) 1px, transparent 1px),
-    linear-gradient(to bottom, hsl(var(--border) / 0.45) 1px, transparent 1px);
+    linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
   background-size: 64px 64px;
   mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, black, transparent 75%);
   -webkit-mask-image: radial-gradient(
@@ -436,11 +536,57 @@
   bottom: 0;
 }
 
+/* Standalone divider — a single letterbox rule between sections */
+.letterbox-divider {
+  height: 1px;
+  width: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    hsl(var(--primary-glow) / 0.45),
+    transparent
+  );
+}
+
 /* Horizontal scrolling marquee for long telemetry / logo strips */
 .marquee-track {
   display: flex;
   width: max-content;
   animation: marquee 60s linear infinite;
+}
+
+/* Scroll-reveal: opacity 0 until .is-visible toggled by IntersectionObserver */
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translate3d(0, 16px, 0);
+  transition:
+    opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.reveal-on-scroll.is-visible {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+/* Scoped dark surface — forces dark tokens onto a subtree even in light mode.
+   Used for product screenshots / dashboard chrome that read as dark UI. */
+.vx-dark-surface {
+  --background: 222 47% 3%;
+  --foreground: 210 40% 98%;
+  --card: 222 40% 6%;
+  --card-foreground: 210 40% 98%;
+  --muted: 222 40% 8%;
+  --muted-foreground: 215 20% 70%;
+  --secondary: 222 40% 10%;
+  --border: 222 40% 14%;
+  --input: 222 40% 10%;
+  --shadow-card: 0 4px 30px -4px hsl(0 0% 0% / 0.6);
+  --grid-line: hsl(222 40% 14% / 0.45);
+  --noise-opacity: 0.04;
+  --noise-blend: overlay;
+  --glass-bg: hsl(222 47% 3% / 0.7);
+  color: hsl(var(--foreground));
+  background-color: hsl(var(--background));
 }
 
 /* Long-form legal page typography */

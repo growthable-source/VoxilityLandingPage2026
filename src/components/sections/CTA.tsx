@@ -13,15 +13,25 @@ export function CTA() {
         className="pointer-events-none absolute -left-32 top-1/4 -z-10 h-[500px] w-[500px] animate-orb-float rounded-full opacity-70"
         style={{
           background:
-            "radial-gradient(closest-side, hsl(var(--primary) / 0.4), transparent 70%)",
+            "radial-gradient(closest-side, var(--orb-glow-primary), transparent 70%)",
           filter: "blur(60px)",
+        }}
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -right-24 bottom-1/4 -z-10 h-[420px] w-[420px] rounded-full opacity-60"
+        style={{
+          background:
+            "radial-gradient(closest-side, var(--orb-glow-amber), transparent 70%)",
+          filter: "blur(80px)",
+          animation: "orb-float 18s ease-in-out infinite reverse",
         }}
       />
       <div className="noise absolute inset-0 -z-0" aria-hidden />
 
       <div className="container relative mx-auto max-w-[1320px] px-5 md:px-8">
         <div className="mx-auto max-w-[760px] text-center">
-          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-border/60 bg-card/50 px-3 py-1.5 backdrop-blur-md">
+          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-border/60 bg-card/70 px-3 py-1.5 backdrop-blur-md">
             <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-primary-glow">
               30 minutes · Conversational · No slide deck required
             </span>

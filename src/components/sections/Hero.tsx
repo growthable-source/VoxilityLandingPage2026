@@ -18,7 +18,7 @@ export function Hero() {
         className="pointer-events-none absolute -left-32 top-24 -z-10 h-[520px] w-[520px] animate-orb-float rounded-full opacity-70"
         style={{
           background:
-            "radial-gradient(closest-side, hsl(var(--primary) / 0.5), transparent 70%)",
+            "radial-gradient(closest-side, var(--orb-glow-primary), transparent 70%)",
           filter: "blur(60px)",
         }}
       />
@@ -27,9 +27,19 @@ export function Hero() {
         className="pointer-events-none absolute -right-40 top-40 -z-10 h-[600px] w-[600px] rounded-full opacity-60"
         style={{
           background:
-            "radial-gradient(closest-side, hsl(var(--primary-glow) / 0.45), transparent 70%)",
+            "radial-gradient(closest-side, var(--orb-glow-amber), transparent 70%)",
           filter: "blur(80px)",
           animation: "orb-float 16s ease-in-out infinite reverse",
+        }}
+      />
+      {/* Plane 3b — small deeper amber orb for parallax depth */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute left-[42%] top-[58%] -z-10 h-[260px] w-[260px] animate-orb-pulse rounded-full opacity-50"
+        style={{
+          background:
+            "radial-gradient(closest-side, var(--orb-glow-primary), transparent 70%)",
+          filter: "blur(70px)",
         }}
       />
 
@@ -40,7 +50,7 @@ export function Hero() {
         <div className="grid grid-cols-1 items-center gap-16 lg:grid-cols-12 lg:gap-10">
           {/* Copy */}
           <div className="relative z-10 lg:col-span-7">
-            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-border/60 bg-card/50 px-3 py-1.5 backdrop-blur-md">
+            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-border/60 bg-card/70 px-3 py-1.5 backdrop-blur-md">
               <span className="relative inline-flex h-1.5 w-1.5">
                 <span className="absolute inset-0 animate-orb-pulse rounded-full bg-primary" />
                 <span className="absolute inset-0 rounded-full bg-primary" />
@@ -71,9 +81,11 @@ export function Hero() {
             </p>
 
             <div className="mt-9 flex flex-wrap items-center gap-3">
-              <Button variant="hero" size="xl" href="#contact">
-                Book a 30-min strategy call
-              </Button>
+              <div className="conic-border inline-flex rounded-md">
+                <Button variant="hero" size="xl" href="#contact">
+                  Book a 30-min strategy call
+                </Button>
+              </div>
               <Button variant="glass" size="xl" href="#system">
                 See the system
               </Button>

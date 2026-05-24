@@ -16,11 +16,11 @@ const variants: Record<Variant, string> = {
     "bg-gradient-primary text-primary-foreground shadow-primary " +
     "hover:scale-[1.02] hover:shadow-glow",
   premium:
-    "bg-gradient-hero text-foreground border-2 border-[hsl(var(--primary-glow)/0.3)] " +
-    "font-semibold hover:border-[hsl(var(--primary-glow)/0.7)] hover:shadow-glow-soft",
+    "bg-gradient-hero text-foreground border-2 border-[hsl(var(--ring-soft))] " +
+    "font-semibold hover:border-primary-glow hover:shadow-glow-soft",
   glass:
-    "bg-card/50 backdrop-blur-sm border border-border/60 text-foreground " +
-    "hover:bg-card/80 hover:border-border",
+    "bg-card/60 backdrop-blur-sm border border-border/60 text-foreground " +
+    "hover:bg-card hover:border-border",
   accent:
     "bg-accent text-accent-foreground hover:scale-[1.02] hover:shadow-accent",
   ghost: "text-muted-foreground hover:text-foreground",

@@ -86,7 +86,7 @@ export function FAQ() {
                     type="button"
                     onClick={() => setOpen(isOpen ? null : i)}
                     aria-expanded={isOpen}
-                    className="group flex w-full items-start gap-4 py-5 text-left transition-fast hover:bg-card/30"
+                    className="group flex w-full items-start gap-4 py-5 text-left transition-fast hover:bg-muted/50"
                   >
                     <span
                       className="mt-0.5 font-mono text-[12px] tabular-nums text-muted-foreground"

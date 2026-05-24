@@ -13,7 +13,7 @@ export function AgenciesBlock() {
             className="pointer-events-none absolute inset-0 -z-0"
             style={{
               background:
-                "radial-gradient(60% 60% at 90% 10%, hsl(var(--primary-glow) / 0.15) 0%, transparent 60%), radial-gradient(50% 50% at 10% 90%, hsl(var(--primary-deep) / 0.18) 0%, transparent 60%)",
+                "radial-gradient(60% 60% at 90% 10%, var(--ambient-glow-primary) 0%, transparent 60%), radial-gradient(50% 50% at 10% 90%, var(--ambient-glow-deep) 0%, transparent 60%)",
             }}
           />
 

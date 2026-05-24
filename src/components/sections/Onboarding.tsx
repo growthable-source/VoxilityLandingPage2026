@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect, useRef } from "react";
 import { Section, SectionEyebrow, SectionHeading, SectionLede } from "@/components/ui/Section";
 
 const phases = [
@@ -37,6 +40,39 @@ const phases = [
 ];
 
 export function Onboarding() {
+  const rootRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const root = rootRef.current;
+    if (!root) return;
+
+    const items = Array.from(root.querySelectorAll<HTMLElement>("[data-reveal]"));
+    if (items.length === 0) return;
+
+    if (typeof IntersectionObserver === "undefined") {
+      items.forEach((el) => el.classList.add("is-visible"));
+      return;
+    }
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const el = entry.target as HTMLElement;
+            const i = Number(el.dataset.revealIndex ?? "0");
+            el.style.transitionDelay = `${i * 120}ms`;
+            el.classList.add("is-visible");
+            io.unobserve(el);
+          }
+        });
+      },
+      { rootMargin: "0px 0px -10% 0px", threshold: 0.15 },
+    );
+
+    items.forEach((el) => io.observe(el));
+    return () => io.disconnect();
+  }, []);
+
   return (
     <Section id="onboarding" className="relative">
       <div className="mb-16 max-w-[660px]">
@@ -53,7 +89,7 @@ export function Onboarding() {
         </SectionLede>
       </div>
 
-      <div className="relative">
+      <div className="relative" ref={rootRef}>
         {/* Timeline rail (desktop) */}
         <div
           className="absolute inset-x-0 top-[42px] hidden h-px bg-gradient-to-r from-primary-deep via-primary to-primary-glow md:block"
@@ -64,8 +100,9 @@ export function Onboarding() {
           {phases.map((phase, i) => (
             <div
               key={phase.days}
-              className="relative animate-fade-in-up"
-              style={{ animationDelay: `${i * 100}ms` }}
+              data-reveal
+              data-reveal-index={i}
+              className="reveal-on-scroll relative"
             >
               {/* Marker dot */}
               <div className="relative z-10 mb-7 hidden md:block">

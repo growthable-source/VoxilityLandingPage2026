@@ -4,7 +4,11 @@ const ASPECT = 3177.22 / 956.78;
 
 interface LogoProps {
   className?: string;
-  variant?: "color" | "white";
+  /**
+   * `color` — the fiery gradient mark (default; reads on both light + dark).
+   * `mono` — white on dark, near-black on light (auto-swapped per theme).
+   */
+  variant?: "color" | "mono" | "white";
   height?: number;
 }
 
@@ -13,19 +17,47 @@ export function Logo({
   variant = "color",
   height = 28,
 }: LogoProps) {
-  const src =
-    variant === "white" ? "/brand/voxility-white.svg" : "/brand/voxility-color.svg";
+  const width = Math.round(height * ASPECT);
 
+  if (variant === "color") {
+    return (
+      // eslint-disable-next-line @next/next/no-img-element
+      <img
+        src="/brand/voxility-color.svg"
+        alt="Voxility"
+        width={width}
+        height={height}
+        className={cn("block select-none", className)}
+        style={{ height, width: "auto" }}
+        draggable={false}
+      />
+    );
+  }
+
+  // mono / white — swap based on the active theme via Tailwind's dark: variant.
+  // `voxility-white.svg` for dark theme, `voxility-black.svg` for light theme.
   return (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img
-      src={src}
-      alt="Voxility"
-      width={Math.round(height * ASPECT)}
-      height={height}
-      className={cn("block select-none", className)}
-      style={{ height, width: "auto" }}
-      draggable={false}
-    />
+    <span className={cn("block select-none", className)} style={{ height }}>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src="/brand/voxility-white.svg"
+        alt="Voxility"
+        width={width}
+        height={height}
+        className="hidden h-full w-auto dark:block"
+        style={{ height, width: "auto" }}
+        draggable={false}
+      />
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src="/brand/voxility-black.svg"
+        alt="Voxility"
+        width={width}
+        height={height}
+        className="block h-full w-auto dark:hidden"
+        style={{ height, width: "auto" }}
+        draggable={false}
+      />
+    </span>
   );
 }

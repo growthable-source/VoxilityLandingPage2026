@@ -62,7 +62,7 @@ export function Fit() {
         {profile.map((p) => (
           <div
             key={p.l}
-            className="rounded-md border border-border/50 bg-card/50 p-5 backdrop-blur-md"
+            className="rounded-md border border-border/50 bg-card p-5 shadow-card"
           >
             <div
               className="heat-text text-2xl font-semibold tracking-tight md:text-[30px]"
@@ -79,7 +79,7 @@ export function Fit() {
 
       {/* Vertical chip grid grouped by category */}
       <div className="gradient-border rounded-lg">
-        <div className="rounded-lg bg-card/60 p-7 shadow-card backdrop-blur-md md:p-10">
+        <div className="rounded-lg bg-card p-7 shadow-card md:p-10">
           <div className="grid grid-cols-1 gap-10 md:grid-cols-12 md:gap-12">
             {categories.map((cat, i) => (
               <div
@@ -103,7 +103,7 @@ export function Fit() {
                     <li
                       key={item}
                       className={cn(
-                        "inline-flex items-center rounded-md border border-border/60 bg-background/60 px-3 py-1.5",
+                        "inline-flex items-center rounded-md border border-border/60 bg-muted/60 px-3 py-1.5",
                         "text-[13px] tracking-tight text-foreground/90",
                         "transition-fast hover:border-primary/50 hover:bg-card hover:text-foreground",
                       )}

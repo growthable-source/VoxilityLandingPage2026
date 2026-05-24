@@ -81,11 +81,15 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#070708",
-  colorScheme: "dark",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#FAF7F4" },
+    { media: "(prefers-color-scheme: dark)", color: "#070708" },
+  ],
   width: "device-width",
   initialScale: 1,
 };
+
+const themeInitScript = `(function(){try{var s=localStorage.getItem('vx-theme');var sys=window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';var t=(s==='light'||s==='dark')?s:sys;var d=document.documentElement;d.classList.toggle('dark',t==='dark');d.classList.toggle('light',t==='light');d.style.colorScheme=t;}catch(e){document.documentElement.classList.add('dark');document.documentElement.style.colorScheme='dark';}})();`;
 
 const organizationJsonLd = {
   "@context": "https://schema.org",
@@ -132,11 +136,14 @@ export default function RootLayout({
   return (
     <html
       lang="en-US"
-      className={`${GeistSans.variable} ${GeistMono.variable} dark`}
+      className={`${GeistSans.variable} ${GeistMono.variable}`}
       data-scroll-behavior="smooth"
       suppressHydrationWarning
     >
       <head>
+        <script
+          dangerouslySetInnerHTML={{ __html: themeInitScript }}
+        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}

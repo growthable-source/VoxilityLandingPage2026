@@ -108,7 +108,7 @@ export function System() {
         })}
       </div>
 
-      <div className="mt-10 rounded-lg border border-border/50 bg-card/50 p-6 text-center backdrop-blur-md md:p-8">
+      <div className="mt-10 rounded-lg border border-border/50 bg-card p-6 text-center shadow-card md:p-8">
         <p className="text-[15px] text-muted-foreground md:text-base">
           You can pick up the bundle or just one piece. Most clients start with
           the bundle — it&rsquo;s where the components reinforce each other.

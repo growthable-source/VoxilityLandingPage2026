@@ -18,15 +18,19 @@ export default function HomePage() {
       <Nav />
       <main>
         <Hero />
+        <div className="letterbox-divider" aria-hidden />
         <Platform />
         <Leak />
         <System />
+        <div className="letterbox-divider" aria-hidden />
         <VoxAI />
         <Proof />
+        <div className="letterbox-divider" aria-hidden />
         <Fit />
         <Onboarding />
         <AgenciesBlock />
         <FAQ />
+        <div className="letterbox-divider" aria-hidden />
         <CTA />
       </main>
       <Footer />

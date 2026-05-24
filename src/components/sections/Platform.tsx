@@ -71,7 +71,7 @@ export function Platform() {
               className="group block h-full"
             >
               <div className="gradient-border h-full rounded-lg transition-smooth group-hover:-translate-y-0.5 group-hover:shadow-glow-soft">
-                <div className="flex h-full flex-col rounded-lg bg-card/85 p-6 backdrop-blur-md shadow-card">
+                <div className="flex h-full flex-col rounded-lg bg-card p-6 shadow-card">
                   <div className="flex items-start justify-between gap-3">
                     <div>
                       <h3 className="text-[18px] font-semibold tracking-tight text-foreground">

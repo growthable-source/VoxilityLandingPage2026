@@ -364,16 +364,16 @@ export function ContactForm() {
                   update("notes", e.target.value)
                 }
                 placeholder="What are you trying to fix? Any specific results you're after?"
-                className="w-full resize-y rounded-md border border-border/60 bg-background/60 px-3.5 py-2.5 text-[15px] text-foreground placeholder:text-muted-foreground/60 transition-fast focus:border-primary/60 focus:outline-none focus:ring-2 focus:ring-primary/20"
+                className="w-full resize-y rounded-md border border-border/60 bg-input px-3.5 py-2.5 text-[15px] text-foreground placeholder:text-muted-foreground/60 transition-fast focus:border-primary/60 focus:outline-none focus:ring-2 focus:ring-primary/20"
               />
             </div>
 
-            <label className="flex cursor-pointer items-start gap-3 rounded-md border border-border/50 bg-background/40 p-4 transition-fast hover:border-border">
+            <label className="flex cursor-pointer items-start gap-3 rounded-md border border-border/50 bg-muted/60 p-4 transition-fast hover:border-border">
               <input
                 type="checkbox"
                 checked={data.smsOptIn}
                 onChange={(e) => update("smsOptIn", e.target.checked)}
-                className="mt-0.5 h-4 w-4 shrink-0 rounded border-border/60 bg-background accent-[hsl(var(--primary))]"
+                className="mt-0.5 h-4 w-4 shrink-0 rounded border-border/60 bg-input accent-primary"
               />
               <span className="text-[12.5px] leading-relaxed text-muted-foreground">
                 <span className="font-medium text-foreground/90">
@@ -411,7 +411,7 @@ export function ContactForm() {
             <button
               type="button"
               onClick={goBack}
-              className="inline-flex h-11 items-center rounded-md border border-border/60 bg-card/40 px-4 text-[14px] text-foreground/85 transition-fast hover:border-border hover:bg-card/70"
+              className="inline-flex h-11 items-center rounded-md border border-border/60 bg-muted/60 px-4 text-[14px] text-foreground/85 transition-fast hover:border-border hover:bg-muted"
             >
               Back
             </button>
@@ -491,7 +491,7 @@ function Field({
         aria-invalid={Boolean(error)}
         aria-describedby={error ? `${id}-err` : hint ? `${id}-hint` : undefined}
         className={cn(
-          "h-11 w-full rounded-md border bg-background/60 px-3.5 text-[15px] text-foreground placeholder:text-muted-foreground/60 transition-fast focus:outline-none focus:ring-2 focus:ring-primary/20",
+          "h-11 w-full rounded-md border bg-input px-3.5 text-[15px] text-foreground placeholder:text-muted-foreground/60 transition-fast focus:outline-none focus:ring-2 focus:ring-primary/20",
           error
             ? "border-destructive/60 focus:border-destructive/70"
             : "border-border/60 focus:border-primary/60",
@@ -550,7 +550,7 @@ function RadioGroup({
                 "inline-flex h-9 items-center rounded-md border px-3.5 text-[13px] tracking-tight transition-fast",
                 selected
                   ? "border-primary/70 bg-primary/15 text-foreground shadow-glow-soft"
-                  : "border-border/60 bg-background/50 text-foreground/85 hover:border-primary/40 hover:bg-card/70",
+                  : "border-border/60 bg-muted/50 text-foreground/85 hover:border-primary/40 hover:bg-muted",
               )}
             >
               {opt}
