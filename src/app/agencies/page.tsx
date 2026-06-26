@@ -23,29 +23,29 @@ import {
 } from "lucide-react";
 
 const AGENCY_TITLE =
-  "Voxility for agencies — Whitelabel the system. Add $2–5k MRR per client.";
+  "Xovera for agencies — Whitelabel the system. Add $2–5k MRR per client.";
 const AGENCY_DESCRIPTION =
-  "Resell our Meta ads, landing pages, and Voxility AI infrastructure under your own brand. Built for 2–15 person agencies.";
+  "Resell our Meta ads, landing pages, and Xovera AI infrastructure under your own brand. Built for 2–15 person agencies.";
 
 export const metadata: Metadata = {
   title: AGENCY_TITLE,
   description: AGENCY_DESCRIPTION,
   alternates: {
-    canonical: "https://voxility.com/agencies",
+    canonical: "https://xovera.io/agencies",
   },
   openGraph: {
     title: AGENCY_TITLE,
     description: AGENCY_DESCRIPTION,
-    url: "https://voxility.com/agencies",
-    siteName: "Voxility",
+    url: "https://xovera.io/agencies",
+    siteName: "Xovera",
     type: "website",
     locale: "en_US",
     images: [
       {
-        url: "https://voxility.com/og.png",
+        url: "https://xovera.io/og.png",
         width: 1200,
         height: 630,
-        alt: "Voxility for agencies — Whitelabel the system.",
+        alt: "Xovera for agencies — Whitelabel the system.",
       },
     ],
   },
@@ -53,7 +53,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: AGENCY_TITLE,
     description: AGENCY_DESCRIPTION,
-    images: ["https://voxility.com/og.png"],
+    images: ["https://xovera.io/og.png"],
   },
 };
 
@@ -71,7 +71,7 @@ const valueProps = [
   {
     icon: Wrench,
     title: "Whitelabel, end to end",
-    body: "Voxility AI under your domain. GHL sub-accounts under your brand. Reporting wrapped in your colors. Your client only sees you.",
+    body: "Xovera AI under your domain. GHL sub-accounts under your brand. Reporting wrapped in your colors. Your client only sees you.",
   },
   {
     icon: ShieldCheck,
@@ -323,7 +323,7 @@ export default function AgenciesPage() {
                 <Button
                   variant="hero"
                   size="xl"
-                  href="https://cal.com/voxility/partner"
+                  href="https://cal.com/xovera/partner"
                   external
                 >
                   Book partner inquiry
@@ -331,10 +331,10 @@ export default function AgenciesPage() {
                 <Button
                   variant="glass"
                   size="xl"
-                  href="mailto:partners@voxility.com"
+                  href="mailto:partners@xovera.io"
                   external
                 >
-                  partners@voxility.com
+                  partners@xovera.io
                 </Button>
               </div>
             </div>

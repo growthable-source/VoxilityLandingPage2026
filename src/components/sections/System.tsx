@@ -28,13 +28,13 @@ const pillars = [
     bullets: [
       "Live in around 10 days, iterated weekly",
       "Mobile-first, sub-1s load, global edge CDN",
-      "Form, call, and SMS routed through Voxility AI",
+      "Form, call, and SMS routed through Xovera AI",
     ],
   },
   {
     icon: Cpu,
     eyebrow: "03 · Capture",
-    title: "Voxility AI answers, qualifies, books.",
+    title: "Xovera AI answers, qualifies, books.",
     body: "Inbound voice answered in under 3 rings. SMS and chat replies inside 60 seconds. Missed calls returned within the minute. Every conversation written back to GoHighLevel or HubSpot.",
     bullets: [
       "Natural voices in 30+ languages, 24/7 coverage, region-aware compliance",

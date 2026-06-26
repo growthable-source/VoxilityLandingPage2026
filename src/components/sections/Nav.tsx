@@ -6,7 +6,7 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 
 const navItems = [
   { label: "System", href: "#system" },
-  { label: "Voxility AI", href: "#voxai" },
+  { label: "Xovera AI", href: "#voxai" },
   { label: "Proof", href: "#proof" },
   { label: "Agencies", href: "/agencies" },
 ];
@@ -15,7 +15,7 @@ export function Nav() {
   return (
     <header className="glass-surface fixed inset-x-0 top-0 z-50 border-b border-border/40">
       <div className="container mx-auto flex h-16 max-w-[1320px] items-center justify-between px-5 md:px-8">
-        <Link href="/" aria-label="Voxility home">
+        <Link href="/" aria-label="Xovera home">
           <Logo />
         </Link>
 
@@ -34,7 +34,7 @@ export function Nav() {
         <div className="flex items-center gap-2">
           <ThemeToggle className="hidden md:inline-flex" />
           <a
-            href="https://go.voxility.ai/"
+            href="https://go.xovera.io/"
             target="_blank"
             rel="noreferrer noopener"
             className="hidden items-center gap-1 rounded-md px-3 py-2 text-sm text-muted-foreground transition-fast hover:text-foreground md:inline-flex"

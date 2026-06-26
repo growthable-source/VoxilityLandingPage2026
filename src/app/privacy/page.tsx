@@ -1,18 +1,18 @@
 import type { Metadata } from "next";
 import { LegalShell } from "@/components/sections/LegalShell";
 
-const TITLE = "Privacy Policy — Voxility";
+const TITLE = "Privacy Policy — Xovera";
 const DESCRIPTION =
-  "How Voxility collects, uses, and protects your information when you visit our site, contact us, or use the Voxility AI, Voxility Ads, or Voxility Go platforms.";
+  "How Xovera collects, uses, and protects your information when you visit our site, contact us, or use the Xovera AI, Xovera Ads, or Xovera Go platforms.";
 
 export const metadata: Metadata = {
   title: TITLE,
   description: DESCRIPTION,
-  alternates: { canonical: "https://voxility.com/privacy" },
+  alternates: { canonical: "https://xovera.io/privacy" },
   openGraph: {
     title: TITLE,
     description: DESCRIPTION,
-    url: "https://voxility.com/privacy",
+    url: "https://xovera.io/privacy",
     type: "article",
   },
   twitter: { card: "summary_large_image", title: TITLE, description: DESCRIPTION },
@@ -23,11 +23,11 @@ export default function PrivacyPage() {
     <LegalShell
       title="Privacy Policy"
       lastUpdated="April 27, 2026"
-      intro="This Privacy Policy describes how Voxility collects, uses, and protects personal information when you visit our website, contact us, or use the Voxility AI, Voxility Ads, or Voxility Go platforms."
+      intro="This Privacy Policy describes how Xovera collects, uses, and protects personal information when you visit our website, contact us, or use the Xovera AI, Xovera Ads, or Xovera Go platforms."
     >
       <p>
         We aim to be straightforward. If anything in this policy is unclear,
-        email <a href="mailto:privacy@voxility.com">privacy@voxility.com</a>.
+        email <a href="mailto:privacy@xovera.io">privacy@xovera.io</a>.
       </p>
 
       <h2>1. Information we collect</h2>
@@ -35,7 +35,7 @@ export default function PrivacyPage() {
       <ul>
         <li>Identity and contact information (name, company, work email, phone number, role)</li>
         <li>Business qualification details (ad spend, CRM, team size, notes)</li>
-        <li>Account credentials and profile data when you sign in to a Voxility platform</li>
+        <li>Account credentials and profile data when you sign in to a Xovera platform</li>
         <li>Payment and billing information when you become a customer</li>
       </ul>
 
@@ -50,7 +50,7 @@ export default function PrivacyPage() {
       <h3>Information from third parties</h3>
       <ul>
         <li>Authentication providers (e.g. Google, Microsoft) when you use single sign-on</li>
-        <li>Integrations (CRMs, calendars, ad platforms) you connect to a Voxility platform</li>
+        <li>Integrations (CRMs, calendars, ad platforms) you connect to a Xovera platform</li>
         <li>Analytics and advertising partners, in line with their own policies</li>
       </ul>
 
@@ -78,7 +78,7 @@ export default function PrivacyPage() {
         </li>
         <li>
           <strong>Integration partners</strong> — when you authorize an
-          integration (e.g. connecting Voxility AI to your CRM), data flows
+          integration (e.g. connecting Xovera AI to your CRM), data flows
           between us and that partner per your configuration.
         </li>
         <li>
@@ -103,7 +103,7 @@ export default function PrivacyPage() {
       <p>
         If you provide a phone number through a form and check the SMS
         marketing opt-in, you&rsquo;re agreeing to receive recurring marketing
-        text messages from Voxility. Message frequency varies. Message and
+        text messages from Xovera. Message frequency varies. Message and
         data rates may apply. Reply <strong>HELP</strong> for help,{" "}
         <strong>STOP</strong> to cancel. Consent is not a condition of
         purchase.
@@ -151,7 +151,7 @@ export default function PrivacyPage() {
 
       <h3>EU and UK (GDPR)</h3>
       <p>
-        Voxility acts as a controller for the data described in this policy.
+        Xovera acts as a controller for the data described in this policy.
         Lawful bases for processing include performance of a contract,
         legitimate interests, your consent, and legal obligations. You have
         the right to lodge a complaint with your local supervisory authority.
@@ -165,12 +165,12 @@ export default function PrivacyPage() {
         information; and the right to limit use of sensitive personal
         information. We do not sell personal information as defined under
         CCPA. To exercise these rights, email{" "}
-        <a href="mailto:privacy@voxility.com">privacy@voxility.com</a>.
+        <a href="mailto:privacy@xovera.io">privacy@xovera.io</a>.
       </p>
 
       <h3>How to exercise your rights</h3>
       <p>
-        Email <a href="mailto:privacy@voxility.com">privacy@voxility.com</a>.
+        Email <a href="mailto:privacy@xovera.io">privacy@xovera.io</a>.
         We&rsquo;ll respond within the timeframe required by applicable law.
         We may need to verify your identity before fulfilling certain
         requests.
@@ -178,7 +178,7 @@ export default function PrivacyPage() {
 
       <h2>9. International transfers</h2>
       <p>
-        Voxility operates globally. If you&rsquo;re outside the country where
+        Xovera operates globally. If you&rsquo;re outside the country where
         our infrastructure is hosted, your data may be transferred to and
         processed in other jurisdictions. We use safeguards such as Standard
         Contractual Clauses when transferring personal data out of the EU or
@@ -202,9 +202,9 @@ export default function PrivacyPage() {
 
       <h2>12. Contact</h2>
       <p>
-        Voxility — <a href="mailto:privacy@voxility.com">privacy@voxility.com</a>{" "}
+        Xovera — <a href="mailto:privacy@xovera.io">privacy@xovera.io</a>{" "}
         for privacy questions,{" "}
-        <a href="mailto:support@voxility.com">support@voxility.com</a> for
+        <a href="mailto:support@xovera.io">support@xovera.io</a> for
         general inquiries.
       </p>
     </LegalShell>

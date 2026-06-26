@@ -44,7 +44,7 @@ export function LegalShell({
 
           <p className="mt-16 border-t border-border/40 pt-6 text-[12px] leading-relaxed text-muted-foreground/80">
             This document is provided as a starting point and reflects
-            standard practice. It is not legal advice. Voxility recommends
+            standard practice. It is not legal advice. Xovera recommends
             review by qualified counsel before relying on it for any specific
             situation.
           </p>

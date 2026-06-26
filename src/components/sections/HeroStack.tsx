@@ -1,7 +1,7 @@
 import { cn } from "@/lib/cn";
 
 /**
- * The peek-card stack — front card is the live Voxility AI conversation,
+ * The peek-card stack — front card is the live Xovera AI conversation,
  * second tilted card peeks behind showing the booked appointment,
  * third card behind shows Meta Ads Manager. Three planes, three artifacts,
  * connected. Communicates "we connect these" without copy.
@@ -52,7 +52,7 @@ export function HeroStack({ className }: { className?: string }) {
         />
       </div>
 
-      {/* Card 1 — Voxility AI conversation (front, centered) */}
+      {/* Card 1 — Xovera AI conversation (front, centered) */}
       <div className="relative mx-auto w-full animate-fade-in-up">
         <div className="gradient-border rounded-lg shadow-glow">
           <div className="relative rounded-lg bg-card/95 p-6 backdrop-blur-md">
@@ -63,7 +63,7 @@ export function HeroStack({ className }: { className?: string }) {
                   <span className="absolute inset-0 rounded-full bg-primary" />
                 </span>
                 <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
-                  Voxility AI · Live call
+                  Xovera AI · Live call
                 </span>
               </div>
               <span className="font-mono text-[11px] tabular-nums text-muted-foreground">

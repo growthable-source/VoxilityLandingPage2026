@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 
-const BASE_URL = "https://voxility.com";
+const BASE_URL = "https://xovera.io";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();

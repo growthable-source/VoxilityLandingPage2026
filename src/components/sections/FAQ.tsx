@@ -8,19 +8,19 @@ import { cn } from "@/lib/cn";
 const faqs = [
   {
     q: "Will the AI sound like a robot to my patients?",
-    a: "Not really. Voxility AI uses natural-sounding voices across 30+ languages and accents, tuned for the conversational pacing of clinical and home-services inquiries. Most callers don't realize it's not a person. We can turn that disclosure on or off, depending on your industry's compliance requirements.",
+    a: "Not really. Xovera AI uses natural-sounding voices across 30+ languages and accents, tuned for the conversational pacing of clinical and home-services inquiries. Most callers don't realize it's not a person. We can turn that disclosure on or off, depending on your industry's compliance requirements.",
   },
   {
     q: "How fast can we go live?",
-    a: "Voxility AI is usually live within 14 days of kickoff — including number porting, GHL or HubSpot wiring, and booking system integration. Meta campaigns and the purpose-built landing page typically follow between days 21 and 30.",
+    a: "Xovera AI is usually live within 14 days of kickoff — including number porting, GHL or HubSpot wiring, and booking system integration. Meta campaigns and the purpose-built landing page typically follow between days 21 and 30.",
   },
   {
     q: "We already use HubSpot — do we have to switch to GoHighLevel?",
-    a: "Not at all. We're HubSpot solutions partners, and the Bundle and Voxility AI both work natively with HubSpot. Most agency-resold work runs on GHL because of the whitelabel mechanics, but direct clients on HubSpot stay on HubSpot.",
+    a: "Not at all. We're HubSpot solutions partners, and the Bundle and Xovera AI both work natively with HubSpot. Most agency-resold work runs on GHL because of the whitelabel mechanics, but direct clients on HubSpot stay on HubSpot.",
   },
   {
     q: "What if I just want the ads, not the AI?",
-    a: "We're happy to, though we'll be upfront on the call: the economics work best when the components are connected. Voxility AI tends to catch the leads ads agencies usually hand off and lose, which is what makes the cost-per-booking what it is.",
+    a: "We're happy to, though we'll be upfront on the call: the economics work best when the components are connected. Xovera AI tends to catch the leads ads agencies usually hand off and lose, which is what makes the cost-per-booking what it is.",
   },
   {
     q: "Are there long contracts?",

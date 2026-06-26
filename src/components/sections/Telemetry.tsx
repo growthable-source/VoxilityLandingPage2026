@@ -23,7 +23,7 @@ export function Telemetry({ className }: { className?: string }) {
         "letterbox relative w-full overflow-hidden border-y border-border/50 bg-card/40 backdrop-blur-md",
         className,
       )}
-      aria-label="Voxility live telemetry"
+      aria-label="Xovera live telemetry"
     >
       <div className="grid grid-cols-2 gap-x-6 gap-y-6 px-5 py-5 md:grid-cols-3 md:px-8 lg:grid-cols-6 lg:gap-x-10">
         {stats.map((s, i) => (

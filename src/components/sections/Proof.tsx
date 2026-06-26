@@ -6,7 +6,7 @@ const proofs = [
     metricSuffix: "bookings/mo",
     delta: "in the first 60 days",
     quote:
-      "We were spending the same on Meta. The difference was Voxility AI picking up after-hours and on lunch breaks. We didn't change a thing in the clinic.",
+      "We were spending the same on Meta. The difference was Xovera AI picking up after-hours and on lunch breaks. We didn't change a thing in the clinic.",
     name: "Practice Manager",
     business: "Scottsdale med spa · 3 locations",
   },

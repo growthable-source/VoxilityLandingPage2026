@@ -23,8 +23,8 @@ export function Logo({
     return (
       // eslint-disable-next-line @next/next/no-img-element
       <img
-        src="/brand/voxility-color.svg"
-        alt="Voxility"
+        src="/brand/xovera-color.svg"
+        alt="Xovera"
         width={width}
         height={height}
         className={cn("block select-none", className)}
@@ -35,13 +35,13 @@ export function Logo({
   }
 
   // mono / white — swap based on the active theme via Tailwind's dark: variant.
-  // `voxility-white.svg` for dark theme, `voxility-black.svg` for light theme.
+  // `xovera-white.svg` for dark theme, `xovera-black.svg` for light theme.
   return (
     <span className={cn("block select-none", className)} style={{ height }}>
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        src="/brand/voxility-white.svg"
-        alt="Voxility"
+        src="/brand/xovera-white.svg"
+        alt="Xovera"
         width={width}
         height={height}
         className="hidden h-full w-auto dark:block"
@@ -50,8 +50,8 @@ export function Logo({
       />
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        src="/brand/voxility-black.svg"
-        alt="Voxility"
+        src="/brand/xovera-black.svg"
+        alt="Xovera"
         width={width}
         height={height}
         className="block h-full w-auto dark:hidden"

@@ -1,18 +1,18 @@
 import type { Metadata } from "next";
 import { LegalShell } from "@/components/sections/LegalShell";
 
-const TITLE = "Terms of Service — Voxility";
+const TITLE = "Terms of Service — Xovera";
 const DESCRIPTION =
-  "Terms governing the marketing services and software platforms provided by Voxility, including Voxility AI, Voxility Ads, and Voxility Go.";
+  "Terms governing the marketing services and software platforms provided by Xovera, including Xovera AI, Xovera Ads, and Xovera Go.";
 
 export const metadata: Metadata = {
   title: TITLE,
   description: DESCRIPTION,
-  alternates: { canonical: "https://voxility.com/terms" },
+  alternates: { canonical: "https://xovera.io/terms" },
   openGraph: {
     title: TITLE,
     description: DESCRIPTION,
-    url: "https://voxility.com/terms",
+    url: "https://xovera.io/terms",
     type: "article",
   },
   twitter: { card: "summary_large_image", title: TITLE, description: DESCRIPTION },
@@ -23,7 +23,7 @@ export default function TermsPage() {
     <LegalShell
       title="Terms of Service"
       lastUpdated="April 27, 2026"
-      intro="These Terms govern your use of Voxility's marketing services and software platforms (Voxility AI, Voxility Ads, and Voxility Go). By signing an order form or accessing the platforms, you agree to these Terms."
+      intro="These Terms govern your use of Xovera's marketing services and software platforms (Xovera AI, Xovera Ads, and Xovera Go). By signing an order form or accessing the platforms, you agree to these Terms."
     >
       <p>
         These Terms work together with any signed Order Form or Services
@@ -33,20 +33,20 @@ export default function TermsPage() {
 
       <h2>1. Services</h2>
       <p>
-        <strong>Marketing services.</strong> Voxility provides the marketing
+        <strong>Marketing services.</strong> Xovera provides the marketing
         services described in your Order Form, which may include paid
         advertising management (Meta, Google), landing page design and
         hosting, conversion analytics, and integration setup.
       </p>
       <p>
-        <strong>Software platforms.</strong> Voxility AI, Voxility Ads, and
-        Voxility Go are software-as-a-service products. Your use of each
+        <strong>Software platforms.</strong> Xovera AI, Xovera Ads, and
+        Xovera Go are software-as-a-service products. Your use of each
         platform is also governed by our{" "}
         <a href="/acceptable-use">Acceptable Use Policy</a>.
       </p>
       <p>
-        <strong>Voxility Go (whitelabel).</strong> Voxility Go is a whitelabel
-        of GoHighLevel. By using Voxility Go, you also agree to GoHighLevel&rsquo;s
+        <strong>Xovera Go (whitelabel).</strong> Xovera Go is a whitelabel
+        of GoHighLevel. By using Xovera Go, you also agree to GoHighLevel&rsquo;s
         applicable terms.
       </p>
 
@@ -98,7 +98,7 @@ export default function TermsPage() {
         similar compliance.
       </p>
 
-      <h2>5. Voxility responsibilities</h2>
+      <h2>5. Xovera responsibilities</h2>
       <ul>
         <li>Perform services with reasonable care and professional skill</li>
         <li>Keep your data confidential and secure (subject to our <a href="/privacy">Privacy Policy</a>)</li>
@@ -113,7 +113,7 @@ export default function TermsPage() {
         You grant us a license to use it solely to provide the services.
       </p>
       <p>
-        <strong>Our IP.</strong> Voxility retains all rights to our software
+        <strong>Our IP.</strong> Xovera retains all rights to our software
         platforms, source code, infrastructure, methodologies, and any work
         product or improvements we develop in the course of providing
         services.
@@ -151,15 +151,15 @@ export default function TermsPage() {
       <p>To the maximum extent permitted by law:</p>
       <ul>
         <li>Neither party is liable for indirect, incidental, consequential, or punitive damages, lost profits, or lost data, even if advised of the possibility</li>
-        <li>Our total aggregate liability for any claim is limited to the fees paid by you to Voxility in the 12 months preceding the claim</li>
+        <li>Our total aggregate liability for any claim is limited to the fees paid by you to Xovera in the 12 months preceding the claim</li>
         <li>Nothing in this section limits liability for fraud, willful misconduct, or matters that cannot be limited under applicable law</li>
       </ul>
 
       <h2>10. Indemnification</h2>
       <p>
-        You&rsquo;ll indemnify Voxility against claims arising from your
+        You&rsquo;ll indemnify Xovera against claims arising from your
         content, your end-customer interactions, your breach of law, or your
-        breach of these Terms. Voxility will indemnify you against
+        breach of these Terms. Xovera will indemnify you against
         third-party claims that our services infringe intellectual property
         rights, subject to standard exceptions.
       </p>
@@ -182,7 +182,7 @@ export default function TermsPage() {
 
       <h2>13. Contact</h2>
       <p>
-        Voxility — <a href="mailto:legal@voxility.com">legal@voxility.com</a>.
+        Xovera — <a href="mailto:legal@xovera.io">legal@xovera.io</a>.
       </p>
     </LegalShell>
   );

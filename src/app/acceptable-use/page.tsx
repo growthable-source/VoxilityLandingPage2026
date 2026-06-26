@@ -1,18 +1,18 @@
 import type { Metadata } from "next";
 import { LegalShell } from "@/components/sections/LegalShell";
 
-const TITLE = "Acceptable Use Policy — Voxility";
+const TITLE = "Acceptable Use Policy — Xovera";
 const DESCRIPTION =
-  "The rules for using the Voxility AI, Voxility Ads, and Voxility Go software platforms — what's allowed, what isn't, and what you're responsible for as a user.";
+  "The rules for using the Xovera AI, Xovera Ads, and Xovera Go software platforms — what's allowed, what isn't, and what you're responsible for as a user.";
 
 export const metadata: Metadata = {
   title: TITLE,
   description: DESCRIPTION,
-  alternates: { canonical: "https://voxility.com/acceptable-use" },
+  alternates: { canonical: "https://xovera.io/acceptable-use" },
   openGraph: {
     title: TITLE,
     description: DESCRIPTION,
-    url: "https://voxility.com/acceptable-use",
+    url: "https://xovera.io/acceptable-use",
     type: "article",
   },
   twitter: { card: "summary_large_image", title: TITLE, description: DESCRIPTION },
@@ -23,10 +23,10 @@ export default function AcceptableUsePage() {
     <LegalShell
       title="Acceptable Use Policy"
       lastUpdated="April 27, 2026"
-      intro="This Acceptable Use Policy applies to all users of the Voxility software platforms — Voxility AI (app.voxility.ai), Voxility Ads (ads.voxility.ai), and Voxility Go (go.voxility.ai). By accessing or using a Voxility platform, you agree to comply with this Policy."
+      intro="This Acceptable Use Policy applies to all users of the Xovera software platforms — Xovera AI (app.xovera.io), Xovera Ads (ads.xovera.io), and Xovera Go (go.xovera.io). By accessing or using a Xovera platform, you agree to comply with this Policy."
     >
       <p>
-        If you&rsquo;re using Voxility under a Services Agreement, this Policy
+        If you&rsquo;re using Xovera under a Services Agreement, this Policy
         supplements the <a href="/terms">Terms of Service</a>.
       </p>
 
@@ -34,7 +34,7 @@ export default function AcceptableUsePage() {
       <ul>
         <li>Provide accurate, current information and keep it up to date</li>
         <li>Keep your credentials secure; you&rsquo;re responsible for activity under your account</li>
-        <li>Notify us promptly at <a href="mailto:security@voxility.com">security@voxility.com</a> if you suspect unauthorized access</li>
+        <li>Notify us promptly at <a href="mailto:security@xovera.io">security@xovera.io</a> if you suspect unauthorized access</li>
         <li>One person per account login; sharing credentials is not allowed</li>
       </ul>
 
@@ -71,7 +71,7 @@ export default function AcceptableUsePage() {
 
       <h3>Restricted industries</h3>
       <p>
-        Without our prior written consent, you may not use Voxility for:
+        Without our prior written consent, you may not use Xovera for:
       </p>
       <ul>
         <li>Adult content, dating, or escort services</li>
@@ -95,7 +95,7 @@ export default function AcceptableUsePage() {
 
       <h3>Misuse of AI features</h3>
       <ul>
-        <li>Impersonate Voxility or a real human in a deceptive way</li>
+        <li>Impersonate Xovera or a real human in a deceptive way</li>
         <li>Generate content that infringes intellectual property or privacy rights</li>
         <li>Use the AI for high-stakes decisions where human review is legally required</li>
       </ul>
@@ -138,8 +138,8 @@ export default function AcceptableUsePage() {
       <h2>7. Reporting abuse</h2>
       <p>
         To report abuse, security issues, or copyright infringement, email{" "}
-        <a href="mailto:abuse@voxility.com">abuse@voxility.com</a> or{" "}
-        <a href="mailto:security@voxility.com">security@voxility.com</a>.
+        <a href="mailto:abuse@xovera.io">abuse@xovera.io</a> or{" "}
+        <a href="mailto:security@xovera.io">security@xovera.io</a>.
       </p>
 
       <h2>8. Changes</h2>
@@ -150,7 +150,7 @@ export default function AcceptableUsePage() {
 
       <h2>9. Contact</h2>
       <p>
-        Voxility — <a href="mailto:support@voxility.com">support@voxility.com</a>.
+        Xovera — <a href="mailto:support@xovera.io">support@xovera.io</a>.
       </p>
     </LegalShell>
   );

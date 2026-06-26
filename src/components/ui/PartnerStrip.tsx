@@ -20,7 +20,7 @@ export function PartnerStrip({ className }: { className?: string }) {
         "flex flex-wrap items-center gap-x-7 gap-y-4 lg:gap-x-9",
         className,
       )}
-      aria-label="Voxility partner programs"
+      aria-label="Xovera partner programs"
     >
       {partners.map((p) => (
         <li

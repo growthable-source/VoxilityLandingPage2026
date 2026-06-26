@@ -4,25 +4,25 @@ import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
 import "./globals.css";
 
-const SITE_URL = "https://voxility.com";
+const SITE_URL = "https://xovera.io";
 const TITLE =
-  "Voxility — Booked appointments, end-to-end. Revenue architecture for appointment-driven service businesses.";
+  "Xovera — Booked appointments, end-to-end. Revenue architecture for appointment-driven service businesses.";
 const DESCRIPTION =
-  "Meta ads, landing pages, and Voxility AI on one accountable system. We answer the call, qualify the lead, and book the appointment — usually before your front desk has read the email.";
+  "Meta ads, landing pages, and Xovera AI on one accountable system. We answer the call, qualify the lead, and book the appointment — usually before your front desk has read the email.";
 const OG_IMAGE = `${SITE_URL}/og.png`;
 
 export const metadata: Metadata = {
   title: TITLE,
   description: DESCRIPTION,
   metadataBase: new URL(SITE_URL),
-  applicationName: "Voxility",
-  authors: [{ name: "Voxility" }],
+  applicationName: "Xovera",
+  authors: [{ name: "Xovera" }],
   generator: "Next.js",
   keywords: [
-    "Voxility",
-    "Voxility AI",
-    "Voxility Ads",
-    "Voxility Go",
+    "Xovera",
+    "Xovera AI",
+    "Xovera Ads",
+    "Xovera Go",
     "Meta ads management",
     "Google ads management",
     "AI receptionist",
@@ -40,11 +40,11 @@ export const metadata: Metadata = {
     canonical: SITE_URL,
   },
   openGraph: {
-    title: "Voxility — Booked appointments, end-to-end.",
+    title: "Xovera — Booked appointments, end-to-end.",
     description:
-      "Revenue architecture for appointment-driven service businesses. Meta ads + landing pages + Voxility AI on one accountable system.",
+      "Revenue architecture for appointment-driven service businesses. Meta ads + landing pages + Xovera AI on one accountable system.",
     url: SITE_URL,
-    siteName: "Voxility",
+    siteName: "Xovera",
     locale: "en_US",
     type: "website",
     images: [
@@ -52,15 +52,15 @@ export const metadata: Metadata = {
         url: OG_IMAGE,
         width: 1200,
         height: 630,
-        alt: "Voxility — Booked appointments, end-to-end.",
+        alt: "Xovera — Booked appointments, end-to-end.",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Voxility — Booked appointments, end-to-end.",
+    title: "Xovera — Booked appointments, end-to-end.",
     description:
-      "Meta ads, landing pages, and Voxility AI on one accountable system.",
+      "Meta ads, landing pages, and Xovera AI on one accountable system.",
     images: [OG_IMAGE],
   },
   robots: {
@@ -94,24 +94,24 @@ const themeInitScript = `(function(){try{var s=localStorage.getItem('vx-theme');
 const organizationJsonLd = {
   "@context": "https://schema.org",
   "@type": "Organization",
-  name: "Voxility",
+  name: "Xovera",
   url: SITE_URL,
-  logo: `${SITE_URL}/brand/voxility-color.svg`,
+  logo: `${SITE_URL}/brand/xovera-color.svg`,
   description:
-    "Voxility is a global revenue-architecture company for appointment-driven service businesses. We bundle Meta ads, landing pages, and the Voxility AI conversational + agentic platform into one accountable system from ad click to booked appointment.",
+    "Xovera is a global revenue-architecture company for appointment-driven service businesses. We bundle Meta ads, landing pages, and the Xovera AI conversational + agentic platform into one accountable system from ad click to booked appointment.",
   brand: {
     "@type": "Brand",
-    name: "Voxility",
+    name: "Xovera",
   },
   sameAs: [
-    "https://app.voxility.ai",
-    "https://ads.voxility.ai",
-    "https://go.voxility.ai",
+    "https://app.xovera.io",
+    "https://ads.xovera.io",
+    "https://go.xovera.io",
   ],
   contactPoint: {
     "@type": "ContactPoint",
     contactType: "sales",
-    email: "hello@voxility.com",
+    email: "hello@xovera.io",
     availableLanguage: ["English"],
   },
 };
@@ -119,12 +119,12 @@ const organizationJsonLd = {
 const websiteJsonLd = {
   "@context": "https://schema.org",
   "@type": "WebSite",
-  name: "Voxility",
+  name: "Xovera",
   url: SITE_URL,
   inLanguage: "en-US",
   publisher: {
     "@type": "Organization",
-    name: "Voxility",
+    name: "Xovera",
   },
 };
 
@@ -156,7 +156,7 @@ export default function RootLayout({
       <body className="min-h-screen bg-background text-foreground antialiased">
         {children}
         <Script
-          src="https://app.voxility.ai/widget.js"
+          src="https://app.xovera.io/widget.js"
           data-widget-id="cmoh5l1c8000004l4yp6k1m4y"
           data-public-key="widget_pub_7131eb1c5f35cd851b96c5f73b8f6db72cf2"
           strategy="afterInteractive"

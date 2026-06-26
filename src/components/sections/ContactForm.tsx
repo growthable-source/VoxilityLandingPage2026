@@ -380,7 +380,7 @@ export function ContactForm() {
                   Send me marketing texts (optional).
                 </span>{" "}
                 By checking this box, I agree to receive recurring marketing
-                text messages from Voxility — including product updates and
+                text messages from Xovera — including product updates and
                 relevant offers — at the number I provided. Message frequency
                 varies. Msg &amp; data rates may apply. Reply STOP to
                 unsubscribe. Consent isn&rsquo;t a condition of purchase. See

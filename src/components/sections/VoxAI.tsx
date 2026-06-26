@@ -63,14 +63,14 @@ export function VoxAI() {
 
       <div className="grid grid-cols-1 items-end gap-12 lg:grid-cols-12">
         <div className="lg:col-span-7">
-          <SectionEyebrow>Voxility AI</SectionEyebrow>
+          <SectionEyebrow>Xovera AI</SectionEyebrow>
           <SectionHeading>
             The receptionist
             <br />
             <span className="text-gradient">that doesn&rsquo;t miss.</span>
           </SectionHeading>
           <SectionLede>
-            Voxility AI is our conversational and agentic platform — built
+            Xovera AI is our conversational and agentic platform — built
             in-house, GoHighLevel-native, and HubSpot-integrated. It&rsquo;s
             how we turn paid leads into actual booked appointments.
           </SectionLede>
@@ -114,7 +114,7 @@ export function VoxAI() {
 
       <p className="mx-auto mt-12 max-w-[64ch] text-center text-[15px] text-muted-foreground">
         We don&rsquo;t sell AI on its own. We deliver a system that produces
-        booked appointments — and Voxility AI is the part of it your front
+        booked appointments — and Xovera AI is the part of it your front
         desk tends to thank you for.
       </p>
     </Section>

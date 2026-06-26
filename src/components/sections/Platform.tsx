@@ -3,21 +3,21 @@ import { Section, SectionEyebrow } from "@/components/ui/Section";
 
 const products = [
   {
-    name: "Voxility Ads",
-    domain: "ads.voxility.ai",
-    href: "https://ads.voxility.ai/",
+    name: "Xovera Ads",
+    domain: "ads.xovera.io",
+    href: "https://ads.xovera.io/",
     body: "Build, launch, and manage Meta and Google ad campaigns with an AI launcher.",
   },
   {
-    name: "Voxility AI",
-    domain: "app.voxility.ai",
-    href: "https://app.voxility.ai/",
+    name: "Xovera AI",
+    domain: "app.xovera.io",
+    href: "https://app.xovera.io/",
     body: "Conversational, agentic AI that answers, qualifies, books, and writes back to your CRM.",
   },
   {
-    name: "Voxility Go",
-    domain: "go.voxility.ai",
-    href: "https://go.voxility.ai/",
+    name: "Xovera Go",
+    domain: "go.xovera.io",
+    href: "https://go.xovera.io/",
     body: "A whitelabel marketing and sales platform on GoHighLevel, configured and run by us.",
   },
 ];
@@ -31,7 +31,7 @@ const platformJsonLd = {
     applicationCategory: "BusinessApplication",
     operatingSystem: "Web",
     description: p.body,
-    publisher: { "@type": "Organization", name: "Voxility" },
+    publisher: { "@type": "Organization", name: "Xovera" },
     offers: { "@type": "Offer", availability: "https://schema.org/InStock" },
   })),
 };

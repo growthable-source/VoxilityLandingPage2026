@@ -5,9 +5,9 @@ const cols = [
   {
     title: "Platform",
     links: [
-      { l: "Voxility Ads", h: "https://ads.voxility.ai/", external: true },
-      { l: "Voxility AI", h: "https://app.voxility.ai/", external: true },
-      { l: "Voxility Go", h: "https://go.voxility.ai/", external: true },
+      { l: "Xovera Ads", h: "https://ads.xovera.io/", external: true },
+      { l: "Xovera AI", h: "https://app.xovera.io/", external: true },
+      { l: "Xovera Go", h: "https://go.xovera.io/", external: true },
     ],
   },
   {
@@ -15,7 +15,7 @@ const cols = [
     links: [
       { l: "Meta ads", h: "#system" },
       { l: "Landing pages", h: "#system" },
-      { l: "Voxility AI", h: "#voxai" },
+      { l: "Xovera AI", h: "#voxai" },
     ],
   },
   {
@@ -55,7 +55,7 @@ export function Footer() {
             <Logo className="mb-5" />
             <p className="max-w-[42ch] text-[14px] leading-relaxed text-muted-foreground">
               Revenue architecture for appointment-driven service businesses
-              worldwide. Meta ads, landing pages, and Voxility AI on one
+              worldwide. Meta ads, landing pages, and Xovera AI on one
               accountable system.
             </p>
 
@@ -119,7 +119,7 @@ export function Footer() {
 
         <div className="mt-14 flex flex-col items-start justify-between gap-4 border-t border-border/50 pt-8 md:flex-row md:items-center">
           <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
-            © {new Date().getFullYear()} Voxility · One accountable system, end-to-end
+            © {new Date().getFullYear()} Xovera · One accountable system, end-to-end
           </p>
 
           <div className="flex items-center gap-5 font-mono text-[11px] uppercase tracking-[0.18em] text-muted-foreground">

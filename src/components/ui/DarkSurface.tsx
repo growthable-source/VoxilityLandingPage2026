@@ -3,7 +3,7 @@ import { cn } from "@/lib/cn";
 type DarkSurfaceProps = React.HTMLAttributes<HTMLDivElement> & {
   /** Render macOS-style window chrome (3 traffic-light dots + 1px ring) */
   chrome?: boolean;
-  /** Optional small label rendered in the chrome bar (e.g. "voxility.ai/dashboard") */
+  /** Optional small label rendered in the chrome bar (e.g. "xovera.io/dashboard") */
   chromeLabel?: string;
 };
 

@@ -7,11 +7,11 @@ const phases = [
   {
     days: "Days 0–14",
     label: "Stand up",
-    headline: "Voxility AI goes live. Calls answered. Leads replied to in seconds.",
+    headline: "Xovera AI goes live. Calls answered. Leads replied to in seconds.",
     bullets: [
       "Number ported or new local number provisioned",
       "GoHighLevel or HubSpot wired to your booking system",
-      "Inbound call, SMS, web chat, form fills all routed through Voxility AI",
+      "Inbound call, SMS, web chat, form fills all routed through Xovera AI",
       "First reporting view live by day 10",
     ],
   },
