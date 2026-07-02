@@ -69,3 +69,12 @@ export function trackCalculatorComplete(missedMonthlyRevenue: number) {
     value: missedMonthlyRevenue,
   });
 }
+
+/** Fired when a demo request is submitted (e.g. /ai-for-gyms). */
+export function trackDemoRequest(source: string) {
+  if (typeof window !== "undefined" && typeof window.fbq === "function") {
+    window.fbq("track", "Lead", { content_name: source });
+    window.fbq("trackCustom", "DemoRequest", { source });
+  }
+  pushDataLayer("demo_request", { source });
+}

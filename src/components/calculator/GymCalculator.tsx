@@ -236,8 +236,8 @@ export function GymCalculator() {
                 Book a 30-min strategy call
               </Button>
             </div>
-            <Button variant="glass" size="lg" href="/">
-              See how the system works
+            <Button variant="glass" size="lg" href="/ai-for-gyms">
+              See how it works for gyms
             </Button>
           </div>
         </div>
