@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/Section";
 import { Card, CardBody, CardIcon, CardTitle } from "@/components/ui/Card";
 import { GymChatDemo } from "@/components/gyms/GymChatDemo";
+import { GymHeroVideo } from "@/components/gyms/GymHeroVideo";
 import { GymDemoForm } from "@/components/gyms/GymDemoForm";
 import { GymsFAQ } from "@/components/gyms/GymsFAQ";
 
@@ -110,85 +111,95 @@ export default function AiForGymsPage() {
     <>
       <Nav />
       <main>
-        {/* Hero */}
-        <section className="relative isolate overflow-hidden pt-28 md:pt-36">
-          <div className="absolute inset-0 -z-30 mesh-bg" aria-hidden />
-          <div className="absolute inset-0 -z-20 grid-overlay opacity-50" aria-hidden />
+        {/* Hero — full-bleed background video, ported from app.xovera.io */}
+        <section className="relative isolate flex min-h-[clamp(560px,86vh,820px)] items-center justify-center overflow-hidden px-5 py-24 md:px-8">
+          {/* Poster fallback paints first and covers reduced-motion */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/landing/gym-hero-poster.jpg"
+            alt=""
+            aria-hidden
+            className="absolute inset-0 -z-30 h-full w-full object-cover"
+          />
+          <GymHeroVideo />
+          {/* Scrims — hero sits on dark footage in both themes */}
           <div
             aria-hidden
-            className="pointer-events-none absolute -left-32 top-24 -z-10 h-[500px] w-[500px] animate-orb-float rounded-full opacity-60"
+            className="pointer-events-none absolute inset-0 -z-10"
             style={{
               background:
-                "radial-gradient(closest-side, var(--orb-glow-primary), transparent 70%)",
-              filter: "blur(70px)",
+                "linear-gradient(180deg, rgba(7,8,12,0.80) 0%, rgba(7,8,12,0.55) 45%, rgba(7,8,12,0.84) 100%)",
             }}
           />
           <div
             aria-hidden
-            className="pointer-events-none absolute -right-40 top-40 -z-10 h-[560px] w-[560px] rounded-full opacity-50"
+            className="pointer-events-none absolute inset-0 -z-10"
             style={{
               background:
-                "radial-gradient(closest-side, var(--orb-glow-amber), transparent 70%)",
-              filter: "blur(80px)",
-              animation: "orb-float 16s ease-in-out infinite reverse",
+                "radial-gradient(ellipse at 80% 15%, hsl(var(--primary) / 0.24), transparent 55%)",
             }}
           />
-          <div className="noise absolute inset-0 -z-0" aria-hidden />
 
-          <div className="container relative z-10 mx-auto max-w-[1320px] px-5 pb-16 md:px-8 md:pb-24">
-            <div className="mx-auto max-w-[860px] text-center">
-              <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-border/60 bg-card/70 px-3 py-1.5 backdrop-blur-md">
-                <span className="relative inline-flex h-1.5 w-1.5">
-                  <span className="absolute inset-0 animate-orb-pulse rounded-full bg-primary" />
-                  <span className="absolute inset-0 rounded-full bg-primary" />
-                </span>
-                <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted-foreground">
-                  For gyms &amp; fitness studios · US &amp; Canada
-                </span>
-              </div>
-
-              <h1
-                className="text-balance font-semibold tracking-tight text-foreground"
-                style={{
-                  fontSize: "clamp(2.5rem, 5.5vw, 4.5rem)",
-                  lineHeight: 1.04,
-                  letterSpacing: "-0.035em",
-                }}
-              >
-                Turn every lead into a{" "}
-                <span className="text-gradient">paying member</span> —
-                automatically.
-              </h1>
-
-              <p className="mx-auto mt-7 max-w-[58ch] text-balance text-lg leading-relaxed text-muted-foreground md:text-[20px]">
-                The moment a lead comes in — call, text, DM, or ad — Xovera
-                answers in seconds, routes it to the right instructor or
-                salesperson, and follows up until they&rsquo;re signed up and
-                paying. Any hour, with nobody at the desk.
-              </p>
-
-              <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
-                <div className="conic-border inline-flex rounded-md">
-                  <Button variant="hero" size="xl" href="#contact">
-                    Book a demo
-                  </Button>
-                </div>
-                <Button
-                  variant="glass"
-                  size="xl"
-                  href="https://app.xovera.io/"
-                  external
-                >
-                  Start free
-                </Button>
-              </div>
-              <p className="mt-4 font-mono text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
-                Free while in beta — no card required
-              </p>
+          <div className="relative z-10 mx-auto max-w-[860px] pt-10 text-center">
+            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/15 bg-black/40 px-3 py-1.5 backdrop-blur-md">
+              <span className="relative inline-flex h-1.5 w-1.5">
+                <span className="absolute inset-0 animate-orb-pulse rounded-full bg-primary" />
+                <span className="absolute inset-0 rounded-full bg-primary" />
+              </span>
+              <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-white/70">
+                For gyms &amp; fitness studios · US &amp; Canada
+              </span>
             </div>
 
+            <h1
+              className="text-balance font-semibold tracking-tight text-white"
+              style={{
+                fontSize: "clamp(2.5rem, 5.5vw, 4.5rem)",
+                lineHeight: 1.04,
+                letterSpacing: "-0.035em",
+              }}
+            >
+              Turn every lead into a{" "}
+              <span className="text-gradient">paying member</span> —
+              automatically.
+            </h1>
+
+            <p className="mx-auto mt-7 max-w-[58ch] text-balance text-lg leading-relaxed text-white/75 md:text-[20px]">
+              The moment a lead comes in — call, text, DM, or ad — Xovera
+              answers in seconds, routes it to the right instructor or
+              salesperson, and follows up until they&rsquo;re signed up and
+              paying. Any hour, with nobody at the desk.
+            </p>
+
+            <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
+              <div className="conic-border inline-flex rounded-md">
+                <Button variant="hero" size="xl" href="#contact">
+                  Book a demo
+                </Button>
+              </div>
+              <Button
+                variant="glass"
+                size="xl"
+                href="https://app.xovera.io/"
+                external
+                className="border-white/20 bg-black/40 text-white hover:bg-black/60"
+              >
+                Start free
+              </Button>
+            </div>
+            <p className="mt-4 font-mono text-[11px] uppercase tracking-[0.18em] text-white/60">
+              Free while in beta — no card required
+            </p>
+          </div>
+
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-primary-glow/40 to-transparent" />
+        </section>
+
+        {/* Metrics + calculator cross-link */}
+        <section className="relative">
+          <div className="container mx-auto max-w-[1320px] px-5 py-14 md:px-8 md:py-16">
             {/* Metrics strip */}
-            <div className="mx-auto mt-16 grid max-w-[880px] grid-cols-1 gap-4 sm:grid-cols-3">
+            <div className="mx-auto grid max-w-[880px] grid-cols-1 gap-4 sm:grid-cols-3">
               {heroMetrics.map((m) => (
                 <div
                   key={m.v}
@@ -221,8 +232,6 @@ export default function AiForGymsPage() {
               </Link>
             </div>
           </div>
-
-          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-primary-glow/40 to-transparent" />
         </section>
 
         {/* Integrations */}
