@@ -20,11 +20,12 @@ import {
 import { Card, CardBody, CardIcon, CardTitle } from "@/components/ui/Card";
 import { GymChatDemo } from "@/components/gyms/GymChatDemo";
 import { GymHeroVideo } from "@/components/gyms/GymHeroVideo";
+import { VoiceSampleButton } from "@/components/gyms/VoiceSampleButton";
 import { GymDemoForm } from "@/components/gyms/GymDemoForm";
 import { GymsFAQ } from "@/components/gyms/GymsFAQ";
 
 const PAGE_TITLE =
-  "Xovera AI for Gyms — Turn every lead into a paying member, automatically";
+  "AI for Gyms & Fitness Studios — Never Miss a Lead | Xovera";
 const PAGE_DESCRIPTION =
   "The moment a lead comes in — call, text, DM, or ad — Xovera answers in seconds, qualifies them, and books the tour. 24/7, US & Canada, works with Mindbody, ABC, Club Automation and more.";
 
@@ -253,15 +254,27 @@ export default function AiForGymsPage() {
               automation without running it yourself.
             </SectionLede>
 
-            <div className="mt-10 flex flex-wrap justify-center gap-2.5">
-              {integrations.map((name) => (
-                <span
-                  key={name}
-                  className="inline-flex h-10 items-center rounded-md border border-border/50 bg-card/70 px-4 font-mono text-[13px] tracking-tight text-foreground/85"
-                >
-                  {name}
-                </span>
-              ))}
+            {/* Infinite wordmark marquee — two copies of the row loop seamlessly */}
+            <div className="relative mt-10 overflow-hidden py-2">
+              <div
+                aria-hidden
+                className="pointer-events-none absolute inset-y-0 left-0 z-10 w-20 bg-gradient-to-r from-background to-transparent"
+              />
+              <div
+                aria-hidden
+                className="pointer-events-none absolute inset-y-0 right-0 z-10 w-20 bg-gradient-to-l from-background to-transparent"
+              />
+              <ul className="marquee-track items-center gap-12">
+                {[...integrations, ...integrations].map((name, i) => (
+                  <li
+                    key={`${name}-${i}`}
+                    aria-hidden={i >= integrations.length}
+                    className="shrink-0 whitespace-nowrap text-xl font-bold tracking-tight text-muted-foreground/70 md:text-2xl"
+                  >
+                    {name}
+                  </li>
+                ))}
+              </ul>
             </div>
             <p className="mt-5 text-[13px] text-muted-foreground">
               Don&rsquo;t see your system? We&rsquo;ll build the integration —
@@ -464,9 +477,10 @@ export default function AiForGymsPage() {
                     </span>
                   </div>
                 ))}
-                <div className="pt-2">
+                <div className="flex flex-wrap items-center gap-3 pt-2">
+                  <VoiceSampleButton />
                   <Button variant="glass" size="lg" href="#contact">
-                    Hear it handle a real call
+                    See it live on a demo
                   </Button>
                 </div>
               </div>

@@ -651,6 +651,16 @@
   border-color: hsl(var(--border) / 0.5);
 }
 
+/* Equalizer bars for the voice-sample player */
+@keyframes voice-bar {
+  from {
+    height: 4px;
+  }
+  to {
+    height: 16px;
+  }
+}
+
 /* Range slider for the calculator — fill percentage driven by --fill */
 .range-input {
   -webkit-appearance: none;
