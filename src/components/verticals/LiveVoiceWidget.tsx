@@ -36,6 +36,14 @@ const AGENT_ID = process.env.NEXT_PUBLIC_VOICE_AGENT_ID;
 /** True once Ryan has configured a live widget (env) or pasted an embed. */
 export const LIVE_VOICE_CONFIGURED = Boolean(WIDGET_SRC || AGENT_ID);
 
+/**
+ * Whether the live demo is ready for a given vertical — true if there's an
+ * env-level widget/agent, or this vertical supplies its own agent id.
+ */
+export function voiceConfigured(agentId?: string): boolean {
+  return Boolean(WIDGET_SRC || AGENT_ID || agentId);
+}
+
 export function LiveVoiceWidget({ agentId }: { agentId?: string }) {
   const loaded = useRef(false);
 

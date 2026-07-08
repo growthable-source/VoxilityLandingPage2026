@@ -31,6 +31,7 @@ interface CalculatorPayload {
     utmContent?: string;
     utmTerm?: string;
     fbclid?: string;
+    gclid?: string;
   };
   // anti-spam
   website?: string;
@@ -120,6 +121,7 @@ export async function POST(request: Request) {
     utmContent: clamp(utm.utmContent ?? "", 200) || undefined,
     utmTerm: clamp(utm.utmTerm ?? "", 200) || undefined,
     fbclid: clamp(utm.fbclid ?? "", 200) || undefined,
+    gclid: clamp(utm.gclid ?? "", 200) || undefined,
     submittedAt: new Date().toISOString(),
     userAgent: request.headers.get("user-agent") ?? undefined,
     ip:

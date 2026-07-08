@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/Button";
 import { VoiceSampleButton } from "@/components/gyms/VoiceSampleButton";
 import {
   LiveVoiceWidget,
-  LIVE_VOICE_CONFIGURED,
+  voiceConfigured,
 } from "@/components/verticals/LiveVoiceWidget";
 import { trackCompletedWebDemo, trackVoiceDemoStart } from "@/lib/tracking";
 import type { Vertical } from "@/lib/verticals/types";
@@ -34,6 +34,7 @@ export function VoiceDemo({ vertical }: { vertical: Vertical }) {
   const [launched, setLaunched] = useState(false);
   const completed = useRef(false);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const configured = voiceConfigured(vertical.voiceAgentId);
 
   const fireComplete = () => {
     if (completed.current) return;
@@ -56,7 +57,7 @@ export function VoiceDemo({ vertical }: { vertical: Vertical }) {
     if (launched) return;
     setLaunched(true);
     trackVoiceDemoStart(vertical.slug);
-    if (LIVE_VOICE_CONFIGURED) {
+    if (configured) {
       timer.current = setTimeout(fireComplete, COMPLETE_AFTER_MS);
     }
   };
@@ -134,7 +135,7 @@ export function VoiceDemo({ vertical }: { vertical: Vertical }) {
           </>
         ) : (
           <div className="mt-6">
-            {LIVE_VOICE_CONFIGURED ? (
+            {configured ? (
               <div className="flex flex-col items-center">
                 <VoiceOrb />
                 <p className="mt-5 text-center text-[14px] text-muted-foreground">
@@ -142,7 +143,7 @@ export function VoiceDemo({ vertical }: { vertical: Vertical }) {
                   access when your browser asks.
                 </p>
                 <div className="mt-5 w-full">
-                  <LiveVoiceWidget />
+                  <LiveVoiceWidget agentId={vertical.voiceAgentId} />
                 </div>
               </div>
             ) : (

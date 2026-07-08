@@ -96,6 +96,12 @@ export interface Vertical {
   signupUrl: string;
   /** Source tag sent to the demo/calculator APIs + tracking. */
   demoSource: string;
+  /**
+   * Optional per-niche live voice-demo agent id. When set, the hero demo
+   * connects to this vertical's own agent; otherwise it uses the env default
+   * (NEXT_PUBLIC_VOICE_AGENT_ID). Requires NEXT_PUBLIC_VOICE_WIDGET_SRC.
+   */
+  voiceAgentId?: string;
 
   // ---- SEO ----
   seo: {

@@ -5,6 +5,7 @@ declare global {
   interface Window {
     fbq?: (...args: unknown[]) => void;
     dataLayer?: Record<string, unknown>[];
+    gtag?: (...args: unknown[]) => void;
   }
 }
 
@@ -15,6 +16,8 @@ export interface UtmParams {
   utmContent?: string;
   utmTerm?: string;
   fbclid?: string;
+  /** Google Ads click id — capture it into leads for offline conversion import. */
+  gclid?: string;
 }
 
 /** Read ad-attribution params from the current URL (client only). */
@@ -29,6 +32,7 @@ export function readUtmParams(): UtmParams {
     utmContent: pick("utm_content"),
     utmTerm: pick("utm_term"),
     fbclid: pick("fbclid"),
+    gclid: pick("gclid"),
   };
 }
 
@@ -36,6 +40,13 @@ function pushDataLayer(event: string, data: Record<string, unknown> = {}) {
   if (typeof window === "undefined") return;
   window.dataLayer = window.dataLayer || [];
   window.dataLayer.push({ event, ...data });
+}
+
+/** Fire a GA4 / Google Ads event via gtag (no-op when the tag is absent). */
+function gtagEvent(name: string, params: Record<string, unknown> = {}) {
+  if (typeof window !== "undefined" && typeof window.gtag === "function") {
+    window.gtag("event", name, params);
+  }
 }
 
 /** Fired once when the visitor first interacts with the calculator. */
@@ -76,6 +87,7 @@ export function trackDemoRequest(source: string) {
     window.fbq("track", "Lead", { content_name: source });
     window.fbq("trackCustom", "DemoRequest", { source });
   }
+  gtagEvent("demo_request", { source });
   pushDataLayer("demo_request", { source });
 }
 
@@ -86,6 +98,7 @@ export function trackVoiceDemoStart(vertical: string) {
   if (typeof window !== "undefined" && typeof window.fbq === "function") {
     window.fbq("trackCustom", "VoiceDemoStart", { vertical });
   }
+  gtagEvent("voice_demo_start", { vertical });
   pushDataLayer("voice_demo_start", { vertical });
 }
 
@@ -99,6 +112,7 @@ export function trackCompletedWebDemo(vertical: string) {
     window.fbq("track", "Lead", { content_name: `voice-demo-${vertical}` });
     window.fbq("trackCustom", "CompletedWebDemo", { vertical });
   }
+  gtagEvent("completed_web_demo", { vertical });
   pushDataLayer("completed_web_demo", { vertical });
 }
 
@@ -108,6 +122,7 @@ export function trackStartedPaidSignup(vertical: string) {
     window.fbq("track", "InitiateCheckout", { content_name: `signup-${vertical}` });
     window.fbq("trackCustom", "StartedPaidSignup", { vertical });
   }
+  gtagEvent("started_paid_signup", { vertical });
   pushDataLayer("started_paid_signup", { vertical });
 }
 
@@ -116,6 +131,7 @@ export function trackCalcStart(vertical: string) {
   if (typeof window !== "undefined" && typeof window.fbq === "function") {
     window.fbq("trackCustom", "CalculatorStart", { calculator: vertical });
   }
+  gtagEvent("calculator_start", { calculator: vertical });
   pushDataLayer("calculator_start", { calculator: vertical });
 }
 
@@ -133,6 +149,11 @@ export function trackCalcComplete(vertical: string, missedMonthlyRevenue: number
       currency: "USD",
     });
   }
+  gtagEvent("calculator_complete", {
+    calculator: vertical,
+    value: missedMonthlyRevenue,
+    currency: "USD",
+  });
   pushDataLayer("calculator_complete", {
     calculator: vertical,
     value: missedMonthlyRevenue,
