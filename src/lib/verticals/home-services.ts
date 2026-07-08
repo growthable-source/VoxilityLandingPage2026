@@ -11,7 +11,7 @@ export const homeServices: Vertical = {
   name: "Home Services",
   noun: "home-services business",
   orgLabel: "Company name",
-  signupUrl: "https://xovera.io/home-services",
+  signupUrl: "https://app.xovera.io/?ref=ai-for-home-services",
   demoSource: "ai-for-home-services",
 
   seo: {

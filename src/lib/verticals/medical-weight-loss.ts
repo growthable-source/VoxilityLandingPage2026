@@ -11,7 +11,7 @@ export const medicalWeightLoss: Vertical = {
   name: "Medical Weight-Loss",
   noun: "weight-loss clinic",
   orgLabel: "Clinic name",
-  signupUrl: "https://xovera.io/medical-weight-loss",
+  signupUrl: "https://app.xovera.io/?ref=ai-for-medical-weight-loss",
   demoSource: "ai-for-medical-weight-loss",
 
   seo: {

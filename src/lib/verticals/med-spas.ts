@@ -10,7 +10,7 @@ export const medSpas: Vertical = {
   name: "Med Spas",
   noun: "med spa",
   orgLabel: "Med spa name",
-  signupUrl: "https://xovera.io/med-spas",
+  signupUrl: "https://app.xovera.io/?ref=ai-for-med-spas",
   demoSource: "ai-for-med-spas",
 
   seo: {

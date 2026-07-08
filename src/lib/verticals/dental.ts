@@ -10,7 +10,7 @@ export const dental: Vertical = {
   name: "Dental & Orthodontics",
   noun: "dental practice",
   orgLabel: "Practice name",
-  signupUrl: "https://xovera.io/dental",
+  signupUrl: "https://app.xovera.io/?ref=ai-for-dental",
   demoSource: "ai-for-dental",
 
   seo: {

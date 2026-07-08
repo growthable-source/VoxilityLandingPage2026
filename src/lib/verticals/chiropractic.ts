@@ -11,7 +11,7 @@ export const chiropractic: Vertical = {
   name: "Chiropractic & Physical Therapy",
   noun: "practice",
   orgLabel: "Practice name",
-  signupUrl: "https://xovera.io/chiropractic",
+  signupUrl: "https://app.xovera.io/?ref=ai-for-chiropractic",
   demoSource: "ai-for-chiropractic",
 
   seo: {
