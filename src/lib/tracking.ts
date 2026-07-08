@@ -78,3 +78,63 @@ export function trackDemoRequest(source: string) {
   }
   pushDataLayer("demo_request", { source });
 }
+
+// ─── Vertical funnel events (the growth report's funnel) ─────────────────────
+
+/** Fired when a visitor launches the ungated in-browser voice demo. */
+export function trackVoiceDemoStart(vertical: string) {
+  if (typeof window !== "undefined" && typeof window.fbq === "function") {
+    window.fbq("trackCustom", "VoiceDemoStart", { vertical });
+  }
+  pushDataLayer("voice_demo_start", { vertical });
+}
+
+/**
+ * The mid-funnel conversion we optimize Google Ads on: a meaningful completed
+ * voice demo (≥30s of talk or ≥2 turns). Fires the standard Lead event plus a
+ * custom event to import as the Google Ads / Meta optimization conversion.
+ */
+export function trackCompletedWebDemo(vertical: string) {
+  if (typeof window !== "undefined" && typeof window.fbq === "function") {
+    window.fbq("track", "Lead", { content_name: `voice-demo-${vertical}` });
+    window.fbq("trackCustom", "CompletedWebDemo", { vertical });
+  }
+  pushDataLayer("completed_web_demo", { vertical });
+}
+
+/** Fired when a visitor clicks through to the paid self-serve signup. */
+export function trackStartedPaidSignup(vertical: string) {
+  if (typeof window !== "undefined" && typeof window.fbq === "function") {
+    window.fbq("track", "InitiateCheckout", { content_name: `signup-${vertical}` });
+    window.fbq("trackCustom", "StartedPaidSignup", { vertical });
+  }
+  pushDataLayer("started_paid_signup", { vertical });
+}
+
+/** Fired once when a visitor first interacts with a vertical calculator. */
+export function trackCalcStart(vertical: string) {
+  if (typeof window !== "undefined" && typeof window.fbq === "function") {
+    window.fbq("trackCustom", "CalculatorStart", { calculator: vertical });
+  }
+  pushDataLayer("calculator_start", { calculator: vertical });
+}
+
+/** Fired when a vertical calculator is completed (lead captured, results shown). */
+export function trackCalcComplete(vertical: string, missedMonthlyRevenue: number) {
+  if (typeof window !== "undefined" && typeof window.fbq === "function") {
+    window.fbq("track", "Lead", {
+      value: missedMonthlyRevenue,
+      currency: "USD",
+      content_name: `${vertical}-calculator`,
+    });
+    window.fbq("trackCustom", "CalculatorComplete", {
+      calculator: vertical,
+      value: missedMonthlyRevenue,
+      currency: "USD",
+    });
+  }
+  pushDataLayer("calculator_complete", {
+    calculator: vertical,
+    value: missedMonthlyRevenue,
+  });
+}

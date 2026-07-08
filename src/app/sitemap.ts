@@ -1,9 +1,27 @@
 import type { MetadataRoute } from "next";
+import { VERTICAL_SLUGS } from "@/lib/verticals";
 
 const BASE_URL = "https://xovera.io";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
+
+  // One landing page + one calculator funnel per data-driven vertical.
+  const verticalRoutes: MetadataRoute.Sitemap = VERTICAL_SLUGS.flatMap((slug) => [
+    {
+      url: `${BASE_URL}/ai-for-${slug}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.9,
+    },
+    {
+      url: `${BASE_URL}/ai-for-${slug}/calculator`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.8,
+    },
+  ]);
+
   return [
     {
       url: BASE_URL,
@@ -29,6 +47,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.8,
     },
+    ...verticalRoutes,
     {
       url: `${BASE_URL}/privacy`,
       lastModified: now,
