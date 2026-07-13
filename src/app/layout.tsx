@@ -6,7 +6,7 @@ import { MetaPixel } from "@/components/MetaPixel";
 import { GoogleTag } from "@/components/GoogleTag";
 import "./globals.css";
 
-const SITE_URL = "https://xovera.io";
+const SITE_URL = "https://www.xovera.io";
 const TITLE =
   "Xovera — Booked appointments, end-to-end. Revenue architecture for appointment-driven service businesses.";
 const DESCRIPTION =

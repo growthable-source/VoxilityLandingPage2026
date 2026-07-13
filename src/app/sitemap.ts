@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 import { VERTICAL_SLUGS } from "@/lib/verticals";
 
-const BASE_URL = "https://xovera.io";
+const BASE_URL = "https://www.xovera.io";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();

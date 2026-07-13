@@ -7,7 +7,7 @@ import {
 } from "@/lib/verticals";
 import { VerticalPage } from "@/components/verticals/VerticalPage";
 
-const SITE_URL = "https://xovera.io";
+const SITE_URL = "https://www.xovera.io";
 
 // Landing pages live at `/ai-for-<slug>`. The whole segment is dynamic, so the
 // param is the full prefixed path (e.g. "ai-for-med-spas"). Static routes like

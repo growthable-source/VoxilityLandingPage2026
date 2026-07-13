@@ -8,11 +8,11 @@ const DESCRIPTION =
 export const metadata: Metadata = {
   title: TITLE,
   description: DESCRIPTION,
-  alternates: { canonical: "https://xovera.io/privacy" },
+  alternates: { canonical: "https://www.xovera.io/privacy" },
   openGraph: {
     title: TITLE,
     description: DESCRIPTION,
-    url: "https://xovera.io/privacy",
+    url: "https://www.xovera.io/privacy",
     type: "article",
   },
   twitter: { card: "summary_large_image", title: TITLE, description: DESCRIPTION },

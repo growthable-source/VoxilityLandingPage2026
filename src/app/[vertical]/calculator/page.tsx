@@ -7,7 +7,7 @@ import { HL } from "@/components/verticals/HL";
 import { RevenueCalculator } from "@/components/verticals/RevenueCalculator";
 import { VERTICAL_PATH_PARAMS, getVerticalByPath } from "@/lib/verticals";
 
-const SITE_URL = "https://xovera.io";
+const SITE_URL = "https://www.xovera.io";
 
 export function generateStaticParams() {
   return VERTICAL_PATH_PARAMS.map((vertical) => ({ vertical }));
