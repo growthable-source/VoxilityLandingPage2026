@@ -34,26 +34,19 @@ export const metadata: Metadata = {
   description: PAGE_DESCRIPTION,
   alternates: { canonical: "https://www.xovera.io/ai-for-gyms" },
   openGraph: {
+    images: ["/opengraph-image"],
     title: PAGE_TITLE,
     description: PAGE_DESCRIPTION,
     url: "https://www.xovera.io/ai-for-gyms",
     siteName: "Xovera",
     type: "website",
     locale: "en_US",
-    images: [
-      {
-        url: "https://www.xovera.io/og.png",
-        width: 1200,
-        height: 630,
-        alt: "Xovera AI for gyms and fitness studios.",
-      },
-    ],
   },
   twitter: {
+    images: ["/twitter-image"],
     card: "summary_large_image",
     title: PAGE_TITLE,
     description: PAGE_DESCRIPTION,
-    images: ["https://www.xovera.io/og.png"],
   },
 };
 

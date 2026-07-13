@@ -33,26 +33,19 @@ export async function generateMetadata({
     keywords: v.seo.keywords,
     alternates: { canonical: url },
     openGraph: {
+    images: ["/opengraph-image"],
       title: v.seo.title,
       description: v.seo.description,
       url,
       siteName: "Xovera",
       type: "website",
       locale: "en_US",
-      images: [
-        {
-          url: `${SITE_URL}/og.png`,
-          width: 1200,
-          height: 630,
-          alt: v.seo.ogAlt,
-        },
-      ],
     },
     twitter: {
+    images: ["/twitter-image"],
       card: "summary_large_image",
       title: v.seo.title,
       description: v.seo.description,
-      images: [`${SITE_URL}/og.png`],
     },
   };
 }
@@ -65,6 +58,20 @@ export default async function Page({
   const { vertical } = await params;
   const v = getVerticalByPath(vertical);
   if (!v) notFound();
+
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: `AI for ${v.name}`,
+        item: `${SITE_URL}/ai-for-${v.slug}`,
+      },
+    ],
+  };
 
   const serviceJsonLd = {
     "@context": "https://schema.org",
@@ -87,6 +94,10 @@ export default async function Page({
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
       <VerticalPage vertical={v} siblings={siblingVerticals(v.slug)} />
     </>

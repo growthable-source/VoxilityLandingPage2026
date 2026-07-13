@@ -7,11 +7,9 @@ import { GoogleTag } from "@/components/GoogleTag";
 import "./globals.css";
 
 const SITE_URL = "https://www.xovera.io";
-const TITLE =
-  "Xovera — Booked appointments, end-to-end. Revenue architecture for appointment-driven service businesses.";
+const TITLE = "Xovera — AI Receptionist & Ads That Book Appointments";
 const DESCRIPTION =
-  "Meta ads, landing pages, and Xovera AI on one accountable system. We answer the call, qualify the lead, and book the appointment — usually before your front desk has read the email.";
-const OG_IMAGE = `${SITE_URL}/og.png`;
+  "Meta ads, landing pages, and an AI receptionist on one accountable system. Xovera answers every call, qualifies the lead, and books the appointment 24/7.";
 
 export const metadata: Metadata = {
   title: TITLE,
@@ -49,21 +47,12 @@ export const metadata: Metadata = {
     siteName: "Xovera",
     locale: "en_US",
     type: "website",
-    images: [
-      {
-        url: OG_IMAGE,
-        width: 1200,
-        height: 630,
-        alt: "Xovera — Booked appointments, end-to-end.",
-      },
-    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Xovera — Booked appointments, end-to-end.",
     description:
       "Meta ads, landing pages, and Xovera AI on one accountable system.",
-    images: [OG_IMAGE],
   },
   robots: {
     index: true,

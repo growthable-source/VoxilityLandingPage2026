@@ -10,12 +10,14 @@ export const metadata: Metadata = {
   description: DESCRIPTION,
   alternates: { canonical: "https://www.xovera.io/privacy" },
   openGraph: {
+    images: ["/opengraph-image"],
     title: TITLE,
     description: DESCRIPTION,
     url: "https://www.xovera.io/privacy",
     type: "article",
   },
-  twitter: { card: "summary_large_image", title: TITLE, description: DESCRIPTION },
+  twitter: {
+    images: ["/twitter-image"], card: "summary_large_image", title: TITLE, description: DESCRIPTION },
 };
 
 export default function PrivacyPage() {

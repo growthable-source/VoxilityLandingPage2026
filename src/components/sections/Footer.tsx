@@ -13,9 +13,20 @@ const cols = [
   {
     title: "System",
     links: [
-      { l: "Meta ads", h: "#system" },
-      { l: "Landing pages", h: "#system" },
-      { l: "Xovera AI", h: "#voxai" },
+      { l: "Meta ads", h: "/#system" },
+      { l: "Landing pages", h: "/#system" },
+      { l: "Xovera AI", h: "/#voxai" },
+    ],
+  },
+  {
+    title: "Industries",
+    links: [
+      { l: "AI for gyms", h: "/ai-for-gyms" },
+      { l: "AI for med spas", h: "/ai-for-med-spas" },
+      { l: "AI for dental", h: "/ai-for-dental" },
+      { l: "AI for weight loss", h: "/ai-for-medical-weight-loss" },
+      { l: "AI for home services", h: "/ai-for-home-services" },
+      { l: "AI for chiropractic", h: "/ai-for-chiropractic" },
     ],
   },
   {
@@ -23,17 +34,8 @@ const cols = [
     links: [
       { l: "Service businesses", h: "/" },
       { l: "Marketing agencies", h: "/agencies" },
-      { l: "Industries we serve", h: "#fit" },
-      { l: "Onboarding", h: "#onboarding" },
-    ],
-  },
-  {
-    title: "Company",
-    links: [
-      { l: "About", h: "#" },
-      { l: "Contact", h: "#contact" },
-      { l: "Careers", h: "#" },
-      { l: "Status", h: "#" },
+      { l: "Onboarding", h: "/#onboarding" },
+      { l: "Contact", h: "/#contact" },
     ],
   },
   {

@@ -34,26 +34,19 @@ export const metadata: Metadata = {
     canonical: "https://www.xovera.io/agencies",
   },
   openGraph: {
+    images: ["/opengraph-image"],
     title: AGENCY_TITLE,
     description: AGENCY_DESCRIPTION,
     url: "https://www.xovera.io/agencies",
     siteName: "Xovera",
     type: "website",
     locale: "en_US",
-    images: [
-      {
-        url: "https://www.xovera.io/og.png",
-        width: 1200,
-        height: 630,
-        alt: "Xovera for agencies — Whitelabel the system.",
-      },
-    ],
   },
   twitter: {
+    images: ["/twitter-image"],
     card: "summary_large_image",
     title: AGENCY_TITLE,
     description: AGENCY_DESCRIPTION,
-    images: ["https://www.xovera.io/og.png"],
   },
 };
 

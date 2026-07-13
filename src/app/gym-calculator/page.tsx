@@ -10,6 +10,7 @@ export const metadata: Metadata = {
     "Around 23% of calls to service businesses go unanswered. Estimate what missed calls and slow follow-up cost your gym each month — in members and dollars — in about 60 seconds.",
   alternates: { canonical: "https://www.xovera.io/gym-calculator" },
   openGraph: {
+    images: ["/opengraph-image"],
     title: "The 60-Second Missed-Revenue Calculator for Gyms",
     description:
       "Estimate what missed calls and slow follow-up cost your gym each month — in members and dollars.",

@@ -30,6 +30,7 @@ export async function generateMetadata({
     description: v.calcCopy.subhead,
     alternates: { canonical: url },
     openGraph: {
+    images: ["/opengraph-image"],
       title,
       description: v.calcCopy.subhead,
       url,
@@ -73,8 +74,32 @@ export default async function Page({
   const v = getVerticalByPath(vertical);
   if (!v) notFound();
 
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: `AI for ${v.name}`,
+        item: `${SITE_URL}/ai-for-${v.slug}`,
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: "Missed-revenue calculator",
+        item: `${SITE_URL}/ai-for-${v.slug}/calculator`,
+      },
+    ],
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
       {/* Slim header — this page is an ad destination, so no site nav */}
       <header className="glass-surface fixed inset-x-0 top-0 z-50 border-b border-border/40">
         <div className="container mx-auto flex h-16 max-w-[1320px] items-center justify-between px-5 md:px-8">
