@@ -1,0 +1,26 @@
+# Xovera
+
+> Xovera is a revenue-architecture company for appointment-driven service businesses. It bundles Meta ads, landing pages, and the Xovera AI conversational + agentic platform (AI receptionist) into one accountable system — from ad click to booked appointment. The AI answers calls, texts, DMs, and web chats in seconds, qualifies the lead, and books it straight onto the calendar, 24/7 in 30+ languages.
+
+Xovera serves gyms and fitness studios, med spas, dental practices, medical weight-loss clinics, home-services companies, and chiropractic/PT clinics, with customers primarily in the US and Canada. It integrates with GoHighLevel, HubSpot, and industry booking systems such as Mindbody, ABC Fitness, and Club Automation. Marketing agencies can whitelabel the entire system.
+
+## Main pages
+
+- [Home](https://www.xovera.io/): What Xovera is and how the end-to-end system works
+- [For agencies](https://www.xovera.io/agencies): Whitelabel partnership for marketing agencies
+- [AI for gyms](https://www.xovera.io/ai-for-gyms): AI receptionist for gyms and fitness studios
+- [AI for med spas](https://www.xovera.io/ai-for-med-spas): AI receptionist for med spas
+- [AI for dental](https://www.xovera.io/ai-for-dental): AI receptionist for dental practices
+- [AI for medical weight loss](https://www.xovera.io/ai-for-medical-weight-loss): AI receptionist for weight-loss clinics
+- [AI for home services](https://www.xovera.io/ai-for-home-services): AI receptionist for home-services businesses
+- [AI for chiropractic](https://www.xovera.io/ai-for-chiropractic): AI receptionist for chiropractic and PT clinics
+
+## Tools
+
+- [Gym missed-revenue calculator](https://www.xovera.io/gym-calculator): Estimate what missed calls cost a gym each month
+- Each industry page above has a matching calculator at `/calculator` (e.g. https://www.xovera.io/ai-for-med-spas/calculator)
+
+## Product
+
+- [Xovera AI app](https://app.xovera.io/): The conversational + agentic AI platform (free while in beta)
+- Contact: hello@xovera.io
