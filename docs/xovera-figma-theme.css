@@ -1,0 +1,236 @@
+/* ============================================================
+   XOVERA — THEME TOKENS FOR FIGMA
+   ============================================================
+   Source of truth: src/app/globals.css (HSL CSS variables).
+   This file is a designer handoff copy: every color is resolved
+   to a flat HEX value so it can be pasted straight into Figma
+   color styles / variables. HSL originals are kept in comments.
+
+   Figma setup suggestion:
+   - Create a variable collection "Xovera" with two modes:
+     "Dark" (default — the site ships dark) and "Light".
+   - Name variables exactly as the custom properties below
+     (background, foreground, card, primary, primary-glow, …)
+     so dev handoff maps 1:1 to Tailwind classes like
+     bg-background, text-primary-glow, border-border.
+   ============================================================ */
+
+/* ------------------------------------------------------------
+   1. COLOR — DARK MODE (canonical / default)
+   ------------------------------------------------------------ */
+.xovera-dark {
+  /* Surfaces */
+  --background:            #04060B;  /* hsl(222 47% 3%)  — page background */
+  --foreground:            #F8FAFC;  /* hsl(210 40% 98%) — primary text */
+  --card:                  #090D15;  /* hsl(222 40% 6%)  — cards, popovers */
+  --card-foreground:       #F8FAFC;
+  --muted:                 #0C111D;  /* hsl(222 40% 8%)  — muted fills */
+  --muted-foreground:      #A3B0C2;  /* hsl(215 20% 70%) — secondary text */
+  --secondary:             #0F1524;  /* hsl(222 40% 10%) — raised fills */
+  --secondary-foreground:  #F8FAFC;
+  --border:                #151E32;  /* hsl(222 40% 14%) — hairlines, strokes */
+  --input:                 #0F1524;  /* hsl(222 40% 10%) — form field fills */
+  --hero-bg-stop:          #030407;  /* hsl(222 47% 2%)  — hero gradient floor */
+
+  /* Brand — the fire ramp (deep → primary → glow) */
+  --primary:               #FA4D2E;  /* hsl(9 95% 58%)   — brand red-orange */
+  --primary-foreground:    #F8FAFC;  /* text on primary */
+  --primary-glow:          #FF843D;  /* hsl(22 100% 62%) — amber highlight */
+  --primary-deep:          #BF181D;  /* hsl(358 78% 42%) — deep ember red */
+  --accent:                #FF843D;  /* alias of primary-glow */
+  --accent-foreground:     #04060B;  /* text on accent */
+  --ring:                  #FA4D2E;  /* focus ring */
+
+  /* Status */
+  --destructive:           #EF4444;  /* hsl(0 84% 60%)   */
+  --success:               #16A34A;  /* hsl(142 76% 36%) */
+  --warning:               #F59E0B;  /* hsl(38 92% 50%)  */
+}
+
+/* ------------------------------------------------------------
+   2. COLOR — LIGHT MODE (warm ivory paper)
+   ------------------------------------------------------------ */
+.xovera-light {
+  /* Surfaces */
+  --background:            #F9F7F5;  /* hsl(30 25% 97%) */
+  --foreground:            #231D1A;  /* hsl(20 14% 12%) */
+  --card:                  #FDFCFC;  /* hsl(30 30% 99%) */
+  --card-foreground:       #231D1A;
+  --muted:                 #F3F0ED;  /* hsl(30 20% 94%) */
+  --muted-foreground:      #696059;  /* hsl(25 8% 38%)  */
+  --secondary:             #EFEBE7;  /* hsl(30 20% 92%) */
+  --secondary-foreground:  #231D1A;
+  --border:                #E1DBD6;  /* hsl(30 15% 86%) */
+  --input:                 #F5F2EF;  /* hsl(30 25% 95%) */
+  --hero-bg-stop:          #F5F2EF;  /* hsl(30 25% 95%) */
+
+  /* Brand — slightly darkened for contrast on light paper */
+  --primary:               #F93310;  /* hsl(9 95% 52%)   */
+  --primary-foreground:    #FDFCFC;
+  --primary-glow:          #F95F06;  /* hsl(22 95% 50%)  */
+  --primary-deep:          #AC151A;  /* hsl(358 78% 38%) */
+  --accent:                #F95F06;
+  --accent-foreground:     #FDFCFC;
+  --ring:                  #F93310;
+
+  /* Status */
+  --destructive:           #E31C1C;  /* hsl(0 78% 50%)   */
+  --success:               #188B42;  /* hsl(142 70% 32%) */
+  --warning:               #D78C09;  /* hsl(38 92% 44%)  */
+}
+
+/* ------------------------------------------------------------
+   3. GRADIENTS  (recreate as Figma gradient fills)
+   Angles: CSS 135deg = Figma diagonal top-left → bottom-right.
+   ------------------------------------------------------------ */
+.xovera-gradients {
+  /* Primary brand gradient — used for gradient text + filled CTAs.
+     Dark-mode stops shown; swap in light-mode brand hexes for light. */
+  --gradient-primary: linear-gradient(
+    135deg,
+    #BF181D 0%,     /* primary-deep */
+    #FA4D2E 55%,    /* primary */
+    #FF843D 100%    /* primary-glow */
+  );
+
+  /* Hero background — 2 radial glows over a vertical fade.
+     In Figma: 3 stacked fills on the hero frame (top = first). */
+  --gradient-hero:
+    radial-gradient(60% 60% at 18% 12%, rgba(250, 77, 46, 0.35) 0%, transparent 60%),
+    radial-gradient(50% 50% at 88% 90%, rgba(255, 132, 61, 0.25) 0%, transparent 60%),
+    linear-gradient(180deg, #04060B 0%, #030407 100%);
+
+  /* Mesh background — 3 radial blobs on #04060B */
+  --gradient-mesh:
+    radial-gradient(45% 45% at 20% 30%, rgba(250, 77, 46, 0.32) 0%, transparent 60%),
+    radial-gradient(40% 40% at 80% 20%, rgba(255, 132, 61, 0.28) 0%, transparent 60%),
+    radial-gradient(50% 50% at 50% 80%, rgba(191, 24, 29, 0.30) 0%, transparent 60%);
+
+  /* 1px glowing border stroke (cards) — fades out toward bottom-right */
+  --gradient-border: linear-gradient(
+    135deg,
+    #FA4D2E 0%,
+    #FF843D 50%,
+    rgba(250, 77, 46, 0) 100%
+  );
+
+  /* Subtle section top-glow */
+  --gradient-subtle: radial-gradient(
+    80% 60% at 50% 0%,
+    rgba(250, 77, 46, 0.18) 0%,
+    transparent 70%
+  );
+
+  /* Heat text — telemetry-style number gradient (left → right) */
+  --gradient-heat: linear-gradient(
+    90deg,
+    #FF843D 0%,
+    #FA4D2E 60%,
+    #BF181D 100%
+  );
+
+  /* Conic CTA border — angular gradient, rotates 360° over 6s */
+  --gradient-conic: conic-gradient(
+    #BF181D 0deg,
+    #FA4D2E 90deg,
+    #FF843D 180deg,
+    #BF181D 360deg
+  );
+
+  /* Letterbox divider — 1px horizontal rule between sections */
+  --gradient-letterbox: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 132, 61, 0.6),
+    transparent
+  );
+}
+
+/* ------------------------------------------------------------
+   4. SHADOWS & GLOWS  (Figma drop-shadow effects, dark mode)
+   Format: x y blur spread color
+   ------------------------------------------------------------ */
+.xovera-shadows-dark {
+  --shadow-glow:      0 0 80px 0 rgba(250, 77, 46, 0.50);   /* hero CTA halo */
+  --shadow-glow-soft: 0 0 120px 0 rgba(255, 132, 61, 0.25); /* ambient section glow */
+  --shadow-primary:   0 10px 40px -10px rgba(250, 77, 46, 0.45); /* primary buttons */
+  --shadow-accent:    0 10px 40px -10px rgba(255, 132, 61, 0.35);
+  --shadow-card:      0 4px 30px -4px rgba(0, 0, 0, 0.60);  /* elevated cards */
+}
+.xovera-shadows-light {
+  --shadow-glow:      0 0 60px 0 rgba(249, 51, 16, 0.22);
+  --shadow-glow-soft: 0 0 100px 0 rgba(249, 95, 6, 0.12);
+  --shadow-primary:   0 10px 30px -10px rgba(249, 51, 16, 0.30);
+  --shadow-accent:    0 10px 30px -10px rgba(249, 95, 6, 0.22);
+  --shadow-card:      0 4px 30px -8px rgba(66, 47, 36, 0.10);
+}
+
+/* ------------------------------------------------------------
+   5. TYPOGRAPHY
+   ------------------------------------------------------------ */
+.xovera-type {
+  /* Families (both free on Google Fonts / Vercel) */
+  --font-sans: "Geist", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, monospace;
+
+  /* OpenType: ss01, cv01, cv11 enabled on body text.
+     Mono numerals are always tabular (stat counters, telemetry). */
+
+  /* Headings: Geist Sans semibold/bold, tight tracking (-0.02em).
+     Body: Geist Sans regular, muted-foreground for secondary copy.
+     Long-form (legal) body: 15px / 1.75 line-height. */
+}
+
+/* ------------------------------------------------------------
+   6. RADIUS, LAYOUT & EFFECTS
+   ------------------------------------------------------------ */
+.xovera-layout {
+  --radius-lg: 14px;   /* cards, modals (0.875rem) */
+  --radius-md: 12px;   /* inputs, inner elements */
+  --radius-sm: 10px;   /* chips, small controls */
+  /* Pills/buttons often use full rounding (9999px). */
+
+  --container-max: 1320px;         /* section content width */
+  --section-pad-y: 80px;           /* mobile vertical rhythm (py-20) */
+  --section-pad-y-desktop: 112px;  /* md+ vertical rhythm (py-28) */
+
+  /* Glass surface (nav, floating chrome):
+     fill = background @ 70% opacity, background blur 16px */
+  --glass-bg-dark:  rgba(4, 6, 11, 0.70);
+  --glass-bg-light: rgba(249, 247, 245, 0.78);
+  --glass-blur: 16px;
+
+  /* Grain overlay: fractal noise, 4% opacity, blend mode Overlay
+     (light mode: 3.5% opacity, blend Multiply) */
+  --noise-opacity-dark: 0.04;
+  --noise-opacity-light: 0.035;
+
+  /* Grid overlay: 64px square grid, 1px lines
+     dark line: rgba(21, 30, 50, 0.45)  — border @ 45%
+     light line: rgba(66, 59, 55, 0.10)
+     masked with a radial fade (ellipse 80% x 60% at 50% 40%) */
+  --grid-size: 64px;
+
+  /* Atmospheric orbs (hero/CTA): large blurred circles,
+     radial fill from center → transparent 70%
+     dark: primary @ 50% / glow @ 45%; light: 18% / 16% */
+
+  /* Text selection: primary @ 35% */
+}
+
+/* ------------------------------------------------------------
+   7. MOTION  (for prototyping — all disabled for reduced-motion)
+   ------------------------------------------------------------ */
+.xovera-motion {
+  --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1); /* everything uses this */
+  --duration-fast: 150ms;    /* hovers, small state changes */
+  --duration-smooth: 300ms;  /* standard transitions */
+  --duration-reveal: 700ms;  /* scroll reveal: fade + 16px rise */
+
+  /* Ambient loops:
+     orb-float   12s  — drift ±40px, scale 0.97–1.05
+     glow-pulse   3s  — CTA halo breathes 40px → 80px blur
+     shimmer      3s  — background-position sweep
+     marquee     60s  — logo/telemetry strip, linear
+     conic spin   6s  — CTA border rotation, linear */
+}
