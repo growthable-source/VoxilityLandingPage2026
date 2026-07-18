@@ -1,5 +1,4 @@
 import type { Metadata, Viewport } from "next";
-import Script from "next/script";
 import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
 import { MetaPixel } from "@/components/MetaPixel";
@@ -148,12 +147,6 @@ export default function RootLayout({
         {children}
         <MetaPixel />
         <GoogleTag />
-        <Script
-          src="https://app.xovera.io/widget.js"
-          data-widget-id="cmoh5l1c8000004l4yp6k1m4y"
-          data-public-key="widget_pub_7131eb1c5f35cd851b96c5f73b8f6db72cf2"
-          strategy="afterInteractive"
-        />
       </body>
     </html>
   );
