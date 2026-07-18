@@ -17,13 +17,17 @@
 
 /* ------------------------------------------------------------
    1. COLOR — DARK MODE (canonical / default)
+   Declared on :root so theme-import tools ("CSS must start
+   with :root") can paste this block directly.
    ------------------------------------------------------------ */
-.xovera-dark {
+:root {
   /* Surfaces */
   --background:            #04060B;  /* hsl(222 47% 3%)  — page background */
   --foreground:            #F8FAFC;  /* hsl(210 40% 98%) — primary text */
   --card:                  #090D15;  /* hsl(222 40% 6%)  — cards, popovers */
   --card-foreground:       #F8FAFC;
+  --popover:               #090D15;
+  --popover-foreground:    #F8FAFC;
   --muted:                 #0C111D;  /* hsl(222 40% 8%)  — muted fills */
   --muted-foreground:      #A3B0C2;  /* hsl(215 20% 70%) — secondary text */
   --secondary:             #0F1524;  /* hsl(222 40% 10%) — raised fills */
@@ -45,6 +49,8 @@
   --destructive:           #EF4444;  /* hsl(0 84% 60%)   */
   --success:               #16A34A;  /* hsl(142 76% 36%) */
   --warning:               #F59E0B;  /* hsl(38 92% 50%)  */
+
+  --radius:                14px;     /* base corner radius (0.875rem) */
 }
 
 /* ------------------------------------------------------------
