@@ -3,6 +3,7 @@ import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
 import { MetaPixel } from "@/components/MetaPixel";
 import { GoogleTag } from "@/components/GoogleTag";
+import { Clarity } from "@/components/Clarity";
 import "./globals.css";
 
 const SITE_URL = "https://www.xovera.io";
@@ -147,6 +148,7 @@ export default function RootLayout({
         {children}
         <MetaPixel />
         <GoogleTag />
+        <Clarity />
       </body>
     </html>
   );
