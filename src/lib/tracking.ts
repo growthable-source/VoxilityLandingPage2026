@@ -113,6 +113,17 @@ export function trackVoiceDemoStart(vertical: string) {
 }
 
 /**
+ * Google Ads conversion "Completed Web Demo" (account 570-724-0444) — the
+ * mid-funnel optimization signal for the vertical Search campaigns. Create the
+ * conversion action in Google Ads (Tools → Conversions → New → Website), then
+ * set its send-to label ("AW-11078657396/<label>") as
+ * NEXT_PUBLIC_ADS_WEB_DEMO_SEND_TO in Vercel. Until that env var is set this is
+ * a no-op — the custom event below still flows to GA4/GTM/Meta. Configure the
+ * value + counting on the Google Ads side; don't pass a value here.
+ */
+const ADS_WEB_DEMO_SEND_TO = process.env.NEXT_PUBLIC_ADS_WEB_DEMO_SEND_TO;
+
+/**
  * The mid-funnel conversion we optimize Google Ads on: a meaningful completed
  * voice demo (≥30s of talk or ≥2 turns). Fires the standard Lead event plus a
  * custom event to import as the Google Ads / Meta optimization conversion.
@@ -123,6 +134,11 @@ export function trackCompletedWebDemo(vertical: string) {
     window.fbq("trackCustom", "CompletedWebDemo", { vertical });
   }
   gtagEvent("completed_web_demo", { vertical });
+  // The paid-ads optimization conversion — fires only once the send-to label
+  // is configured (see ADS_WEB_DEMO_SEND_TO above).
+  if (ADS_WEB_DEMO_SEND_TO) {
+    gtagEvent("conversion", { send_to: ADS_WEB_DEMO_SEND_TO });
+  }
   pushDataLayer("completed_web_demo", { vertical });
 }
 
