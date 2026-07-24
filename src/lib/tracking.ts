@@ -81,6 +81,13 @@ export function trackCalculatorComplete(missedMonthlyRevenue: number) {
   });
 }
 
+/**
+ * Google Ads conversion "Booked a Demo with Xovera Sales Team" (account
+ * 570-724-0444). Value ($100 USD) and one-per-click counting are configured on
+ * the Google Ads side — do not pass a value here.
+ */
+const ADS_DEMO_BOOKED_SEND_TO = "AW-11078657396/vX1zCP_evdQcEPTK26Ip";
+
 /** Fired when a demo request is submitted (e.g. /ai-for-gyms). */
 export function trackDemoRequest(source: string) {
   if (typeof window !== "undefined" && typeof window.fbq === "function") {
@@ -88,6 +95,9 @@ export function trackDemoRequest(source: string) {
     window.fbq("trackCustom", "DemoRequest", { source });
   }
   gtagEvent("demo_request", { source });
+  // The paid-ads conversion: only called after the demo API confirms the
+  // booking request succeeded, never on clicks or other CTAs.
+  gtagEvent("conversion", { send_to: ADS_DEMO_BOOKED_SEND_TO });
   pushDataLayer("demo_request", { source });
 }
 
