@@ -718,3 +718,27 @@
     scroll-behavior: auto !important;
   }
 }
+
+/* Incoming-call phone mockup (vertical hero demo): gentle wiggle on the
+   green Answer button + cycling "ringing…" dots. Ripple rings reuse
+   Tailwind's built-in animate-ping. The global prefers-reduced-motion
+   block above already neutralizes both. */
+@keyframes phone-wiggle {
+  0%, 100% { transform: rotate(0deg); }
+  10%      { transform: rotate(-14deg); }
+  20%      { transform: rotate(12deg); }
+  30%      { transform: rotate(-10deg); }
+  40%      { transform: rotate(8deg); }
+  50%      { transform: rotate(0deg); }
+}
+.phone-wiggle {
+  animation: phone-wiggle 1.6s ease-in-out infinite;
+}
+@keyframes ring-dot-flash {
+  0%, 20%  { opacity: 0.2; }
+  50%      { opacity: 1; }
+  100%     { opacity: 0.2; }
+}
+.ring-dot {
+  animation: ring-dot-flash 1.4s ease-in-out infinite;
+}

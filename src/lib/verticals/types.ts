@@ -119,9 +119,10 @@ export interface Vertical {
   /** Source tag sent to the demo/calculator APIs + tracking. */
   demoSource: string;
   /**
-   * Optional per-niche live voice-demo agent id. When set, the hero demo
-   * connects to this vertical's own agent; otherwise it uses the env default
-   * (NEXT_PUBLIC_VOICE_AGENT_ID). Requires NEXT_PUBLIC_VOICE_WIDGET_SRC.
+   * Reserved for per-vertical demo agents. The live hero demo currently uses
+   * one shared agent served by the Xovera app's public voice-demo endpoint
+   * (see NEXT_PUBLIC_VOICE_API_BASE in .env.example); wiring this up requires
+   * that endpoint to accept an agent/vertical parameter first.
    */
   voiceAgentId?: string;
 
