@@ -230,6 +230,37 @@ export const medSpas: Vertical = {
     },
   ],
 
+  kiosk: {
+    eyebrow: "At the front desk, too",
+    heading: {
+      before: "Walk-ins get the ",
+      highlight: "same treatment",
+      after: " as callers.",
+    },
+    lede:
+      "Xovera isn't only on the phone. A kiosk at your front desk lets a walk-in sign the consent forms, pick a package, and pay — right there, while your team stays with the client in the room. Every walk-in ends up in your system, not on a sticky note.",
+    items: [
+      {
+        icon: "PenLine",
+        title: "Consent forms, signed on the spot",
+        body:
+          "Waivers and treatment consents get signed on the tablet and saved to the client's record — no paper forms, no chasing signatures before an appointment.",
+      },
+      {
+        icon: "CreditCard",
+        title: "Sign up and pay in one visit",
+        body:
+          "A new client picks their membership or package and pays at the kiosk. Signed up, paid, and logged in your system before they walk out the door.",
+      },
+      {
+        icon: "UserCheck",
+        title: "Every walk-in, captured",
+        body:
+          "Walk-ins check in and land in your follow-up pipeline automatically — so the ones who say they'll come back later actually hear from you.",
+      },
+    ],
+  },
+
   calc: {
     unitSingular: "appointment",
     unitPlural: "appointments",
@@ -272,5 +303,15 @@ export const medSpas: Vertical = {
       "Up to 35% of calls to med spas go unanswered, and aesthetics clients book with whoever answers first. Sixty seconds, a few questions, and you'll have a working estimate — in appointments and dollars.",
     crossLink:
       "Curious what missed calls and slow replies cost your med spa today? Run the 60-second calculator.",
+    section: {
+      eyebrow: "Your number, not the industry's",
+      heading: {
+        before: "What are missed calls costing ",
+        highlight: "your med spa",
+        after: "?",
+      },
+      lede:
+        "The stats above are industry averages. Your call volume, treatment value, and hours set the real number. Three sliders, sixty seconds, and you'll have a working estimate — in appointments and dollars.",
+    },
   },
 };

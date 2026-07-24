@@ -18,6 +18,8 @@ import {
   SectionLede,
 } from "@/components/ui/Section";
 import { Card, CardBody, CardIcon, CardTitle } from "@/components/ui/Card";
+import { CalculatorSection } from "@/components/verticals/CalculatorSection";
+import { KioskSection } from "@/components/verticals/KioskSection";
 import { GymChatDemo } from "@/components/gyms/GymChatDemo";
 import { GymHeroVideo } from "@/components/gyms/GymHeroVideo";
 import { VoiceSampleButton } from "@/components/gyms/VoiceSampleButton";
@@ -328,6 +330,38 @@ export default function AiForGymsPage() {
           </div>
         </Section>
 
+        {/* Walk-in kiosk — in-person signing at the front desk */}
+        <KioskSection
+          eyebrow="At the front desk, too"
+          heading={
+            <>
+              Walk-ins sign up{" "}
+              <span className="text-gradient">before the tour ends.</span>
+            </>
+          }
+          lede="Xovera isn't only on the phone. A kiosk at your front desk lets a walk-in sign the waiver, pick a membership, and pay — right there, while your team stays on the floor. Every walk-in lands in your system, not on a clipboard."
+          items={[
+            {
+              icon: "PenLine",
+              title: "Waivers signed before the first workout",
+              body:
+                "Liability waivers and membership agreements get signed on the tablet and saved to the member's record — no paper stack, no missing signatures.",
+            },
+            {
+              icon: "CreditCard",
+              title: "Membership and payment, on the spot",
+              body:
+                "A walk-in picks their plan and pays at the kiosk. Signed up, paid, and logged in your system before they've finished the tour.",
+            },
+            {
+              icon: "UserCheck",
+              title: "Every walk-in, captured",
+              body:
+                "Visitors check in and land in your follow-up pipeline automatically — so the ones who say they'll think about it actually hear from you.",
+            },
+          ]}
+        />
+
         {/* Live demo */}
         <Section id="demo" className="relative">
           <div className="absolute inset-x-0 top-0 -z-10 h-[400px] bg-gradient-subtle opacity-60" aria-hidden />
@@ -373,6 +407,19 @@ export default function AiForGymsPage() {
             </div>
           </div>
         </Section>
+
+        {/* Calculator — quantify what the demo just showed */}
+        <CalculatorSection
+          eyebrow="Your number, not a benchmark"
+          heading={
+            <>
+              What are missed inquiries costing{" "}
+              <span className="text-gradient">your gym?</span>
+            </>
+          }
+          lede="Your lead volume, membership value, and staffed hours set the real number. Three sliders, sixty seconds, and you'll have a working estimate — in members and dollars."
+          href="/gym-calculator"
+        />
 
         <div className="letterbox-divider" aria-hidden />
 

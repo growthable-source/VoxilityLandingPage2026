@@ -21,6 +21,8 @@ import {
 import { Card, CardBody, CardIcon, CardTitle } from "@/components/ui/Card";
 import { VoiceSampleButton } from "@/components/gyms/VoiceSampleButton";
 import { HL } from "@/components/verticals/HL";
+import { CalculatorSection } from "@/components/verticals/CalculatorSection";
+import { KioskSection } from "@/components/verticals/KioskSection";
 import { VoiceDemo } from "@/components/verticals/VoiceDemo";
 import { ChatDemo } from "@/components/verticals/ChatDemo";
 import { DemoForm } from "@/components/verticals/DemoForm";
@@ -253,6 +255,14 @@ export function VerticalPage({
           </div>
         </Section>
 
+        {/* Calculator — the "so what's YOUR number?" payoff of the problem stats */}
+        <CalculatorSection
+          eyebrow={vertical.calcCopy.section.eyebrow}
+          heading={<HL value={vertical.calcCopy.section.heading} />}
+          lede={vertical.calcCopy.section.lede}
+          href={`/ai-for-${vertical.slug}/calculator`}
+        />
+
         {/* Three growth methods */}
         <Section id="methods">
           <SectionEyebrow>{vertical.methods.eyebrow}</SectionEyebrow>
@@ -272,6 +282,16 @@ export function VerticalPage({
             ))}
           </div>
         </Section>
+
+        {/* Walk-in kiosk — only where in-person signup is core (med spas) */}
+        {vertical.kiosk && (
+          <KioskSection
+            eyebrow={vertical.kiosk.eyebrow}
+            heading={<HL value={vertical.kiosk.heading} />}
+            lede={vertical.kiosk.lede}
+            items={vertical.kiosk.items}
+          />
+        )}
 
         {/* Scripted demo */}
         <Section id="conversation" className="relative">

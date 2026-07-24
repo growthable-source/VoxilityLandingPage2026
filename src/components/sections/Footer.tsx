@@ -30,6 +30,17 @@ const cols = [
     ],
   },
   {
+    title: "Calculators",
+    links: [
+      { l: "Med spas", h: "/ai-for-med-spas/calculator" },
+      { l: "Dental", h: "/ai-for-dental/calculator" },
+      { l: "Weight loss", h: "/ai-for-medical-weight-loss/calculator" },
+      { l: "Home services", h: "/ai-for-home-services/calculator" },
+      { l: "Chiropractic", h: "/ai-for-chiropractic/calculator" },
+      { l: "Gyms", h: "/gym-calculator" },
+    ],
+  },
+  {
     title: "Audience",
     links: [
       { l: "Service businesses", h: "/" },
@@ -83,7 +94,7 @@ export function Footer() {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-8 sm:grid-cols-3 lg:col-span-7 lg:grid-cols-5">
+          <div className="grid grid-cols-2 gap-8 sm:grid-cols-3 lg:col-span-7 lg:grid-cols-6">
             {cols.map((col) => (
               <div key={col.title}>
                 <div className="mb-4 font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">

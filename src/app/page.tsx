@@ -2,6 +2,7 @@ import { Nav } from "@/components/sections/Nav";
 import { Hero } from "@/components/sections/Hero";
 import { Platform } from "@/components/sections/Platform";
 import { Leak } from "@/components/sections/Leak";
+import { IndustryHub } from "@/components/sections/IndustryHub";
 import { System } from "@/components/sections/System";
 import { VoxAI } from "@/components/sections/VoxAI";
 import { Proof } from "@/components/sections/Proof";
@@ -21,6 +22,7 @@ export default function HomePage() {
         <div className="letterbox-divider" aria-hidden />
         <Platform />
         <Leak />
+        <IndustryHub />
         <System />
         <div className="letterbox-divider" aria-hidden />
         <VoxAI />

@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { Button } from "@/components/ui/Button";
 import { Section, SectionEyebrow, SectionHeading, SectionLede } from "@/components/ui/Section";
 import {
   PhoneCall,
@@ -117,6 +118,15 @@ export function VoxAI() {
         booked appointments — and Xovera AI is the part of it your front
         desk tends to thank you for.
       </p>
+
+      <div className="mt-8 flex flex-col items-center gap-3">
+        <Button variant="premium" size="lg" href="#industries">
+          Talk to it live — free, no signup
+        </Button>
+        <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
+          Live demos for every industry above
+        </p>
+      </div>
     </Section>
   );
 }

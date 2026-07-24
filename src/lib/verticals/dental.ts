@@ -272,5 +272,15 @@ export const dental: Vertical = {
       "Dental offices miss 30–35% of inbound calls, and new patients book with whoever answers first. Sixty seconds, a few questions, and you'll have a working estimate — in patients and dollars.",
     crossLink:
       "Curious what missed calls and slow replies cost your practice today? Run the 60-second calculator.",
+    section: {
+      eyebrow: "Your number, not the industry's",
+      heading: {
+        before: "What are unanswered calls costing ",
+        highlight: "your practice",
+        after: "?",
+      },
+      lede:
+        "The stats above are industry averages. Your call volume, patient value, and front-desk hours set the real number. Three sliders, sixty seconds, and you'll have a working estimate — in new patients and dollars.",
+    },
   },
 };

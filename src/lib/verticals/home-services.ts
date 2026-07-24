@@ -273,5 +273,15 @@ export const homeServices: Vertical = {
       "78% of homeowners book with whoever answers first, and the calls that ring out are often your highest-value emergency work. Sixty seconds, a few questions, and you'll have a working estimate — in jobs and dollars.",
     crossLink:
       "Curious what missed calls and slow callbacks cost your shop today? Run the 60-second calculator.",
+    section: {
+      eyebrow: "Your number, not a benchmark",
+      heading: {
+        before: "What are rung-out calls costing ",
+        highlight: "your shop",
+        after: "?",
+      },
+      lede:
+        "The stats above are industry averages. Your call volume, average ticket, and dispatch hours set the real number. Three sliders, sixty seconds, and you'll have a working estimate — in jobs and dollars.",
+    },
   },
 };

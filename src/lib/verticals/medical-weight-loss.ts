@@ -273,5 +273,15 @@ export const medicalWeightLoss: Vertical = {
       "Up to 35% of calls to clinics go unanswered, and prospects sign up with whoever responds first. Sixty seconds, a few questions, and you'll have a working estimate — in patients and dollars.",
     crossLink:
       "Curious what missed calls and slow replies cost your clinic today? Run the 60-second calculator.",
+    section: {
+      eyebrow: "Your number, not the industry's",
+      heading: {
+        before: "What are missed calls costing ",
+        highlight: "your clinic",
+        after: "?",
+      },
+      lede:
+        "The stats above are industry averages. Your inquiry volume, program value, and staffed hours set the real number. Three sliders, sixty seconds, and you'll have a working estimate — in patients and dollars.",
+    },
   },
 };

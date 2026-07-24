@@ -55,6 +55,28 @@ export interface ChatDemo {
   outcome: string;
 }
 
+export interface KioskItem {
+  /** lucide-react icon name, resolved in the template. */
+  icon: "PenLine" | "CreditCard" | "UserCheck";
+  title: string;
+  body: string;
+}
+
+/**
+ * Copy for the walk-in kiosk section. Only verticals where in-person signup
+ * is core (med spas; the bespoke gym page mirrors it) define this — the
+ * template skips the section when absent. Kiosk capabilities that may be
+ * claimed: waiver/agreement signing, sign-up + payment, walk-in check-in into
+ * the follow-up pipeline. Appointment booking at the kiosk is NOT a confirmed
+ * capability — don't write copy that claims it.
+ */
+export interface KioskConfig {
+  eyebrow: string;
+  heading: Highlighted;
+  lede: string;
+  items: KioskItem[];
+}
+
 /** Economic model + copy for this vertical's missed-revenue calculator. */
 export interface CalcConfig {
   /** Singular noun for a won customer, e.g. "appointment", "patient", "job". */
@@ -181,6 +203,9 @@ export interface Vertical {
   // ---- FAQ ----
   faqs: Faq[];
 
+  // ---- Walk-in kiosk (optional; med spas only for now) ----
+  kiosk?: KioskConfig;
+
   // ---- Calculator ----
   calc: CalcConfig;
   calcCopy: {
@@ -189,5 +214,11 @@ export interface Vertical {
     subhead: string;
     /** Cross-link teaser on the main landing page. */
     crossLink: string;
+    /** Full calculator section on the landing page (after the problem section). */
+    section: {
+      eyebrow: string;
+      heading: Highlighted;
+      lede: string;
+    };
   };
 }
