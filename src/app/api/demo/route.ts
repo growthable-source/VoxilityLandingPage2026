@@ -75,6 +75,7 @@ export async function POST(request: Request) {
 
   const utm = body.utm ?? {};
   const payload = {
+    tags: ["inbound"],
     source: "ai-for-gyms-demo",
     firstName,
     gymName,

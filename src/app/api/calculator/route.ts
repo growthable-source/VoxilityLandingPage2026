@@ -93,6 +93,7 @@ export async function POST(request: Request) {
 
   const utm = body.utm ?? {};
   const payload = {
+    tags: ["inbound"],
     source: "gym-calculator",
     firstName,
     gymName,

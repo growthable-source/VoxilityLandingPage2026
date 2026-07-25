@@ -82,6 +82,7 @@ export async function POST(request: Request) {
   }
 
   const payload = {
+    tags: ["inbound"],
     firstName,
     company,
     email,
