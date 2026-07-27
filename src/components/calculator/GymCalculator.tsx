@@ -17,6 +17,7 @@ import {
   type ResponseSpeed,
 } from "@/lib/gymMath";
 import {
+  newMetaEventId,
   readUtmParams,
   trackCalculatorComplete,
   trackCalculatorStart,
@@ -146,11 +147,15 @@ export function GymCalculator() {
     if (!validateDetails()) return;
     setSubmitting(true);
     setServerError(null);
+    // One id shared by the API route's Conversions API events and the browser
+    // pixel events below, so Meta counts the pair once.
+    const metaEventId = newMetaEventId();
     try {
       const res = await fetch("/api/calculator", {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({
+          metaEventId,
           firstName: details.firstName,
           gymName: details.gymName,
           email: details.email,
@@ -172,7 +177,7 @@ export function GymCalculator() {
       const finalResults =
         json.results ?? roundResults(calculateMissedRevenue(inputs));
       setResults(finalResults);
-      trackCalculatorComplete(finalResults.missedMonthlyRevenue);
+      trackCalculatorComplete(finalResults.missedMonthlyRevenue, metaEventId);
       cardRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
     } catch (err) {
       setServerError(

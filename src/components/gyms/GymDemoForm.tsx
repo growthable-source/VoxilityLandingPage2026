@@ -3,7 +3,7 @@
 import { useId, useRef, useState } from "react";
 import { Check, Loader2 } from "lucide-react";
 import { cn } from "@/lib/cn";
-import { readUtmParams, trackDemoRequest } from "@/lib/tracking";
+import { newMetaEventId, readUtmParams, trackDemoRequest } from "@/lib/tracking";
 
 const LEADS_PER_MONTH = ["Under 50", "50–200", "200–500", "500+"];
 
@@ -94,12 +94,16 @@ export function GymDemoForm() {
 
     setSubmitting(true);
     setServerError(null);
+    // One id shared by the API route's Conversions API events and the browser
+    // pixel events below, so Meta counts the pair once.
+    const metaEventId = newMetaEventId();
     try {
       const res = await fetch("/api/demo", {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({
           ...data,
+          metaEventId,
           utm: readUtmParams(),
           website: honeypot,
           formStartTime: formStartTime.current,
@@ -110,7 +114,7 @@ export function GymDemoForm() {
         throw new Error(json.error ?? "Something went wrong.");
       }
       setSubmitted(true);
-      trackDemoRequest("ai-for-gyms");
+      trackDemoRequest("ai-for-gyms", metaEventId);
     } catch (err) {
       setServerError(
         err instanceof Error ? err.message : "Couldn't send. Please try again.",

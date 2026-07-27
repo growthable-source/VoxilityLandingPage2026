@@ -1,8 +1,14 @@
 import { NextResponse } from "next/server";
+import { capiContextFromRequest, sendMetaCapiEvents } from "@/lib/metaCapi";
 
 const MIN_FORM_DURATION_MS = 3000;
 
+/** Matches the `content_name` the browser pixel sends from GymDemoForm. */
+const DEMO_SOURCE = "ai-for-gyms";
+
 interface DemoPayload {
+  /** Shared with the browser pixel event so Meta deduplicates the pair. */
+  metaEventId?: string;
   firstName?: string;
   gymName?: string;
   email?: string;
@@ -113,6 +119,26 @@ export async function POST(request: Request) {
   } else {
     console.log("[demo] new request:", payload);
   }
+
+  // Server-side twin of the browser's Lead + DemoRequest pixel events, with
+  // hashed contact details for a far better match rate than the browser alone.
+  await sendMetaCapiEvents(
+    [
+      {
+        name: "Lead",
+        eventId: body.metaEventId,
+        customData: { content_name: DEMO_SOURCE },
+        userData: { email, phone, firstName },
+      },
+      {
+        name: "DemoRequest",
+        eventId: body.metaEventId,
+        customData: { source: DEMO_SOURCE },
+        userData: { email, phone, firstName },
+      },
+    ],
+    capiContextFromRequest(request, { fbclid: payload.fbclid }),
+  );
 
   return NextResponse.json({ ok: true });
 }

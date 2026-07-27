@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { capiContextFromRequest, sendMetaCapiEvents } from "@/lib/metaCapi";
 import { getVertical } from "@/lib/verticals";
 
 const MIN_FORM_DURATION_MS = 3000;
@@ -6,6 +7,8 @@ const MIN_FORM_DURATION_MS = 3000;
 interface DemoPayload {
   vertical?: string;
   source?: string;
+  /** Shared with the browser pixel event so Meta deduplicates the pair. */
+  metaEventId?: string;
   firstName?: string;
   orgName?: string;
   email?: string;
@@ -122,6 +125,26 @@ export async function POST(request: Request) {
   } else {
     console.log("[vertical-demo] new request:", payload);
   }
+
+  // Server-side twin of the browser's Lead + DemoRequest pixel events, with
+  // hashed contact details for a far better match rate than the browser alone.
+  await sendMetaCapiEvents(
+    [
+      {
+        name: "Lead",
+        eventId: body.metaEventId,
+        customData: { content_name: vertical.demoSource },
+        userData: { email, phone, firstName },
+      },
+      {
+        name: "DemoRequest",
+        eventId: body.metaEventId,
+        customData: { source: vertical.demoSource, vertical: vertical.slug },
+        userData: { email, phone, firstName },
+      },
+    ],
+    capiContextFromRequest(request, { fbclid: payload.fbclid }),
+  );
 
   return NextResponse.json({ ok: true });
 }

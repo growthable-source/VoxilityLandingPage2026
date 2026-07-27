@@ -3,7 +3,7 @@
 import { useId, useRef, useState } from "react";
 import { Check, Loader2 } from "lucide-react";
 import { cn } from "@/lib/cn";
-import { readUtmParams, trackDemoRequest } from "@/lib/tracking";
+import { newMetaEventId, readUtmParams, trackDemoRequest } from "@/lib/tracking";
 import type { Vertical } from "@/lib/verticals/types";
 
 const VOLUME_BUCKETS = ["Under 50", "50–200", "200–500", "500+"];
@@ -98,6 +98,9 @@ export function DemoForm({ vertical }: { vertical: Vertical }) {
 
     setSubmitting(true);
     setServerError(null);
+    // One id shared by the API route's Conversions API events and the browser
+    // pixel events below, so Meta counts the pair once.
+    const metaEventId = newMetaEventId();
     try {
       const res = await fetch("/api/vertical-demo", {
         method: "POST",
@@ -105,6 +108,7 @@ export function DemoForm({ vertical }: { vertical: Vertical }) {
         body: JSON.stringify({
           vertical: vertical.slug,
           source: vertical.demoSource,
+          metaEventId,
           firstName: data.firstName,
           orgName: data.orgName,
           email: data.email,
@@ -120,7 +124,7 @@ export function DemoForm({ vertical }: { vertical: Vertical }) {
         throw new Error(json.error ?? "Something went wrong.");
       }
       setSubmitted(true);
-      trackDemoRequest(vertical.demoSource);
+      trackDemoRequest(vertical.demoSource, metaEventId);
     } catch (err) {
       setServerError(
         err instanceof Error ? err.message : "Couldn't send. Please try again.",

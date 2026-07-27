@@ -1,5 +1,12 @@
 // Client-side conversion tracking helpers. Every call is guarded so pages
 // work identically with or without the Meta Pixel / GTM present.
+//
+// Meta events carry an `eventID` and are mirrored server-side through the
+// Conversions API (see src/lib/metaCapi.ts). Meta deduplicates on
+// (event_name, event_id), so the browser event and its server twin count once.
+// Events with no PII mirror themselves via /api/meta-event; form-backed events
+// pass their id into the form's own API route, which sends the CAPI event with
+// hashed email/phone for a much better match rate.
 
 declare global {
   interface Window {
@@ -36,6 +43,63 @@ export function readUtmParams(): UtmParams {
   };
 }
 
+// ─── Meta event ids + Conversions API mirroring ──────────────────────────────
+
+/**
+ * A unique id shared by a browser pixel event and its Conversions API twin.
+ * Form components generate one per submission and hand it to both the API route
+ * and the track* call below, so the pair deduplicates.
+ */
+export function newMetaEventId(): string {
+  if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
+    return crypto.randomUUID();
+  }
+  return `${Date.now()}-${Math.random().toString(36).slice(2, 12)}`;
+}
+
+type MetaCustomData = Record<string, string | number | undefined>;
+
+interface MirrorEvent {
+  name: string;
+  eventId: string;
+  customData?: MetaCustomData;
+}
+
+/**
+ * Send PII-free events to our own CAPI relay. Fire-and-forget: `keepalive` lets
+ * it survive the page unloading (the signup click navigates away immediately),
+ * and any failure is swallowed — tracking must never break a user action.
+ */
+function mirrorToCapi(events: MirrorEvent[]) {
+  if (typeof window === "undefined" || events.length === 0) return;
+  try {
+    void fetch("/api/meta-event", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        events,
+        sourceUrl: window.location.href,
+        fbclid: readUtmParams().fbclid,
+      }),
+      keepalive: true,
+    }).catch(() => {});
+  } catch {
+    // Ignore — no tracking is better than a thrown error in a click handler.
+  }
+}
+
+/** Fire a Meta pixel event with a dedup id attached. */
+function fbqEvent(
+  kind: "track" | "trackCustom",
+  name: string,
+  customData: MetaCustomData,
+  eventId: string,
+) {
+  if (typeof window !== "undefined" && typeof window.fbq === "function") {
+    window.fbq(kind, name, customData, { eventID: eventId });
+  }
+}
+
 function pushDataLayer(event: string, data: Record<string, unknown> = {}) {
   if (typeof window === "undefined") return;
   window.dataLayer = window.dataLayer || [];
@@ -51,9 +115,11 @@ function gtagEvent(name: string, params: Record<string, unknown> = {}) {
 
 /** Fired once when the visitor first interacts with the calculator. */
 export function trackCalculatorStart() {
-  if (typeof window !== "undefined" && typeof window.fbq === "function") {
-    window.fbq("trackCustom", "CalculatorStart", { calculator: "gym" });
-  }
+  const eventId = newMetaEventId();
+  fbqEvent("trackCustom", "CalculatorStart", { calculator: "gym" }, eventId);
+  mirrorToCapi([
+    { name: "CalculatorStart", eventId, customData: { calculator: "gym" } },
+  ]);
   pushDataLayer("gym_calculator_start");
 }
 
@@ -61,20 +127,31 @@ export function trackCalculatorStart() {
  * The conversion we optimize ads on: a completed calculator (lead captured,
  * results revealed). Fires the standard Lead event plus a custom event that
  * can be used as a custom conversion in Meta Events Manager.
+ *
+ * `metaEventId` should be the id the caller also sent to /api/calculator, which
+ * mirrors both events server-side with the lead's hashed email and phone.
  */
-export function trackCalculatorComplete(missedMonthlyRevenue: number) {
-  if (typeof window !== "undefined" && typeof window.fbq === "function") {
-    window.fbq("track", "Lead", {
+export function trackCalculatorComplete(
+  missedMonthlyRevenue: number,
+  metaEventId?: string,
+) {
+  const eventId = metaEventId ?? newMetaEventId();
+  fbqEvent(
+    "track",
+    "Lead",
+    {
       value: missedMonthlyRevenue,
       currency: "USD",
       content_name: "gym-calculator",
-    });
-    window.fbq("trackCustom", "CalculatorComplete", {
-      calculator: "gym",
-      value: missedMonthlyRevenue,
-      currency: "USD",
-    });
-  }
+    },
+    eventId,
+  );
+  fbqEvent(
+    "trackCustom",
+    "CalculatorComplete",
+    { calculator: "gym", value: missedMonthlyRevenue, currency: "USD" },
+    eventId,
+  );
   pushDataLayer("gym_calculator_complete", {
     calculator: "gym",
     value: missedMonthlyRevenue,
@@ -88,12 +165,15 @@ export function trackCalculatorComplete(missedMonthlyRevenue: number) {
  */
 const ADS_DEMO_BOOKED_SEND_TO = "AW-11078657396/vX1zCP_evdQcEPTK26Ip";
 
-/** Fired when a demo request is submitted (e.g. /ai-for-gyms). */
-export function trackDemoRequest(source: string) {
-  if (typeof window !== "undefined" && typeof window.fbq === "function") {
-    window.fbq("track", "Lead", { content_name: source });
-    window.fbq("trackCustom", "DemoRequest", { source });
-  }
+/**
+ * Fired when a demo request is submitted (e.g. /ai-for-gyms). `metaEventId`
+ * should be the id the caller also sent to the demo API route, which mirrors
+ * both Meta events server-side with hashed contact details.
+ */
+export function trackDemoRequest(source: string, metaEventId?: string) {
+  const eventId = metaEventId ?? newMetaEventId();
+  fbqEvent("track", "Lead", { content_name: source }, eventId);
+  fbqEvent("trackCustom", "DemoRequest", { source }, eventId);
   gtagEvent("demo_request", { source });
   // The paid-ads conversion: only called after the demo API confirms the
   // booking request succeeded, never on clicks or other CTAs.
@@ -105,9 +185,9 @@ export function trackDemoRequest(source: string) {
 
 /** Fired when a visitor launches the ungated in-browser voice demo. */
 export function trackVoiceDemoStart(vertical: string) {
-  if (typeof window !== "undefined" && typeof window.fbq === "function") {
-    window.fbq("trackCustom", "VoiceDemoStart", { vertical });
-  }
+  const eventId = newMetaEventId();
+  fbqEvent("trackCustom", "VoiceDemoStart", { vertical }, eventId);
+  mirrorToCapi([{ name: "VoiceDemoStart", eventId, customData: { vertical } }]);
   gtagEvent("voice_demo_start", { vertical });
   pushDataLayer("voice_demo_start", { vertical });
 }
@@ -124,15 +204,19 @@ export function trackVoiceDemoStart(vertical: string) {
 const ADS_WEB_DEMO_SEND_TO = process.env.NEXT_PUBLIC_ADS_WEB_DEMO_SEND_TO;
 
 /**
- * The mid-funnel conversion we optimize Google Ads on: a meaningful completed
- * voice demo (≥30s of talk or ≥2 turns). Fires the standard Lead event plus a
- * custom event to import as the Google Ads / Meta optimization conversion.
+ * The mid-funnel conversion we optimize on: a meaningful completed voice demo
+ * (≥30s of talk or ≥2 turns). This is the Meta optimization event too — build a
+ * custom conversion on "CompletedWebDemo" in Events Manager rather than on the
+ * bare Lead event, which three different actions fire.
  */
 export function trackCompletedWebDemo(vertical: string) {
-  if (typeof window !== "undefined" && typeof window.fbq === "function") {
-    window.fbq("track", "Lead", { content_name: `voice-demo-${vertical}` });
-    window.fbq("trackCustom", "CompletedWebDemo", { vertical });
-  }
+  const eventId = newMetaEventId();
+  fbqEvent("track", "Lead", { content_name: `voice-demo-${vertical}` }, eventId);
+  fbqEvent("trackCustom", "CompletedWebDemo", { vertical }, eventId);
+  mirrorToCapi([
+    { name: "Lead", eventId, customData: { content_name: `voice-demo-${vertical}` } },
+    { name: "CompletedWebDemo", eventId, customData: { vertical } },
+  ]);
   gtagEvent("completed_web_demo", { vertical });
   // The paid-ads optimization conversion — fires only once the send-to label
   // is configured (see ADS_WEB_DEMO_SEND_TO above).
@@ -144,37 +228,57 @@ export function trackCompletedWebDemo(vertical: string) {
 
 /** Fired when a visitor clicks through to the paid self-serve signup. */
 export function trackStartedPaidSignup(vertical: string) {
-  if (typeof window !== "undefined" && typeof window.fbq === "function") {
-    window.fbq("track", "InitiateCheckout", { content_name: `signup-${vertical}` });
-    window.fbq("trackCustom", "StartedPaidSignup", { vertical });
-  }
+  const eventId = newMetaEventId();
+  const contentName = `signup-${vertical}`;
+  fbqEvent("track", "InitiateCheckout", { content_name: contentName }, eventId);
+  fbqEvent("trackCustom", "StartedPaidSignup", { vertical }, eventId);
+  mirrorToCapi([
+    { name: "InitiateCheckout", eventId, customData: { content_name: contentName } },
+    { name: "StartedPaidSignup", eventId, customData: { vertical } },
+  ]);
   gtagEvent("started_paid_signup", { vertical });
   pushDataLayer("started_paid_signup", { vertical });
 }
 
 /** Fired once when a visitor first interacts with a vertical calculator. */
 export function trackCalcStart(vertical: string) {
-  if (typeof window !== "undefined" && typeof window.fbq === "function") {
-    window.fbq("trackCustom", "CalculatorStart", { calculator: vertical });
-  }
+  const eventId = newMetaEventId();
+  fbqEvent("trackCustom", "CalculatorStart", { calculator: vertical }, eventId);
+  mirrorToCapi([
+    { name: "CalculatorStart", eventId, customData: { calculator: vertical } },
+  ]);
   gtagEvent("calculator_start", { calculator: vertical });
   pushDataLayer("calculator_start", { calculator: vertical });
 }
 
-/** Fired when a vertical calculator is completed (lead captured, results shown). */
-export function trackCalcComplete(vertical: string, missedMonthlyRevenue: number) {
-  if (typeof window !== "undefined" && typeof window.fbq === "function") {
-    window.fbq("track", "Lead", {
+/**
+ * Fired when a vertical calculator is completed (lead captured, results shown).
+ * `metaEventId` should be the id the caller also sent to
+ * /api/vertical-calculator, which mirrors both events server-side with hashed
+ * contact details.
+ */
+export function trackCalcComplete(
+  vertical: string,
+  missedMonthlyRevenue: number,
+  metaEventId?: string,
+) {
+  const eventId = metaEventId ?? newMetaEventId();
+  fbqEvent(
+    "track",
+    "Lead",
+    {
       value: missedMonthlyRevenue,
       currency: "USD",
       content_name: `${vertical}-calculator`,
-    });
-    window.fbq("trackCustom", "CalculatorComplete", {
-      calculator: vertical,
-      value: missedMonthlyRevenue,
-      currency: "USD",
-    });
-  }
+    },
+    eventId,
+  );
+  fbqEvent(
+    "trackCustom",
+    "CalculatorComplete",
+    { calculator: vertical, value: missedMonthlyRevenue, currency: "USD" },
+    eventId,
+  );
   gtagEvent("calculator_complete", {
     calculator: vertical,
     value: missedMonthlyRevenue,

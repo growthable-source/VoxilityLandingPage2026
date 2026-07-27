@@ -6,10 +6,13 @@ import {
   roundResults,
   sanitizeInputs,
 } from "@/lib/gymMath";
+import { capiContextFromRequest, sendMetaCapiEvents } from "@/lib/metaCapi";
 
 const MIN_FORM_DURATION_MS = 3000;
 
 interface CalculatorPayload {
+  /** Shared with the browser pixel event so Meta deduplicates the pair. */
+  metaEventId?: string;
   firstName?: string;
   gymName?: string;
   email?: string;
@@ -140,6 +143,34 @@ export async function POST(request: Request) {
   } else {
     console.log("[calculator] new completion:", payload);
   }
+
+  // Server-side twin of the browser's Lead + CalculatorComplete pixel events,
+  // with hashed contact details for a far better match rate.
+  await sendMetaCapiEvents(
+    [
+      {
+        name: "Lead",
+        eventId: body.metaEventId,
+        customData: {
+          content_name: "gym-calculator",
+          value: results.missedMonthlyRevenue,
+          currency: "USD",
+        },
+        userData: { email, phone, firstName },
+      },
+      {
+        name: "CalculatorComplete",
+        eventId: body.metaEventId,
+        customData: {
+          calculator: "gym",
+          value: results.missedMonthlyRevenue,
+          currency: "USD",
+        },
+        userData: { email, phone, firstName },
+      },
+    ],
+    capiContextFromRequest(request, { fbclid: payload.fbclid }),
+  );
 
   return NextResponse.json({ ok: true, results });
 }

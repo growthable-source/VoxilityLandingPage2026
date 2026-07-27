@@ -15,7 +15,12 @@ import {
   type CalcResults,
   type ResponseSpeed,
 } from "@/lib/revenueMath";
-import { readUtmParams, trackCalcComplete, trackCalcStart } from "@/lib/tracking";
+import {
+  newMetaEventId,
+  readUtmParams,
+  trackCalcComplete,
+  trackCalcStart,
+} from "@/lib/tracking";
 import type { Vertical } from "@/lib/verticals/types";
 
 type Stage = 1 | 2 | 3;
@@ -142,12 +147,16 @@ export function RevenueCalculator({ vertical }: { vertical: Vertical }) {
     if (!validateDetails()) return;
     setSubmitting(true);
     setServerError(null);
+    // One id shared by the API route's Conversions API events and the browser
+    // pixel events below, so Meta counts the pair once.
+    const metaEventId = newMetaEventId();
     try {
       const res = await fetch("/api/vertical-calculator", {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({
           vertical: vertical.slug,
+          metaEventId,
           firstName: details.firstName,
           orgName: details.orgName,
           email: details.email,
@@ -169,7 +178,11 @@ export function RevenueCalculator({ vertical }: { vertical: Vertical }) {
       const finalResults =
         json.results ?? roundResults(calculateMissedRevenue(inputs, calc));
       setResults(finalResults);
-      trackCalcComplete(vertical.slug, finalResults.missedMonthlyRevenue);
+      trackCalcComplete(
+        vertical.slug,
+        finalResults.missedMonthlyRevenue,
+        metaEventId,
+      );
       cardRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
     } catch (err) {
       setServerError(

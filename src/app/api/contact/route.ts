@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { capiContextFromRequest, sendMetaCapiEvents } from "@/lib/metaCapi";
 
 const MIN_FORM_DURATION_MS = 3000;
 
@@ -118,6 +119,21 @@ export async function POST(request: Request) {
   } else {
     console.log("[contact] new submission:", payload);
   }
+
+  // The main qualifier form fires no browser pixel event, so this is the only
+  // signal Meta gets for it — send it server-side with hashed contact details.
+  // No dedup id is needed since there is no browser twin to pair with.
+  await sendMetaCapiEvents(
+    [
+      {
+        name: "Lead",
+        eventId: crypto.randomUUID(),
+        customData: { content_name: "contact-form" },
+        userData: { email, phone, firstName },
+      },
+    ],
+    capiContextFromRequest(request),
+  );
 
   return NextResponse.json({ ok: true });
 }
