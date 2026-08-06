@@ -50,3 +50,6 @@ next-env.d.ts
 # claude code per-user state
 .claude/settings.local.json
 .claude/projects/
+
+# local audit-record fallback store (dev only — production uses Vercel Blob)
+.audit-store/

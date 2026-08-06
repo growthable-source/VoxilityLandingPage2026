@@ -289,3 +289,52 @@ export function trackCalcComplete(
     value: missedMonthlyRevenue,
   });
 }
+
+// ─── Free build + teardown funnel (/free-website) ────────────────────────────
+
+/**
+ * A submitted free-build request. `metaEventId` should be the id the caller
+ * also sent to /api/free-build, which mirrors this event server-side with
+ * hashed contact details.
+ *
+ * This is the campaign's *proxy* conversion, not its real one — the audit
+ * click and the claim are what separate a curious form fill from a booked
+ * call. Optimize on FreeBuildClaimed once it has volume.
+ */
+export function trackFreeBuildLead(pain: string, metaEventId?: string) {
+  const eventId = metaEventId ?? newMetaEventId();
+  fbqEvent("track", "Lead", { content_name: "free-website-build" }, eventId);
+  fbqEvent("trackCustom", "FreeBuildRequest", { pain }, eventId);
+  gtagEvent("free_build_request", { pain });
+  pushDataLayer("free_build_request", { pain });
+}
+
+/**
+ * The lead opened their audit page. Only reachable from the emailed link, so it
+ * doubles as email validation — the address is real and they are reading it.
+ */
+export function trackAuditViewed(token: string) {
+  const eventId = newMetaEventId();
+  fbqEvent("trackCustom", "AuditViewed", {}, eventId);
+  mirrorToCapi([{ name: "AuditViewed", eventId }]);
+  gtagEvent("audit_viewed");
+  pushDataLayer("audit_viewed", { auditToken: token });
+}
+
+/**
+ * The conversion that matters: they read the audit and asked for the rebuild.
+ * Fires just before the redirect to the booking calendar, so `keepalive` inside
+ * mirrorToCapi is doing real work here.
+ */
+export function trackFreeBuildClaimed() {
+  const eventId = newMetaEventId();
+  fbqEvent("track", "Schedule", { content_name: "free-website-build" }, eventId);
+  fbqEvent("trackCustom", "FreeBuildClaimed", {}, eventId);
+  mirrorToCapi([
+    { name: "Schedule", eventId, customData: { content_name: "free-website-build" } },
+    { name: "FreeBuildClaimed", eventId },
+  ]);
+  gtagEvent("free_build_claimed");
+  gtagEvent("conversion", { send_to: ADS_DEMO_BOOKED_SEND_TO });
+  pushDataLayer("free_build_claimed");
+}

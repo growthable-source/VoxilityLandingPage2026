@@ -1,0 +1,355 @@
+import type { Metadata } from "next";
+import { notFound } from "next/navigation";
+import { AlertTriangle, Check, Info, MinusCircle } from "lucide-react";
+import { AuditClaimButton, AuditViewTracker } from "@/components/free-build/AuditClaim";
+import { AuditReviewBar } from "@/components/free-build/AuditReviewBar";
+import { CampaignFooter, CampaignNav } from "@/components/free-build/CampaignChrome";
+import { MONTHLY_BUILD_CAP } from "@/components/free-build/content";
+import { rankBySeverity } from "@/lib/audit/findings";
+import { isReviewer } from "@/lib/audit/reviewAuth";
+import { loadAudit } from "@/lib/audit/store";
+import type { AuditFinding, AuditRecord, FindingSeverity } from "@/lib/audit/types";
+
+// Someone's own teardown, behind an unguessable token. Never indexed, and
+// never cached — the record changes as it moves ready → sent → claimed.
+export const metadata: Metadata = {
+  title: "Your website teardown | Xovera",
+  robots: { index: false, follow: false, nocache: true },
+};
+export const dynamic = "force-dynamic";
+
+export default async function AuditPage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ token: string }>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}) {
+  const { token } = await params;
+  const query = await searchParams;
+  const key = typeof query.key === "string" ? query.key : undefined;
+
+  const record = await loadAudit(token);
+  if (!record) notFound();
+
+  const reviewer = isReviewer(key);
+
+  // A lead only ever receives this link after approval. Anyone else arriving
+  // early gets a holding page rather than an unreviewed audit.
+  if (!reviewer && (record.status === "pending" || record.status === "ready")) {
+    return <HoldingPage business={record.lead.business} />;
+  }
+  if (!reviewer && record.status === "failed") {
+    return <FailedPage record={record} />;
+  }
+
+  return (
+    <div className="min-h-screen bg-background">
+      <CampaignNav
+        note={`Prepared for ${record.lead.business}`}
+        ctaLabel="Claim my free rebuild"
+      />
+      {!reviewer && <AuditViewTracker token={token} />}
+
+      <main>
+        <AuditHeader record={record} />
+        <Findings record={record} />
+        <Gaps record={record} />
+        <CallTopics record={record} />
+        <ClaimSection record={record} />
+      </main>
+
+      <CampaignFooter />
+
+      {reviewer && key && (
+        <AuditReviewBar
+          token={token}
+          reviewKey={key}
+          status={record.status}
+          recipient={record.lead.email}
+        />
+      )}
+    </div>
+  );
+}
+
+// ─── Sections ────────────────────────────────────────────────────────────────
+
+function AuditHeader({ record }: { record: AuditRecord }) {
+  const measuredUrl = record.signals?.onPage?.finalUrl;
+  const measuredAt = record.readyAt ?? record.createdAt;
+
+  return (
+    <header className="relative overflow-hidden border-b border-border/60 bg-gradient-hero">
+      <div className="relative mx-auto max-w-[860px] px-5 py-16 md:px-8 md:py-20">
+        <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
+          Website teardown
+        </p>
+        <h1
+          className="mt-4 text-balance text-4xl font-semibold tracking-tight text-foreground md:text-5xl"
+          style={{ lineHeight: 1.06, letterSpacing: "-0.03em" }}
+        >
+          {record.lead.business}
+        </h1>
+
+        {record.narrative && (
+          <p className="mt-6 max-w-[62ch] text-lg leading-relaxed text-muted-foreground">
+            {record.narrative.summary}
+          </p>
+        )}
+
+        <dl className="mt-8 flex flex-wrap gap-x-8 gap-y-3 text-[13.5px] text-muted-foreground">
+          {measuredUrl && (
+            <div>
+              <dt className="inline text-muted-foreground/70">Measured on </dt>
+              <dd className="inline break-all text-foreground/85">{measuredUrl}</dd>
+            </div>
+          )}
+          <div>
+            <dt className="inline text-muted-foreground/70">Date </dt>
+            <dd className="inline text-foreground/85">
+              {new Date(measuredAt).toLocaleDateString("en-AU", {
+                day: "numeric",
+                month: "long",
+                year: "numeric",
+              })}
+            </dd>
+          </div>
+        </dl>
+      </div>
+    </header>
+  );
+}
+
+function Findings({ record }: { record: AuditRecord }) {
+  const findings = record.narrative?.findings ?? [];
+  if (findings.length === 0) return null;
+
+  return (
+    <section className="mx-auto max-w-[860px] px-5 py-14 md:px-8 md:py-16">
+      <h2 className="text-2xl font-semibold tracking-tight text-foreground md:text-3xl">
+        What we measured
+      </h2>
+      <p className="mt-3 max-w-[60ch] text-[15.5px] leading-relaxed text-muted-foreground">
+        Every number below came from your live site or your Google listing. Where
+        a check couldn&rsquo;t be run, it says so rather than guessing.
+      </p>
+
+      <div className="mt-10 grid gap-5">
+        {rankBySeverity(findings).map((finding) => (
+          <FindingCard key={finding.id} finding={finding} />
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function FindingCard({ finding }: { finding: AuditFinding }) {
+  const style = SEVERITY_STYLES[finding.severity];
+
+  return (
+    <article className="rounded-lg border border-border/60 bg-card p-6 shadow-card md:p-7">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <h3 className="text-[17px] font-semibold tracking-tight text-foreground">
+          {finding.title}
+        </h3>
+        <span
+          className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11.5px] font-medium ${style.chip}`}
+        >
+          {style.icon}
+          {style.label}
+        </span>
+      </div>
+
+      <p className="mt-4 text-[17px] font-medium leading-snug text-foreground">
+        {finding.headline}
+      </p>
+      <p className="mt-3 max-w-[64ch] text-[15.5px] leading-relaxed text-muted-foreground">
+        {finding.body}
+      </p>
+
+      {finding.metrics.length > 0 && (
+        <dl className="mt-5 grid gap-px overflow-hidden rounded-md border border-border/60 bg-border/60 sm:grid-cols-2">
+          {finding.metrics.map((metric) => (
+            <div key={metric.label} className="bg-card px-4 py-3">
+              <dt className="text-[12px] uppercase tracking-[0.1em] text-muted-foreground/75">
+                {metric.label}
+              </dt>
+              <dd className="mt-1 break-words text-[14.5px] text-foreground/90">
+                {metric.value}
+              </dd>
+            </div>
+          ))}
+        </dl>
+      )}
+    </article>
+  );
+}
+
+const SEVERITY_STYLES: Record<
+  FindingSeverity,
+  { label: string; chip: string; icon: React.ReactNode }
+> = {
+  critical: {
+    label: "Costing you enquiries",
+    chip: "bg-destructive/12 text-destructive",
+    icon: <AlertTriangle className="h-3 w-3" />,
+  },
+  warning: {
+    label: "Worth tidying",
+    chip: "bg-warning/12 text-warning",
+    icon: <Info className="h-3 w-3" />,
+  },
+  ok: {
+    label: "Working",
+    chip: "bg-success/12 text-success",
+    icon: <Check className="h-3 w-3" />,
+  },
+  unmeasured: {
+    label: "Not measured",
+    chip: "bg-muted text-muted-foreground",
+    icon: <MinusCircle className="h-3 w-3" />,
+  },
+};
+
+function Gaps({ record }: { record: AuditRecord }) {
+  const gaps = record.signals?.gaps ?? [];
+  if (gaps.length === 0) return null;
+
+  return (
+    <section className="border-y border-border/60 bg-muted/25">
+      <div className="mx-auto max-w-[860px] px-5 py-12 md:px-8">
+        <h2 className="text-[19px] font-semibold tracking-tight text-foreground">
+          What we couldn&rsquo;t check automatically
+        </h2>
+        <ul className="mt-4 grid gap-3">
+          {gaps.map((gap) => (
+            <li
+              key={gap}
+              className="flex gap-3 text-[15px] leading-relaxed text-muted-foreground"
+            >
+              <MinusCircle className="mt-1 h-3.5 w-3.5 shrink-0 text-muted-foreground/60" />
+              {gap}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  );
+}
+
+function CallTopics({ record }: { record: AuditRecord }) {
+  const topics = record.narrative?.callTopics ?? [];
+  if (topics.length === 0) return null;
+
+  return (
+    <section className="mx-auto max-w-[860px] px-5 py-14 md:px-8 md:py-16">
+      <h2 className="text-2xl font-semibold tracking-tight text-foreground md:text-3xl">
+        Three things we can&rsquo;t see from out here
+      </h2>
+      <p className="mt-3 max-w-[62ch] text-[15.5px] leading-relaxed text-muted-foreground">
+        These are usually the most expensive numbers in a local business, and
+        none of them are visible from a website. We&rsquo;d rather go through
+        them with you than put an estimate in writing.
+      </p>
+
+      <div className="mt-9 grid gap-5 md:grid-cols-3">
+        {topics.map((topic) => (
+          <div
+            key={topic.title}
+            className="rounded-lg border border-border/60 bg-card p-6 shadow-card"
+          >
+            <h3 className="text-[16px] font-semibold tracking-tight text-foreground">
+              {topic.title}
+            </h3>
+            <p className="mt-2.5 text-[15px] leading-relaxed text-muted-foreground">
+              {topic.body}
+            </p>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function ClaimSection({ record }: { record: AuditRecord }) {
+  return (
+    <section
+      id="claim"
+      className="relative overflow-hidden border-t border-border/60 bg-gradient-hero"
+    >
+      <div className="relative mx-auto max-w-[720px] px-5 py-16 text-center md:px-8 md:py-20">
+        <h2
+          className="text-balance text-3xl font-semibold tracking-tight text-foreground md:text-4xl"
+          style={{ lineHeight: 1.08, letterSpacing: "-0.03em" }}
+        >
+          Now let us rebuild it, free.
+        </h2>
+        <p className="mx-auto mt-5 max-w-[54ch] text-[17px] leading-relaxed text-muted-foreground">
+          We&rsquo;ll build {record.lead.business} a new site that fixes what&rsquo;s
+          above, then walk you through it and the rest of the teardown on a
+          30-minute call. The site is yours to keep either way — no card, no
+          lock-in contract.
+        </p>
+
+        <div className="mt-9">
+          <AuditClaimButton
+            token={record.token}
+            alreadyClaimed={record.status === "claimed"}
+          />
+        </div>
+
+        <p className="mx-auto mt-7 max-w-[56ch] text-[13.5px] leading-relaxed text-muted-foreground/85">
+          {/* JSX trims whitespace bordering a newline, so the gap after the
+              expression has to be explicit or it renders as "6builds". */}
+          {`${MONTHLY_BUILD_CAP} builds a month.`}{" "}
+          If you want revisions beyond the first pass or extra functionality,
+          that&rsquo;s a one-off activation of $1,500 to $3,000 depending on
+          scope, and it includes the CRM. Nothing is charged without you agreeing
+          to it on the call.
+        </p>
+      </div>
+    </section>
+  );
+}
+
+// ─── States before the audit is readable ─────────────────────────────────────
+
+function HoldingPage({ business }: { business: string }) {
+  return (
+    <div className="min-h-screen bg-background">
+      <CampaignNav ctaLabel="Back to the site" ctaHref="/free-website" />
+      <main className="mx-auto max-w-[640px] px-5 py-24 text-center md:px-8">
+        <h1 className="text-3xl font-semibold tracking-tight text-foreground">
+          We&rsquo;re still working on this one.
+        </h1>
+        <p className="mt-5 text-[16px] leading-relaxed text-muted-foreground">
+          {business}&rsquo;s teardown isn&rsquo;t quite finished. We&rsquo;ll email
+          you the moment it&rsquo;s ready — usually the same day.
+        </p>
+      </main>
+      <CampaignFooter />
+    </div>
+  );
+}
+
+function FailedPage({ record }: { record: AuditRecord }) {
+  return (
+    <div className="min-h-screen bg-background">
+      <CampaignNav ctaLabel="Back to the site" ctaHref="/free-website" />
+      <main className="mx-auto max-w-[640px] px-5 py-24 text-center md:px-8">
+        <h1 className="text-3xl font-semibold tracking-tight text-foreground">
+          We couldn&rsquo;t run this one automatically.
+        </h1>
+        <p className="mt-5 text-[16px] leading-relaxed text-muted-foreground">
+          Something about {record.lead.business}&rsquo;s setup stopped our checks
+          from completing, which happens often enough that we plan for it. Rather
+          than send you a half-finished audit, we&rsquo;ll go through the whole
+          thing with you live. We&rsquo;ll be in touch to book a time — the free
+          build still stands.
+        </p>
+      </main>
+      <CampaignFooter />
+    </div>
+  );
+}
