@@ -4,6 +4,7 @@ import { GeistMono } from "geist/font/mono";
 import { MetaPixel } from "@/components/MetaPixel";
 import { GoogleTag } from "@/components/GoogleTag";
 import { Clarity } from "@/components/Clarity";
+import { ChatWidget } from "@/components/ChatWidget";
 import "./globals.css";
 
 const SITE_URL = "https://www.xovera.io";
@@ -149,6 +150,7 @@ export default function RootLayout({
         <MetaPixel />
         <GoogleTag />
         <Clarity />
+        <ChatWidget />
       </body>
     </html>
   );
