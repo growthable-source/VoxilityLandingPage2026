@@ -460,9 +460,9 @@ function ClaimSection({ record }: { record: AuditRecord }) {
           {/* JSX trims whitespace bordering a newline, so the gap after the
               expression has to be explicit or it renders as "6builds". */}
           {`${MONTHLY_BUILD_CAP} builds a month.`}{" "}
-          Taking the site as-is is free. If you want it working harder, a
-          one-off $297 USD bundles in the CRM — forms answered instantly,
-          speed-to-lead follow-up, missed-call text-back and a universal inbox.
+          Taking the site as-is is free. Revisions, with the site&rsquo;s forms
+          wired into your CRM — or into GoHighLevel, which we provide as a
+          preferred reseller in Australia — are a one-off $1,500 activation.
           Nothing is charged without you agreeing to it on the call.
         </p>
       </div>
