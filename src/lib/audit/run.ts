@@ -10,7 +10,7 @@ import { fetchSite, normalizeSiteUrl, SiteFetchError } from "./fetchSite";
 import { buildNarrative } from "./findings";
 import { narrate } from "./narrate";
 import { extractOnPageSignals } from "./onPage";
-import { fetchPageSpeed } from "./pagespeed";
+import { fetchDesktopScreenshot, fetchPageSpeed } from "./pagespeed";
 import { fetchPlaces } from "./places";
 import { loadAudit, saveAudit } from "./store";
 import type { AuditRecord, AuditSignals } from "./types";
@@ -64,13 +64,16 @@ async function collectSignals(record: AuditRecord): Promise<AuditSignals> {
     );
   }
 
-  // The three collectors are independent, so they run together rather than
-  // stacking their timeouts. PageSpeed is the slow one at up to 35s.
-  const [onPageResult, pageSpeedResult, placesResult] = await Promise.allSettled([
-    siteUrl ? collectOnPage(siteUrl) : Promise.reject(new SkippedError()),
-    siteUrl ? fetchPageSpeed(siteUrl) : Promise.reject(new SkippedError()),
-    fetchPlaces(record.lead.business, siteUrl),
-  ]);
+  // The collectors are independent, so they run together rather than
+  // stacking their timeouts. PageSpeed is the slow one at up to 35s; the
+  // desktop run exists only for its screenshot and fails to null on its own.
+  const [onPageResult, pageSpeedResult, placesResult, desktopShotResult] =
+    await Promise.allSettled([
+      siteUrl ? collectOnPage(siteUrl) : Promise.reject(new SkippedError()),
+      siteUrl ? fetchPageSpeed(siteUrl) : Promise.reject(new SkippedError()),
+      fetchPlaces(record.lead.business, siteUrl),
+      siteUrl ? fetchDesktopScreenshot(siteUrl) : Promise.resolve(null),
+    ]);
 
   if (onPageResult.status === "rejected" && siteUrl) {
     gaps.push(
@@ -91,6 +94,8 @@ async function collectSignals(record: AuditRecord): Promise<AuditSignals> {
     onPage: onPageResult.status === "fulfilled" ? onPageResult.value : null,
     pageSpeed: pageSpeedResult.status === "fulfilled" ? pageSpeedResult.value : null,
     places: placesResult.status === "fulfilled" ? placesResult.value : null,
+    desktopScreenshot:
+      desktopShotResult.status === "fulfilled" ? desktopShotResult.value : null,
     gaps,
   };
 }

@@ -110,6 +110,12 @@ export interface AuditSignals {
   onPage: OnPageSignals | null;
   pageSpeed: PageSpeedSignals | null;
   places: PlacesSignals | null;
+  /**
+   * The page rendered on an emulated laptop-size viewport (a second, desktop
+   * PageSpeed run kept only for its screenshot). Purely presentational — the
+   * report shows it in a laptop mockup beside the phone one.
+   */
+  desktopScreenshot?: string | null;
   /** Human-readable notes on what could not be measured, and why. */
   gaps: string[];
 }

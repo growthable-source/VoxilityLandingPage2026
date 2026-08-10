@@ -1,8 +1,12 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { ArrowRight, Check, Loader2 } from "lucide-react";
+import { ArrowRight, Loader2 } from "lucide-react";
 import { cn } from "@/lib/cn";
+import {
+  AnalysisProgress,
+  type AnalysisPhase,
+} from "@/components/free-build/AnalysisProgress";
 import {
   newMetaEventId,
   readUtmParams,
@@ -13,24 +17,9 @@ import {
 // The URL-first funnel: web address in → analysis runs → contact details in
 // while it works → "Show me my report" opens /audit/<token> with the findings.
 
-/** The checks, in the order the copy walks through them while they wait. */
-const CHECK_STEPS = [
-  "Loading your site the way a visitor on a phone does",
-  "Reading what the top of your page actually says",
-  "Running Google's mobile speed test on your real URL",
-  "Taking a screenshot of how it renders on a phone",
-  "Reviewing the design and colour choices",
-  "Checking tap-to-call, forms and the basics",
-  "Looking up your Google rating and review count",
-  "Comparing you to nearby businesses in your category",
-  "Writing up the findings in plain English",
-];
-
 const POLL_MS = 3000;
-/** Cosmetic pacing for the checklist — the analysis itself sets the real pace. */
-const STEP_MS = 5500;
 
-type Analysis = "running" | "done" | "failed";
+type Analysis = AnalysisPhase;
 
 export function InstantAuditFlow() {
   const [stage, setStage] = useState<"url" | "analysing">("url");
@@ -40,7 +29,6 @@ export function InstantAuditFlow() {
 
   const [token, setToken] = useState<string | null>(null);
   const [analysis, setAnalysis] = useState<Analysis>("running");
-  const [stepIndex, setStepIndex] = useState(0);
 
   const [business, setBusiness] = useState("");
   const [email, setEmail] = useState("");
@@ -76,15 +64,6 @@ export function InstantAuditFlow() {
     }, POLL_MS);
     return () => clearInterval(id);
   }, [token, analysis]);
-
-  // ── Walk the cosmetic checklist forward ────────────────────────────────────
-  useEffect(() => {
-    if (stage !== "analysing") return;
-    const id = setInterval(() => {
-      setStepIndex((i) => Math.min(i + 1, CHECK_STEPS.length - 1));
-    }, STEP_MS);
-    return () => clearInterval(id);
-  }, [stage]);
 
   // ── Both halves done → open the report ─────────────────────────────────────
   useEffect(() => {
@@ -254,33 +233,9 @@ export function InstantAuditFlow() {
           )}
         </div>
 
-        <ul className="mt-5 grid gap-2.5" aria-live="polite">
-          {CHECK_STEPS.map((step, index) => {
-            const done = analysis !== "running" || index < stepIndex;
-            const current = analysis === "running" && index === stepIndex;
-            if (!done && !current) return null;
-            return (
-              <li
-                key={step}
-                className="flex items-start gap-2.5 text-[14px] text-foreground/85"
-              >
-                <span
-                  className={cn(
-                    "mt-0.5 flex h-4.5 w-4.5 shrink-0 items-center justify-center rounded-full",
-                    done ? "bg-primary/15 ring-1 ring-primary/30" : "",
-                  )}
-                >
-                  {done ? (
-                    <Check className="h-2.5 w-2.5 text-primary" strokeWidth={3} />
-                  ) : (
-                    <Loader2 className="h-3 w-3 animate-spin text-primary" />
-                  )}
-                </span>
-                <span className={done ? "" : "text-muted-foreground"}>{step}…</span>
-              </li>
-            );
-          })}
-        </ul>
+        <div className="mt-5">
+          <AnalysisProgress phase={analysis} />
+        </div>
 
         <div className="mt-6 border-t border-border/60 pt-5">
           <h3 className="text-[16px] font-semibold tracking-tight text-foreground">

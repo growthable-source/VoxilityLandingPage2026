@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { AlertTriangle, Check, Info, MinusCircle } from "lucide-react";
 import { AuditClaimButton, AuditViewTracker } from "@/components/free-build/AuditClaim";
+import { AuditLiveProgress } from "@/components/free-build/AuditLiveProgress";
 import { AuditReviewBar } from "@/components/free-build/AuditReviewBar";
 import { CampaignFooter, CampaignNav } from "@/components/free-build/CampaignChrome";
 import { MONTHLY_BUILD_CAP } from "@/components/free-build/content";
@@ -48,9 +49,20 @@ export default async function AuditPage({
     !instantUnlocked &&
     (record.status === "pending" || record.status === "ready")
   ) {
-    return (
-      <HoldingPage business={record.lead.business} instant={record.flow === "instant"} />
-    );
+    // A pending instant record gets live progress that opens the report by
+    // itself. An instant record that finished without contact details would
+    // reload-loop on that component, so it falls through to the static page,
+    // as does the emailed flow.
+    if (record.flow === "instant" && record.status === "pending") {
+      return (
+        <div className="min-h-screen bg-background">
+          <CampaignNav ctaLabel="Back to the site" ctaHref="/free-website" />
+          <AuditLiveProgress token={token} business={record.lead.business} />
+          <CampaignFooter />
+        </div>
+      );
+    }
+    return <HoldingPage business={record.lead.business} />;
   }
   if (!reviewer && record.status === "failed") {
     return <FailedPage record={record} />;
@@ -228,43 +240,37 @@ const SEVERITY_STYLES: Record<
 
 function DesignSection({ record }: { record: AuditRecord }) {
   const screenshot = record.signals?.pageSpeed?.screenshot;
+  const desktopScreenshot = record.signals?.desktopScreenshot;
   const design = record.design;
-  if (!screenshot || !design) return null;
+  if (!screenshot && !desktopScreenshot) return null;
 
   return (
     <section className="border-y border-border/60 bg-muted/20">
-      <div className="mx-auto grid max-w-[860px] items-start gap-10 px-5 py-14 md:grid-cols-[260px_1fr] md:gap-12 md:px-8 md:py-16">
-        <figure className="mx-auto w-full max-w-[260px]">
-          <div className="overflow-hidden rounded-xl border border-border/60 bg-card p-1.5 shadow-card">
-            {/* A data URI straight from Lighthouse — next/image adds nothing here. */}
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={screenshot}
-              alt={`${record.lead.business} as it rendered on a phone`}
-              className="w-full rounded-lg"
-            />
-          </div>
-          <figcaption className="mt-2.5 text-center text-[12px] text-muted-foreground/75">
-            Your site on a phone, captured during the speed test
-          </figcaption>
-        </figure>
+      <div className="mx-auto grid max-w-[860px] items-start gap-12 px-5 py-14 md:grid-cols-[340px_1fr] md:gap-12 md:px-8 md:py-16">
+        <DeviceDuo
+          business={record.lead.business}
+          phone={screenshot ?? null}
+          laptop={desktopScreenshot ?? null}
+        />
 
         <div>
           <h2 className="text-2xl font-semibold tracking-tight text-foreground md:text-3xl">
             How it looks
           </h2>
           <p className="mt-3 max-w-[58ch] text-[15.5px] leading-relaxed text-muted-foreground">
-            This part is professional opinion rather than measurement — our
-            designer&rsquo;s read of the screenshot on the left, so you can
-            check every observation against it.
+            {design
+              ? "This part is professional opinion rather than measurement — our designer’s read of the screenshots beside it, so you can check every observation against them."
+              : "Your site as it renders today, captured during the analysis. We’ll walk through the design together on the call."}
           </p>
 
-          <p className="mt-6 text-[17px] font-medium leading-snug text-foreground">
-            {design.headline}
-          </p>
+          {design && (
+            <p className="mt-6 text-[17px] font-medium leading-snug text-foreground">
+              {design.headline}
+            </p>
+          )}
 
           <div className="mt-6 grid gap-5">
-            {design.points.map((point) => (
+            {(design?.points ?? []).map((point) => (
               <div key={point.title}>
                 <h3 className="text-[15.5px] font-semibold tracking-tight text-foreground">
                   {point.title}
@@ -276,7 +282,7 @@ function DesignSection({ record }: { record: AuditRecord }) {
             ))}
           </div>
 
-          {design.palette.length > 0 && (
+          {design && design.palette.length > 0 && (
             <div className="mt-7">
               <h3 className="text-[12px] uppercase tracking-[0.1em] text-muted-foreground/75">
                 The palette we can see
@@ -300,6 +306,66 @@ function DesignSection({ record }: { record: AuditRecord }) {
         </div>
       </div>
     </section>
+  );
+}
+
+/**
+ * The captured screenshots framed as devices — a laptop with a phone
+ * overlapping its corner when both exist, or whichever one we have.
+ * Pure CSS; the images are data URIs straight from Lighthouse, so
+ * next/image adds nothing here.
+ */
+function DeviceDuo({
+  business,
+  phone,
+  laptop,
+}: {
+  business: string;
+  phone: string | null;
+  laptop: string | null;
+}) {
+  const phoneFrame = phone && (
+    <div className="overflow-hidden rounded-[1.4rem] border border-border/60 bg-card p-1.5 shadow-card">
+      <div className="mx-auto mb-1 h-1 w-10 rounded-full bg-muted" />
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={phone}
+        alt={`${business} as it rendered on a phone`}
+        className="w-full rounded-[1rem]"
+      />
+    </div>
+  );
+
+  const laptopFrame = laptop && (
+    <div>
+      <div className="overflow-hidden rounded-t-lg border border-b-0 border-border/60 bg-card p-1.5 pb-0 shadow-card">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={laptop}
+          alt={`${business} as it rendered on a laptop`}
+          className="w-full rounded-t-md"
+        />
+      </div>
+      <div className="relative left-1/2 h-2.5 w-[108%] -translate-x-1/2 rounded-b-lg border border-border/60 bg-muted">
+        <div className="mx-auto h-1 w-12 rounded-b-md bg-border/60" />
+      </div>
+    </div>
+  );
+
+  return (
+    <figure className="mx-auto w-full max-w-[340px]">
+      {laptopFrame && phoneFrame ? (
+        <div className="relative pb-10 pr-6">
+          {laptopFrame}
+          <div className="absolute bottom-0 right-0 w-[31%]">{phoneFrame}</div>
+        </div>
+      ) : (
+        <div className="mx-auto max-w-[240px]">{laptopFrame ?? phoneFrame}</div>
+      )}
+      <figcaption className="mt-3 text-center text-[12px] text-muted-foreground/75">
+        {business} as it renders today, captured during the analysis
+      </figcaption>
+    </figure>
   );
 }
 
@@ -406,13 +472,7 @@ function ClaimSection({ record }: { record: AuditRecord }) {
 
 // ─── States before the audit is readable ─────────────────────────────────────
 
-function HoldingPage({
-  business,
-  instant = false,
-}: {
-  business: string;
-  instant?: boolean;
-}) {
+function HoldingPage({ business }: { business: string }) {
   return (
     <div className="min-h-screen bg-background">
       <CampaignNav ctaLabel="Back to the site" ctaHref="/free-website" />
@@ -421,9 +481,9 @@ function HoldingPage({
           We&rsquo;re still working on this one.
         </h1>
         <p className="mt-5 text-[16px] leading-relaxed text-muted-foreground">
-          {instant
-            ? `The analysis of ${business} is still running — it usually takes about a minute. Refresh this page shortly and the report will be here.`
-            : `${business}’s teardown isn’t quite finished. We’ll email you the moment it’s ready — usually the same day.`}
+          {business}&rsquo;s teardown isn&rsquo;t quite finished — the analysis
+          usually takes about a minute. Come back to this link shortly and the
+          report will be here.
         </p>
       </main>
       <CampaignFooter />

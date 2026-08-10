@@ -104,6 +104,32 @@ function extractScreenshot(
     : null;
 }
 
+/**
+ * A second PageSpeed run, desktop strategy, kept only for its rendered
+ * screenshot — the report shows the site in a laptop mockup beside the phone
+ * one. The desktop numbers are deliberately discarded: mobile is the only
+ * strategy the audit reports on (see the header comment).
+ */
+export async function fetchDesktopScreenshot(url: string): Promise<string | null> {
+  const key = process.env.PAGESPEED_API_KEY;
+  if (!key) return null;
+
+  const endpoint = new URL(ENDPOINT);
+  endpoint.searchParams.set("url", url);
+  endpoint.searchParams.set("strategy", "desktop");
+  endpoint.searchParams.set("category", "performance");
+  endpoint.searchParams.set("key", key);
+
+  try {
+    const res = await fetch(endpoint, { signal: AbortSignal.timeout(TIMEOUT_MS) });
+    if (!res.ok) return null;
+    const data = (await res.json()) as PsiResponse;
+    return extractScreenshot(data.lighthouseResult?.audits ?? {});
+  } catch {
+    return null;
+  }
+}
+
 function msToSeconds(ms: number | undefined): number | null {
   return typeof ms === "number" ? round(ms / 1000, 1) : null;
 }

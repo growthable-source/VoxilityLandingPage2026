@@ -6,6 +6,23 @@
 export const MONTHLY_BUILD_CAP = 6;
 
 /**
+ * The analysis walkthrough, in the order the copy ticks through it while the
+ * visitor waits. Shown on the landing page and on the report's holding state,
+ * so the two experiences match.
+ */
+export const ANALYSIS_STEPS = [
+  "Loading your site the way a visitor on a phone does",
+  "Reading what the top of your page actually says",
+  "Running Google's mobile speed test on your real URL",
+  "Taking screenshots on a phone and a laptop",
+  "Reviewing the design and colour choices",
+  "Checking tap-to-call, forms and the basics",
+  "Looking up your Google rating and review count",
+  "Comparing you to nearby businesses in your category",
+  "Writing up the findings in plain English",
+];
+
+/**
  * The same three client results the site shows in Proof.tsx, carried with their
  * attributions rather than as three naked numbers. If any of these stop being
  * true they need to come off both places.
