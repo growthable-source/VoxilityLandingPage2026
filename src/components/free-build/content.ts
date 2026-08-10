@@ -69,10 +69,10 @@ export const CATCH_POINTS = [
       "and we don't hold your domain.",
   },
   {
-    title: `We cap it at ${MONTHLY_BUILD_CAP} a month.`,
+    title: `${MONTHLY_BUILD_CAP} builds a month. That's it.`,
     body:
-      "Because we actually build them, and a build we rushed wouldn't do the job of convincing you. " +
-      "That's the real limit rather than a countdown that resets overnight.",
+      "We build every one properly, and six is what that allows. Once they're taken, the next " +
+      "spot is next month.",
   },
 ];
 
