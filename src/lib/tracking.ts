@@ -321,6 +321,26 @@ export function trackAuditViewed(token: string) {
   pushDataLayer("audit_viewed", { auditToken: token });
 }
 
+// ─── AU AI-receptionist campaign (/ai-receptionist-australia) ────────────────
+
+/**
+ * A submitted callback request from the Australian receptionist campaign page.
+ * `metaEventId` should be the id the caller also sent to /api/receptionist-au,
+ * which mirrors the events server-side with hashed contact details.
+ *
+ * Fires the Google Ads demo-booked conversion for the same reason
+ * trackDemoRequest does: the form's whole job is booking the walkthrough call,
+ * and it's only called after the API confirms the request landed.
+ */
+export function trackReceptionistAuLead(callHandling: string, metaEventId?: string) {
+  const eventId = metaEventId ?? newMetaEventId();
+  fbqEvent("track", "Lead", { content_name: "ai-receptionist-au" }, eventId);
+  fbqEvent("trackCustom", "ReceptionistCallbackRequest", { callHandling }, eventId);
+  gtagEvent("receptionist_callback_request", { callHandling });
+  gtagEvent("conversion", { send_to: ADS_DEMO_BOOKED_SEND_TO });
+  pushDataLayer("receptionist_callback_request", { callHandling });
+}
+
 /**
  * The conversion that matters: they read the audit and asked for the rebuild.
  * Fires just before the redirect to the booking calendar, so `keepalive` inside

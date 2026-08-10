@@ -85,17 +85,19 @@ export function StickyMobileCta({
 export function CampaignShell({
   children,
   navNote,
+  navCtaLabel,
   stickyCtaLabel,
   className,
 }: {
   children: ReactNode;
   navNote?: string;
+  navCtaLabel?: string;
   stickyCtaLabel?: string;
   className?: string;
 }) {
   return (
     <div className={cn("min-h-screen bg-background", stickyCtaLabel && "pb-20 md:pb-0", className)}>
-      <CampaignNav note={navNote} />
+      <CampaignNav note={navNote} ctaLabel={navCtaLabel} />
       <main>{children}</main>
       <CampaignFooter />
       {stickyCtaLabel && <StickyMobileCta label={stickyCtaLabel} />}
