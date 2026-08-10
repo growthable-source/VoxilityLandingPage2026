@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { capiContextFromRequest, sendMetaCapiEvents } from "@/lib/metaCapi";
+import { upsertGhlContact } from "@/lib/ghl";
 
 const MIN_FORM_DURATION_MS = 3000;
 
@@ -98,6 +99,27 @@ export async function POST(request: Request) {
       request.headers.get("x-real-ip") ??
       undefined,
   };
+
+  // Direct contact upsert into the GHL subaccount via Private Integration
+  // Token — this is what fires the speed-to-lead automations. The webhook
+  // below still runs as an independent channel.
+  await upsertGhlContact({
+    name,
+    email,
+    phone,
+    business,
+    source: "AI Receptionist AU LP",
+    tags: ["inbound", "ai-receptionist-au"],
+    gclid: payload.gclid,
+    attribution: {
+      callHandling,
+      utmSource: payload.utmSource,
+      utmMedium: payload.utmMedium,
+      utmCampaign: payload.utmCampaign,
+      utmContent: payload.utmContent,
+      utmTerm: payload.utmTerm,
+    },
+  });
 
   const webhookUrl = process.env.CONTACT_WEBHOOK_URL;
   if (webhookUrl) {

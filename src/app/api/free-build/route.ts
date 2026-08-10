@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { after } from "next/server";
 import { capiContextFromRequest, sendMetaCapiEvents } from "@/lib/metaCapi";
+import { upsertGhlContact } from "@/lib/ghl";
 import { runAudit } from "@/lib/audit/run";
 import { newAuditToken, saveAudit } from "@/lib/audit/store";
 import type { AuditRecord } from "@/lib/audit/types";
@@ -159,6 +160,31 @@ export async function POST(request: Request) {
 }
 
 async function forwardToCrm(record: AuditRecord): Promise<void> {
+  // Direct contact upsert into the GHL subaccount via Private Integration
+  // Token — this is what fires the speed-to-lead automations. The webhook
+  // below still runs as an independent channel.
+  const { attribution } = record.lead;
+  await upsertGhlContact({
+    name: record.lead.name,
+    email: record.lead.email,
+    phone: record.lead.phone,
+    business: record.lead.business,
+    website: record.lead.website,
+    source: "Free AI Website + Teardown LP",
+    tags: ["inbound", "free-website-build"],
+    gclid: attribution.gclid,
+    attribution: {
+      pain: record.lead.pain,
+      auditToken: record.token,
+      utmSource: attribution.utmSource,
+      utmMedium: attribution.utmMedium,
+      utmCampaign: attribution.utmCampaign,
+      utmContent: attribution.utmContent,
+      utmTerm: attribution.utmTerm,
+      landingPage: attribution.landingPage,
+    },
+  });
+
   const payload = {
     tags: ["inbound", "free-website-build"],
     ...record.lead,
