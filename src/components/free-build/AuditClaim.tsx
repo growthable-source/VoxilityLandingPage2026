@@ -72,8 +72,8 @@ export function AuditClaimButton({
           Your free build is requested.
         </p>
         <p className="mx-auto mt-2 max-w-[46ch] text-[15px] leading-relaxed text-muted-foreground">
-          We&rsquo;ve started on it. Your new site gets delivered on a
-          15&ndash;30 minute call — if you haven&rsquo;t picked a time yet,
+          We&rsquo;ve started on it. Your new site gets delivered the same day,
+          on a 15 minute call — if you haven&rsquo;t picked a time yet,
           we&rsquo;ll be in touch to sort one out.
         </p>
       </div>

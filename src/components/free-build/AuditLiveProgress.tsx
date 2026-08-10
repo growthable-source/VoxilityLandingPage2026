@@ -65,8 +65,8 @@ export function AuditLiveProgress({
 
       <p className="mt-7 text-[14px] leading-relaxed text-muted-foreground">
         While you wait: the report ends with a button that requests a
-        brand-new site for {business}, built free and delivered on a
-        15&ndash;30 minute call. It&rsquo;s yours to keep either way.
+        brand new site for {business}, built free and delivered the same day
+        on a 15 minute call. It&rsquo;s yours to keep either way.
       </p>
     </main>
   );

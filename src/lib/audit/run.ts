@@ -12,7 +12,7 @@ import { narrate } from "./narrate";
 import { extractOnPageSignals } from "./onPage";
 import { fetchDesktopScreenshot, fetchPageSpeed } from "./pagespeed";
 import { fetchPlaces } from "./places";
-import { loadAudit, saveAudit } from "./store";
+import { loadAudit, updateAudit } from "./store";
 import type { AuditRecord, AuditSignals } from "./types";
 
 export async function runAudit(token: string): Promise<void> {
@@ -33,23 +33,27 @@ export async function runAudit(token: string): Promise<void> {
       screenshot ? reviewDesign(screenshot) : Promise.resolve(null),
     ]);
 
-    await saveAudit({
-      ...record,
+    // Merge onto the CURRENT record rather than the one loaded at the start:
+    // in the instant flow the contact details arrive while the analysis runs,
+    // and saving the stale copy would wipe them — locking the report behind
+    // its own gate.
+    const ready = await updateAudit(token, (current) => ({
+      ...current,
       status: "ready",
       signals,
       narrative,
       design,
       readyAt: new Date().toISOString(),
-    });
+    }));
 
-    await notifyReviewer({ ...record, signals, narrative });
+    await notifyReviewer(ready ?? { ...record, signals, narrative });
   } catch (err) {
     console.error("[audit] generation failed for", token, err);
-    await saveAudit({
-      ...record,
+    await updateAudit(token, (current) => ({
+      ...current,
       status: "failed",
       failureReason: err instanceof Error ? err.message : "Unknown error",
-    }).catch(() => {});
+    })).catch(() => {});
   }
 }
 

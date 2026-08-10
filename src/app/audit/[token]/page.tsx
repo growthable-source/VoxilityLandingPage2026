@@ -444,8 +444,7 @@ function ClaimSection({ record }: { record: AuditRecord }) {
         </h2>
         <p className="mx-auto mt-5 max-w-[54ch] text-[17px] leading-relaxed text-muted-foreground">
           We&rsquo;ll build {record.lead.business}{" "}a new site that fixes
-          what&rsquo;s above, and deliver it on a 15&ndash;30 minute call — same
-          day where we can, and never more than 42 hours from close of business.
+          what&rsquo;s above, and deliver it the same day on a 15 minute call.
           The site is yours to keep either way — no card, no lock-in contract.
         </p>
 

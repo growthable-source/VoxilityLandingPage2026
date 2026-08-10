@@ -151,8 +151,8 @@ export const STEPS = [
     number: "3",
     title: "Request your free build",
     body:
-      "One button on the report. We rebuild the site and deliver it on a 15–30 minute call — same " +
-      "day where we can, and never more than 42 hours from close of business. No deck, no pressure.",
+      "One button on the report. We rebuild the site and deliver it the same day, on a 15 minute " +
+      "call. No deck, no pressure.",
   },
 ];
 
@@ -223,8 +223,7 @@ export const FAQS = [
     question: "How long does it take?",
     answer:
       "The analysis runs while you're on the page — about a minute. From requesting the build, " +
-      "your new site is delivered on a 15–30 minute call: same day where we can, and never more " +
-      "than 42 hours from close of business.",
+      "your new site is delivered the same day, on a 15 minute call.",
   },
   {
     question: "Will I get hammered with sales calls?",

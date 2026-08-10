@@ -164,8 +164,9 @@ export function InstantAuditFlow() {
             See what your website&rsquo;s costing you
           </h2>
           <p className="mt-1.5 text-[14px] text-muted-foreground">
-            Enter your web address and we&rsquo;ll analyse it on the spot. No
-            details needed to start — the check takes about a minute.
+            Enter your web address and we&rsquo;ll analyse it on the spot.
+            Takes about a minute, and there&rsquo;s no call required to see
+            the results.
           </p>
 
           <Honeypot value={honeypot} onChange={setHoneypot} />
@@ -301,8 +302,8 @@ export function InstantAuditFlow() {
                 : "Show me my report"}
             </button>
             <p className="text-center text-[12px] leading-relaxed text-muted-foreground">
-              Then, if you like what you see: a brand-new site, built free and
-              delivered on a 15&ndash;30 minute call.
+              Then, if you like what you see: a brand new site, built free and
+              delivered the same day on a 15 minute call.
             </p>
           </form>
         </div>

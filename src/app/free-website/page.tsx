@@ -30,8 +30,8 @@ export default function FreeWebsitePage() {
       stickyCtaLabel="Analyse my website"
     >
       <Hero />
-      <Stats />
       <Catch />
+      <Stats />
       <Teardown />
       <HowItWorks />
       <Stack />
@@ -45,8 +45,11 @@ function Hero() {
   return (
     <header className="relative overflow-hidden bg-gradient-hero">
       <div className="mesh-bg pointer-events-none absolute inset-0 opacity-60" />
-      <div className="relative mx-auto grid max-w-[1320px] items-start gap-12 px-5 pb-16 pt-12 md:px-8 md:pb-24 md:pt-16 lg:grid-cols-[1.05fr_.95fr]">
-        <div>
+      {/* DOM order puts the URL field straight after the promise so it's
+          above the fold on a phone; on desktop the grid splits it out to the
+          right column with the bullets back under the headline. */}
+      <div className="relative mx-auto grid max-w-[1320px] items-start gap-10 px-5 pb-16 pt-12 md:px-8 md:pb-24 md:pt-16 lg:grid-cols-[1.05fr_.95fr] lg:gap-x-12">
+        <div className="lg:col-start-1 lg:row-start-1">
           <span className="mb-6 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-3.5 py-1.5 text-[13px] font-medium text-primary-glow">
             <span className="h-1.5 w-1.5 rounded-full bg-primary" />
             {`${MONTHLY_BUILD_CAP} free builds a month · Australian businesses`}
@@ -63,16 +66,23 @@ function Hero() {
           </h1>
 
           <p className="mt-6 max-w-[54ch] text-lg leading-relaxed text-muted-foreground">
-            Put your web address in and we&rsquo;ll analyse it while you&rsquo;re
-            here — the numbers, not vibes. Then, if you want it, we rebuild the
-            site at no cost and deliver it on a 15&ndash;30 minute call.
+            Put your web address in below. We&rsquo;ll analyse the site
+            you&rsquo;ve got while you&rsquo;re on this page — then rebuild it
+            for free and hand it over on a 15 minute call.
           </p>
+        </div>
 
-          <ul className="mt-8 grid gap-3.5">
+        <div className="lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:sticky lg:top-24">
+          <InstantAuditFlow />
+        </div>
+
+        <div className="lg:col-start-1 lg:row-start-2">
+          <ul className="grid gap-3.5">
             {[
               "A live analysis of your site, on this page, in about a minute.",
-              "A brand-new site built free — same day where we can, never more than 42 hours from close of business.",
-              "The fixes that make the phone ring, whether you work with us or not.",
+              "A brand new site, built free, delivered the same day.",
+              "Every enquiry answered inside 60 seconds: forms get an instant reply, missed calls get a text back, day or night.",
+              "You keep the fixes either way. Work with us or don't.",
             ].map((line) => (
               <li key={line} className="flex items-start gap-3 text-[16px] text-foreground/85">
                 <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary/15 ring-1 ring-primary/30">
@@ -84,12 +94,8 @@ function Hero() {
           </ul>
 
           <p className="mt-8 text-[14px] text-muted-foreground">
-            Trades, clinics, studios and local services.
+            Built for trades, clinics, studios and local service businesses.
           </p>
-        </div>
-
-        <div className="lg:sticky lg:top-24">
-          <InstantAuditFlow />
         </div>
       </div>
     </header>
@@ -121,11 +127,11 @@ function Catch() {
       <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
         <div>
           <SectionEyebrow>Let&rsquo;s get it out of the way</SectionEyebrow>
-          <SectionHeading>&ldquo;So what&rsquo;s the catch?&rdquo;</SectionHeading>
+          <SectionHeading>Why free?</SectionHeading>
           <SectionLede>
-            Fair question. Nobody builds websites for free out of kindness, so
-            here&rsquo;s the honest version — you shouldn&rsquo;t be sitting on
-            the call waiting for a trapdoor.
+            Because building your site is faster than explaining what we do.
+            Most people stay after. Some don&rsquo;t. Both are fine — here&rsquo;s
+            the honest version, so you&rsquo;re not waiting for a trapdoor.
           </SectionLede>
         </div>
         <ul className="grid gap-5 self-center">
