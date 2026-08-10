@@ -265,6 +265,30 @@ function Stack() {
   );
 }
 
+/** Ryan's GoHighLevel affiliate link — curious readers who sign up credit us. */
+const GHL_AFFILIATE_URL = "https://www.gohighlevel.com/ryan-oconnor1?fp_ref=hlnetwork";
+
+/** Wrap any mention of GoHighLevel in the affiliate link. */
+function linkGoHighLevel(text: string): React.ReactNode {
+  const parts = text.split("GoHighLevel");
+  if (parts.length === 1) return text;
+  return parts.map((part, index) => (
+    <span key={index}>
+      {index > 0 && (
+        <a
+          href={GHL_AFFILIATE_URL}
+          target="_blank"
+          rel="noopener noreferrer sponsored"
+          className="underline decoration-border underline-offset-2 transition-fast hover:text-foreground"
+        >
+          GoHighLevel
+        </a>
+      )}
+      {part}
+    </span>
+  ));
+}
+
 function Faq() {
   return (
     <Section className="bg-muted/20">
@@ -287,7 +311,7 @@ function Faq() {
               </span>
             </summary>
             <p className="mt-3.5 max-w-[68ch] text-[15.5px] leading-relaxed text-muted-foreground">
-              {faq.answer}
+              {linkGoHighLevel(faq.answer)}
             </p>
           </details>
         ))}

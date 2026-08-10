@@ -207,8 +207,8 @@ export const FAQS = [
   {
     question: "So where does the money come in?",
     answer:
-      "The site is free. If you want revisions and your forms wired into a CRM — yours, or " +
-      "GoHighLevel, which we provide — there's a small activation fee. We'll cover it on the call.",
+      "The site is free. If you want revisions and your forms wired into a CRM — yours, or ours, " +
+      "built on GoHighLevel — there's a small activation fee. We'll cover it on the call.",
   },
   {
     question: "What if I already have a website I paid good money for?",
