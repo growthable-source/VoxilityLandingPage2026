@@ -207,11 +207,8 @@ export const FAQS = [
   {
     question: "So where does the money come in?",
     answer:
-      "Taking the site as-is costs nothing. If you want revisions beyond the first pass, there's " +
-      "a one-off $1,500 activation, and it includes wiring the site's forms into your CRM so every " +
-      "enquiry gets answered on the spot. If you don't have a CRM, we set you up on GoHighLevel — " +
-      "we're a preferred reseller in Australia. We'd rather you knew that number before the call " +
-      "than during it.",
+      "The site is free. If you want revisions and your forms wired into a CRM — yours, or " +
+      "GoHighLevel, which we provide — there's a small activation fee. We'll cover it on the call.",
   },
   {
     question: "What if I already have a website I paid good money for?",
