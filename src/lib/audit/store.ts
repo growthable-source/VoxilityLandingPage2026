@@ -8,11 +8,11 @@
 // control — anyone holding the token can read the record, which is why the
 // record carries only what the audit page and the email actually need.
 
-import { list, put } from "@vercel/blob";
+import { head, put } from "@vercel/blob";
 import { randomBytes } from "node:crypto";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
-import type { AuditRecord } from "./types";
+import type { AuditLead, AuditRecord } from "./types";
 
 const PREFIX = "audits";
 const LOCAL_DIR = path.join(process.cwd(), ".audit-store");
@@ -29,6 +29,26 @@ function blobConfigured(): boolean {
 function pathnameFor(token: string): string {
   return `${PREFIX}/${token}.json`;
 }
+
+function leadPathnameFor(token: string): string {
+  return `${PREFIX}/${token}.lead.json`;
+}
+
+/**
+ * The contact details captured at the reveal gate, stored in their own file.
+ *
+ * Blob overwrites can serve stale reads for up to a minute, which makes
+ * read-modify-write on the main record a lost-update machine: the analysis
+ * finishing and the contact arriving both happen inside that window, and
+ * whichever writes second can resurrect a version without the other's data —
+ * which is how leads were vanishing from finished reports. Splitting the
+ * writers means the analysis owns the main record, the gate owns this file,
+ * and nothing ever overwrites anyone else's write. `loadAudit` merges the two.
+ */
+export type AuditLeadOverlay = Pick<
+  AuditLead,
+  "name" | "business" | "email" | "phone"
+>;
 
 export async function saveAudit(record: AuditRecord): Promise<void> {
   const body = JSON.stringify(record, null, 2);
@@ -58,30 +78,63 @@ export async function saveAudit(record: AuditRecord): Promise<void> {
   });
 }
 
+/** Persist the gate's contact details. Only the contact route calls this. */
+export async function saveAuditLead(
+  token: string,
+  overlay: AuditLeadOverlay,
+): Promise<void> {
+  const body = JSON.stringify(overlay, null, 2);
+
+  if (!blobConfigured()) {
+    await mkdir(LOCAL_DIR, { recursive: true });
+    await writeFile(path.join(LOCAL_DIR, `${token}.lead.json`), body, "utf8");
+    return;
+  }
+
+  await put(leadPathnameFor(token), body, {
+    access: "public",
+    contentType: "application/json",
+    addRandomSuffix: false,
+    allowOverwrite: true,
+    cacheControlMaxAge: 0,
+  });
+}
+
 export async function loadAudit(token: string): Promise<AuditRecord | null> {
   if (!isPlausibleToken(token)) return null;
 
+  const [record, overlay] = await Promise.all([
+    loadJson<AuditRecord>(pathnameFor(token), `${token}.json`),
+    loadJson<AuditLeadOverlay>(leadPathnameFor(token), `${token}.lead.json`),
+  ]);
+  if (!record) return null;
+  if (!overlay) return record;
+  return { ...record, lead: { ...record.lead, ...overlay } };
+}
+
+async function loadJson<T>(
+  blobPathname: string,
+  localFilename: string,
+): Promise<T | null> {
   if (!blobConfigured()) {
     try {
-      const body = await readFile(
-        path.join(LOCAL_DIR, `${token}.json`),
-        "utf8",
-      );
-      return JSON.parse(body) as AuditRecord;
+      const body = await readFile(path.join(LOCAL_DIR, localFilename), "utf8");
+      return JSON.parse(body) as T;
     } catch {
       return null;
     }
   }
 
   try {
-    const { blobs } = await list({ prefix: pathnameFor(token), limit: 1 });
-    const blob = blobs[0];
-    if (!blob) return null;
+    // head() resolves the pathname directly — unlike list(), which is
+    // eventually consistent and can miss a blob written moments ago.
+    const blob = await head(blobPathname);
     const res = await fetch(blob.url, { cache: "no-store" });
     if (!res.ok) return null;
-    return (await res.json()) as AuditRecord;
-  } catch (err) {
-    console.error("[audit] failed to load", token, err);
+    return (await res.json()) as T;
+  } catch {
+    // head() throws BlobNotFoundError when the file doesn't exist — the
+    // normal case for overlays on emailed-flow records.
     return null;
   }
 }

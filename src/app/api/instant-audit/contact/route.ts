@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { upsertGhlContact } from "@/lib/ghl";
 import { capiContextFromRequest, sendMetaCapiEvents } from "@/lib/metaCapi";
-import { updateAudit } from "@/lib/audit/store";
+import { loadAudit, saveAuditLead } from "@/lib/audit/store";
 import type { AuditRecord } from "@/lib/audit/types";
 
 // The reveal gate: attaches the contact details to a running (or finished)
@@ -60,21 +60,23 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Invalid phone." }, { status: 422 });
   }
 
-  const updated = await updateAudit(body.token, (record) => ({
-    ...record,
-    lead: {
-      ...record.lead,
-      // The gate asks for company name rather than a personal name, so the
-      // business stands in for both until the call.
-      name: record.lead.name || business,
-      business,
-      email,
-      phone,
-    },
-  }));
-  if (!updated) {
+  const record = await loadAudit(body.token);
+  if (!record) {
     return NextResponse.json({ error: "No such audit." }, { status: 404 });
   }
+
+  // The lead lives in its own overlay file that only this route writes —
+  // never merged into the main record on disk, so the analysis finishing a
+  // moment later can't overwrite it (Blob reads can be stale for up to a
+  // minute, which made read-modify-write here a lost-update machine).
+  // The gate asks for company name rather than a personal name, so the
+  // business stands in for both until the call.
+  await saveAuditLead(body.token, { name: business, business, email, phone });
+
+  const updated: AuditRecord = {
+    ...record,
+    lead: { ...record.lead, name: business, business, email, phone },
+  };
 
   await forwardToCrm(updated);
 

@@ -288,7 +288,10 @@ function Field({
   return (
     <div>
       <label htmlFor={id} className="mb-2 block text-[13px] font-medium text-foreground/85">
-        {label}
+        {label}{" "}
+        <span aria-hidden className="text-primary">
+          *
+        </span>
       </label>
       <input
         id={id}
@@ -298,6 +301,7 @@ function Field({
         autoComplete={autoComplete}
         value={value}
         onChange={(e) => onChange(e.target.value)}
+        aria-required
         aria-invalid={Boolean(error)}
         data-invalid={Boolean(error)}
         aria-describedby={error ? `${id}-err` : hint ? `${id}-hint` : undefined}

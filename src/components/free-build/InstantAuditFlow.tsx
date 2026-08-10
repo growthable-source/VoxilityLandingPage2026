@@ -38,6 +38,17 @@ export function InstantAuditFlow() {
     email?: string;
     phone?: string;
   }>({});
+
+  /** Update a gate field and clear its error as soon as the fix is typed. */
+  const updateGate = (
+    key: "business" | "email" | "phone",
+    setter: (value: string) => void,
+  ) => {
+    return (value: string) => {
+      setter(value);
+      setGateErrors((e) => (e[key] ? { ...e, [key]: undefined } : e));
+    };
+  };
   const [submitting, setSubmitting] = useState(false);
   const [contactDone, setContactDone] = useState(false);
   const [serverError, setServerError] = useState<string | null>(null);
@@ -161,12 +172,12 @@ export function InstantAuditFlow() {
       <div className="gradient-border rounded-lg" id="claim">
         <form onSubmit={start} noValidate className="rounded-lg bg-card p-6 shadow-card md:p-7">
           <h2 className="text-[21px] font-semibold tracking-tight text-foreground">
-            See what your website&rsquo;s costing you
+            Start your free website
           </h2>
           <p className="mt-1.5 text-[14px] text-muted-foreground">
-            Enter your web address and we&rsquo;ll analyse it on the spot.
-            Takes about a minute, and there&rsquo;s no call required to see
-            the results.
+            Step one: enter your web address and we&rsquo;ll analyse your
+            current site on the spot. Takes about a minute, and there&rsquo;s
+            no call required to see the results.
           </p>
 
           <Honeypot value={honeypot} onChange={setHoneypot} />
@@ -260,7 +271,7 @@ export function InstantAuditFlow() {
               placeholder="Thompson Plumbing"
               autoComplete="organization"
               value={business}
-              onChange={setBusiness}
+              onChange={updateGate("business", setBusiness)}
               error={gateErrors.business}
             />
             <GateField
@@ -271,7 +282,7 @@ export function InstantAuditFlow() {
               placeholder="dave@thompsonplumbing.com.au"
               autoComplete="email"
               value={email}
-              onChange={setEmail}
+              onChange={updateGate("email", setEmail)}
               error={gateErrors.email}
             />
             <GateField
@@ -282,7 +293,7 @@ export function InstantAuditFlow() {
               placeholder="0412 345 678"
               autoComplete="tel"
               value={phone}
-              onChange={setPhone}
+              onChange={updateGate("phone", setPhone)}
               error={gateErrors.phone}
             />
 
@@ -368,7 +379,10 @@ function GateField({
   return (
     <div>
       <label htmlFor={id} className="mb-1.5 block text-[13px] font-medium text-foreground/85">
-        {label}
+        {label}{" "}
+        <span aria-hidden className="text-primary">
+          *
+        </span>
       </label>
       <input
         id={id}
@@ -378,6 +392,7 @@ function GateField({
         autoComplete={autoComplete}
         value={value}
         onChange={(e) => onChange(e.target.value)}
+        aria-required
         aria-invalid={Boolean(error)}
         className={cn(
           "h-11 w-full rounded-md border bg-input px-3.5 text-[15px] text-foreground placeholder:text-muted-foreground/50 transition-fast focus:outline-none focus:ring-2 focus:ring-primary/20",

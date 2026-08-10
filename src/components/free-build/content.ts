@@ -149,9 +149,9 @@ export const STEPS = [
   },
   {
     number: "3",
-    title: "Request your free build",
+    title: "Claim your free website",
     body:
-      "One button on the report. We rebuild the site and deliver it the same day, on a 15 minute " +
+      "One button on the report. We build the new site and deliver it the same day, on a 15 minute " +
       "call. No deck, no pressure.",
   },
 ];

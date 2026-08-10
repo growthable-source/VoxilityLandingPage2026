@@ -16,18 +16,18 @@ import { Section, SectionEyebrow, SectionHeading, SectionLede } from "@/componen
 // A paid-traffic landing page: it must never compete with the real site in
 // search, and it is deliberately absent from sitemap.ts.
 export const metadata: Metadata = {
-  title: "Free AI Website + Live Teardown | Xovera",
+  title: "Free Website Built Today + Live Teardown | Xovera",
   description:
-    "Enter your web address and we'll analyse it on the spot, then rebuild the site with AI at no cost. The build is yours to keep.",
+    "A brand new website, built free and delivered today. Enter your web address and we'll analyse your current site on the spot — the build is yours to keep.",
   robots: { index: false, follow: false },
 };
 
 export default function FreeWebsitePage() {
   return (
     <CampaignShell
-      navNote={`Australian businesses · ${MONTHLY_BUILD_CAP} builds a month`}
-      navCtaLabel="Analyse my website"
-      stickyCtaLabel="Analyse my website"
+      navNote={`Australian businesses · ${MONTHLY_BUILD_CAP} free builds a month`}
+      navCtaLabel="Get my free website"
+      stickyCtaLabel="Get my free website"
     >
       <Hero />
       <Catch />
@@ -52,23 +52,23 @@ function Hero() {
         <div className="lg:col-start-1 lg:row-start-1">
           <span className="mb-6 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-3.5 py-1.5 text-[13px] font-medium text-primary-glow">
             <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-            {`${MONTHLY_BUILD_CAP} free builds a month · Australian businesses`}
+            A free website, built today · Australian businesses
           </span>
 
           <h1
             className="text-balance text-4xl font-semibold tracking-tight text-foreground md:text-5xl lg:text-6xl"
             style={{ lineHeight: 1.04, letterSpacing: "-0.035em" }}
           >
-            Your website looks fine.
+            A brand new website.
             <br />
-            It&rsquo;s just{" "}
-            <span className="text-gradient">not bringing you work.</span>
+            <span className="text-gradient">Built free. Delivered today.</span>
           </h1>
 
           <p className="mt-6 max-w-[54ch] text-lg leading-relaxed text-muted-foreground">
-            Put your web address in below. We&rsquo;ll analyse the site
-            you&rsquo;ve got while you&rsquo;re on this page — then rebuild it
-            for free and hand it over on a 15 minute call.
+            Your website looks fine — it&rsquo;s just not bringing you work.
+            Put your address in below: we&rsquo;ll analyse the site
+            you&rsquo;ve got while you&rsquo;re on this page, then build you a
+            new one and hand it over on a 15 minute call. Today.
           </p>
         </div>
 
@@ -79,8 +79,8 @@ function Hero() {
         <div className="lg:col-start-1 lg:row-start-2">
           <ul className="grid gap-3.5">
             {[
-              "A live analysis of your site, on this page, in about a minute.",
-              "A brand new site, built free, delivered the same day.",
+              "A brand new site, built free, delivered today — yours to keep.",
+              "A live analysis of your current site, on this page, in about a minute.",
               "Every enquiry answered inside 60 seconds: forms get an instant reply, missed calls get a text back, day or night.",
               "You keep the fixes either way. Work with us or don't.",
             ].map((line) => (
@@ -304,19 +304,19 @@ function FinalCta() {
           className="text-balance text-3xl font-semibold tracking-tight text-foreground md:text-5xl"
           style={{ lineHeight: 1.06, letterSpacing: "-0.035em" }}
         >
-          Worst case, you get an honest audit
+          A free website, delivered today,
           <br />
-          and a free website.
+          and an honest report on the old one.
         </h2>
         <p className="mx-auto mt-5 max-w-[52ch] text-lg leading-relaxed text-muted-foreground">
-          Best case, you find out exactly why the phone hasn&rsquo;t been
-          ringing, and it starts ringing.
+          That&rsquo;s the whole deal. Worst case, you keep both and never
+          speak to us again — best case, the phone starts ringing.
         </p>
         <a
           href="#claim"
           className="mx-auto mt-9 inline-flex h-14 items-center justify-center rounded-md bg-gradient-primary px-10 text-[17px] font-medium text-primary-foreground shadow-primary transition-smooth hover:scale-[1.02] hover:shadow-glow"
         >
-          Analyse my website
+          Get my free website
         </a>
         <p className="mt-5 text-[14px] text-muted-foreground">
           {`${MONTHLY_BUILD_CAP} builds a month · Australian businesses`}

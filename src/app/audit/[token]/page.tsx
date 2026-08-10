@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { AlertTriangle, Check, Info, MinusCircle } from "lucide-react";
 import { AuditClaimButton, AuditViewTracker } from "@/components/free-build/AuditClaim";
 import { AuditLiveProgress } from "@/components/free-build/AuditLiveProgress";
+import { AutoRefresh } from "@/components/free-build/AutoRefresh";
 import { AuditReviewBar } from "@/components/free-build/AuditReviewBar";
 import { CampaignFooter, CampaignNav } from "@/components/free-build/CampaignChrome";
 import { MONTHLY_BUILD_CAP } from "@/components/free-build/content";
@@ -474,15 +475,16 @@ function ClaimSection({ record }: { record: AuditRecord }) {
 function HoldingPage({ business }: { business: string }) {
   return (
     <div className="min-h-screen bg-background">
+      <AutoRefresh />
       <CampaignNav ctaLabel="Back to the site" ctaHref="/free-website" />
       <main className="mx-auto max-w-[640px] px-5 py-24 text-center md:px-8">
         <h1 className="text-3xl font-semibold tracking-tight text-foreground">
           We&rsquo;re still working on this one.
         </h1>
         <p className="mt-5 text-[16px] leading-relaxed text-muted-foreground">
-          {business}&rsquo;s teardown isn&rsquo;t quite finished — the analysis
-          usually takes about a minute. Come back to this link shortly and the
-          report will be here.
+          {business}&rsquo;s teardown isn&rsquo;t quite finished — it&rsquo;s
+          usually a matter of moments. Keep this page open: it refreshes
+          itself and the report will appear here on its own.
         </p>
       </main>
       <CampaignFooter />
