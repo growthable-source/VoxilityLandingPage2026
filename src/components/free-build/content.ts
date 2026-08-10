@@ -118,24 +118,24 @@ export const TEARDOWN_AREAS = [
 export const STEPS = [
   {
     number: "1",
-    title: "You fill in the form",
+    title: "Enter your web address",
     body:
-      "Forty seconds. We take your details and your current site, and start pulling the data before " +
-      "we ever speak to you.",
+      "One box, no details needed to start. We analyse your live site on the spot — what the top " +
+      "of the page says, mobile speed, tap-to-call, your Google review position. About a minute.",
   },
   {
     number: "2",
-    title: "The audit lands in your inbox",
+    title: "See your report",
     body:
-      "A written teardown of what we measured on your actual site — headings, mobile speed, review " +
-      "position — with the numbers behind each one. Yours to read whether you go further or not.",
+      "Tell us where the findings should go — company name, email, mobile — and the report opens " +
+      "right there, in plain English with the measured numbers behind every finding.",
   },
   {
     number: "3",
-    title: "You claim the rebuild from the email",
+    title: "Request your free build",
     body:
-      "One button in the audit. We build the site, then walk you through it and the rest of the " +
-      "teardown on a 30-minute call. No deck, no pressure.",
+      "One button on the report. We rebuild the site and deliver it on a 15–30 minute call — same " +
+      "day where we can, and never more than 42 hours from close of business. No deck, no pressure.",
   },
 ];
 
@@ -190,10 +190,10 @@ export const FAQS = [
   {
     question: "So where does the money come in?",
     answer:
-      "On the call, if you want more than the build. Revisions beyond the first pass and any extra " +
-      "functionality are a one-off activation of $1,500 to $3,000 depending on scope, and that " +
-      "includes the CRM: your forms connected, automatic replies, reputation management and a " +
-      "universal inbox. We'd rather you knew that number before the call than during it.",
+      "Taking the site as-is costs nothing. If you want it working harder, there's a one-off $297 " +
+      "USD that bundles in the CRM: your forms answered instantly, speed-to-lead follow-up, " +
+      "missed-call text-back and a universal inbox. We'd rather you knew that number before the " +
+      "call than during it.",
   },
   {
     question: "What if I already have a website I paid good money for?",
@@ -205,8 +205,9 @@ export const FAQS = [
   {
     question: "How long does it take?",
     answer:
-      "The audit is usually with you the same day. From claiming the rebuild to a live site is " +
-      "about 48 hours, and the call runs 30 minutes at a time you pick.",
+      "The analysis runs while you're on the page — about a minute. From requesting the build, " +
+      "your new site is delivered on a 15–30 minute call: same day where we can, and never more " +
+      "than 42 hours from close of business.",
   },
   {
     question: "Will I get hammered with sales calls?",

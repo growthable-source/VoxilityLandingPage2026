@@ -69,11 +69,12 @@ export function AuditClaimButton({
     return (
       <div className="rounded-lg border border-primary/30 bg-primary/[0.07] p-6 text-center">
         <p className="text-[17px] font-medium text-foreground">
-          Your rebuild is claimed.
+          Your free build is requested.
         </p>
         <p className="mx-auto mt-2 max-w-[46ch] text-[15px] leading-relaxed text-muted-foreground">
-          We&rsquo;ve started on it. If you haven&rsquo;t picked a time for the
-          call yet, we&rsquo;ll be in touch to sort one out.
+          We&rsquo;ve started on it. Your new site gets delivered on a
+          15&ndash;30 minute call — if you haven&rsquo;t picked a time yet,
+          we&rsquo;ll be in touch to sort one out.
         </p>
       </div>
     );
@@ -92,7 +93,7 @@ export function AuditClaimButton({
         ) : (
           <ArrowRight className="h-4 w-4" />
         )}
-        {submitting ? "One moment…" : "Claim my free rebuild"}
+        {submitting ? "One moment…" : "Request my free new website build"}
       </button>
       {error && (
         <p role="alert" className="mt-3 text-[13px] text-destructive">

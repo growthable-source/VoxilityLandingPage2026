@@ -34,10 +34,23 @@ export default async function AuditPage({
 
   const reviewer = isReviewer(key);
 
-  // A lead only ever receives this link after approval. Anyone else arriving
-  // early gets a holding page rather than an unreviewed audit.
-  if (!reviewer && (record.status === "pending" || record.status === "ready")) {
-    return <HoldingPage business={record.lead.business} />;
+  // Instant-flow records unlock the moment the analysis is done and the
+  // contact details are in — the reveal on the landing page brings people
+  // here. Emailed-flow records still wait for approval, so nobody receives
+  // an unreviewed audit by link.
+  const instantUnlocked =
+    record.flow === "instant" &&
+    Boolean(record.lead.email) &&
+    record.status !== "pending";
+
+  if (
+    !reviewer &&
+    !instantUnlocked &&
+    (record.status === "pending" || record.status === "ready")
+  ) {
+    return (
+      <HoldingPage business={record.lead.business} instant={record.flow === "instant"} />
+    );
   }
   if (!reviewer && record.status === "failed") {
     return <FailedPage record={record} />;
@@ -47,7 +60,7 @@ export default async function AuditPage({
     <div className="min-h-screen bg-background">
       <CampaignNav
         note={`Prepared for ${record.lead.business}`}
-        ctaLabel="Claim my free rebuild"
+        ctaLabel="Request my free build"
       />
       {!reviewer && <AuditViewTracker token={token} />}
 
@@ -286,10 +299,10 @@ function ClaimSection({ record }: { record: AuditRecord }) {
           Now let us rebuild it, free.
         </h2>
         <p className="mx-auto mt-5 max-w-[54ch] text-[17px] leading-relaxed text-muted-foreground">
-          We&rsquo;ll build {record.lead.business} a new site that fixes what&rsquo;s
-          above, then walk you through it and the rest of the teardown on a
-          30-minute call. The site is yours to keep either way — no card, no
-          lock-in contract.
+          We&rsquo;ll build {record.lead.business}{" "}a new site that fixes
+          what&rsquo;s above, and deliver it on a 15&ndash;30 minute call — same
+          day where we can, and never more than 42 hours from close of business.
+          The site is yours to keep either way — no card, no lock-in contract.
         </p>
 
         <div className="mt-9">
@@ -303,10 +316,10 @@ function ClaimSection({ record }: { record: AuditRecord }) {
           {/* JSX trims whitespace bordering a newline, so the gap after the
               expression has to be explicit or it renders as "6builds". */}
           {`${MONTHLY_BUILD_CAP} builds a month.`}{" "}
-          If you want revisions beyond the first pass or extra functionality,
-          that&rsquo;s a one-off activation of $1,500 to $3,000 depending on
-          scope, and it includes the CRM. Nothing is charged without you agreeing
-          to it on the call.
+          Taking the site as-is is free. If you want it working harder, a
+          one-off $297 USD bundles in the CRM — forms answered instantly,
+          speed-to-lead follow-up, missed-call text-back and a universal inbox.
+          Nothing is charged without you agreeing to it on the call.
         </p>
       </div>
     </section>
@@ -315,7 +328,13 @@ function ClaimSection({ record }: { record: AuditRecord }) {
 
 // ─── States before the audit is readable ─────────────────────────────────────
 
-function HoldingPage({ business }: { business: string }) {
+function HoldingPage({
+  business,
+  instant = false,
+}: {
+  business: string;
+  instant?: boolean;
+}) {
   return (
     <div className="min-h-screen bg-background">
       <CampaignNav ctaLabel="Back to the site" ctaHref="/free-website" />
@@ -324,8 +343,9 @@ function HoldingPage({ business }: { business: string }) {
           We&rsquo;re still working on this one.
         </h1>
         <p className="mt-5 text-[16px] leading-relaxed text-muted-foreground">
-          {business}&rsquo;s teardown isn&rsquo;t quite finished. We&rsquo;ll email
-          you the moment it&rsquo;s ready — usually the same day.
+          {instant
+            ? `The analysis of ${business} is still running — it usually takes about a minute. Refresh this page shortly and the report will be here.`
+            : `${business}’s teardown isn’t quite finished. We’ll email you the moment it’s ready — usually the same day.`}
         </p>
       </main>
       <CampaignFooter />

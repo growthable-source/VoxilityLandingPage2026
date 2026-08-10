@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Check, Mail, Phone } from "lucide-react";
 import { CampaignShell } from "@/components/free-build/CampaignChrome";
-import { FreeBuildForm } from "@/components/free-build/FreeBuildForm";
+import { InstantAuditFlow } from "@/components/free-build/InstantAuditFlow";
 import {
   CATCH_POINTS,
   FAQS,
@@ -16,9 +16,9 @@ import { Section, SectionEyebrow, SectionHeading, SectionLede } from "@/componen
 // A paid-traffic landing page: it must never compete with the real site in
 // search, and it is deliberately absent from sitemap.ts.
 export const metadata: Metadata = {
-  title: "Free AI Website + Emailed Teardown | Xovera",
+  title: "Free AI Website + Live Teardown | Xovera",
   description:
-    "We audit your current site and email you what we find, then rebuild it with AI at no cost. The build is yours to keep.",
+    "Enter your web address and we'll analyse it on the spot, then rebuild the site with AI at no cost. The build is yours to keep.",
   robots: { index: false, follow: false },
 };
 
@@ -26,7 +26,8 @@ export default function FreeWebsitePage() {
   return (
     <CampaignShell
       navNote={`Australian businesses · ${MONTHLY_BUILD_CAP} builds a month`}
-      stickyCtaLabel="Send me the audit"
+      navCtaLabel="Analyse my website"
+      stickyCtaLabel="Analyse my website"
     >
       <Hero />
       <Stats />
@@ -62,15 +63,15 @@ function Hero() {
           </h1>
 
           <p className="mt-6 max-w-[54ch] text-lg leading-relaxed text-muted-foreground">
-            We&rsquo;ll audit your current site and email you what we find, with
-            the numbers behind each one. Then, if you want it, we rebuild the
-            site at no cost and go through the rest together on a call.
+            Put your web address in and we&rsquo;ll analyse it while you&rsquo;re
+            here — the numbers, not vibes. Then, if you want it, we rebuild the
+            site at no cost and deliver it on a 15&ndash;30 minute call.
           </p>
 
           <ul className="mt-8 grid gap-3.5">
             {[
-              "A written teardown of your site in your inbox, usually the same day.",
-              "A working site for your business, live in 48 hours, at no cost.",
+              "A live analysis of your site, on this page, in about a minute.",
+              "A brand-new site built free — same day where we can, never more than 42 hours from close of business.",
               "The fixes that make the phone ring, whether you work with us or not.",
             ].map((line) => (
               <li key={line} className="flex items-start gap-3 text-[16px] text-foreground/85">
@@ -88,7 +89,7 @@ function Hero() {
         </div>
 
         <div className="lg:sticky lg:top-24">
-          <FreeBuildForm />
+          <InstantAuditFlow />
         </div>
       </div>
     </header>
@@ -152,9 +153,9 @@ function Teardown() {
           Six places local businesses leak enquiries
         </SectionHeading>
         <SectionLede className="mx-auto">
-          The first three we measure on your actual site and send you in writing.
-          The last three can&rsquo;t be seen from outside, so we go through them
-          with you on the call rather than guessing at them.
+          The first three we measure on your actual site and show you on the
+          spot. The last three can&rsquo;t be seen from outside, so we go through
+          them with you on the call rather than guessing at them.
         </SectionLede>
       </div>
 
@@ -177,7 +178,7 @@ function Teardown() {
               >
                 {area.emailed ? (
                   <>
-                    <Mail className="h-3 w-3" /> In your audit
+                    <Mail className="h-3 w-3" /> In your report
                   </>
                 ) : (
                   <>
@@ -204,7 +205,7 @@ function HowItWorks() {
     <Section className="bg-muted/20">
       <div className="mx-auto max-w-[640px] text-center">
         <SectionEyebrow className="justify-center">How it works</SectionEyebrow>
-        <SectionHeading className="mx-auto">Three steps, about a week.</SectionHeading>
+        <SectionHeading className="mx-auto">Three steps, same day.</SectionHeading>
       </div>
 
       <div className="mt-14 grid gap-10 md:grid-cols-3 md:gap-8">
@@ -309,7 +310,7 @@ function FinalCta() {
           href="#claim"
           className="mx-auto mt-9 inline-flex h-14 items-center justify-center rounded-md bg-gradient-primary px-10 text-[17px] font-medium text-primary-foreground shadow-primary transition-smooth hover:scale-[1.02] hover:shadow-glow"
         >
-          Send me the audit
+          Analyse my website
         </a>
         <p className="mt-5 text-[14px] text-muted-foreground">
           {`${MONTHLY_BUILD_CAP} builds a month · Australian businesses`}

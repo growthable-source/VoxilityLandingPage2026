@@ -292,6 +292,15 @@ export function trackCalcComplete(
 
 // ─── Free build + teardown funnel (/free-website) ────────────────────────────
 
+/** The visitor put a URL in and the instant analysis kicked off. */
+export function trackInstantAuditStart() {
+  const eventId = newMetaEventId();
+  fbqEvent("trackCustom", "InstantAuditStart", {}, eventId);
+  mirrorToCapi([{ name: "InstantAuditStart", eventId }]);
+  gtagEvent("instant_audit_start");
+  pushDataLayer("instant_audit_start");
+}
+
 /**
  * A submitted free-build request. `metaEventId` should be the id the caller
  * also sent to /api/free-build, which mirrors this event server-side with

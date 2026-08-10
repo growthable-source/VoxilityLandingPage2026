@@ -153,6 +153,13 @@ export interface AuditNarrative {
 export interface AuditRecord {
   token: string;
   status: AuditStatus;
+  /**
+   * "instant" records come from the URL-first flow: the analysis starts from
+   * the web address alone, the contact details arrive while it runs, and the
+   * report is revealed on-page the moment the visitor asks for it — no human
+   * review gate. Absent on records from the original emailed flow.
+   */
+  flow?: "instant";
   lead: AuditLead;
   signals: AuditSignals | null;
   narrative: AuditNarrative | null;
