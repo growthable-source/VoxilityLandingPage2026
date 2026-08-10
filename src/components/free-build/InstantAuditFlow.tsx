@@ -18,6 +18,8 @@ const CHECK_STEPS = [
   "Loading your site the way a visitor on a phone does",
   "Reading what the top of your page actually says",
   "Running Google's mobile speed test on your real URL",
+  "Taking a screenshot of how it renders on a phone",
+  "Reviewing the design and colour choices",
   "Checking tap-to-call, forms and the basics",
   "Looking up your Google rating and review count",
   "Comparing you to nearby businesses in your category",
@@ -26,7 +28,7 @@ const CHECK_STEPS = [
 
 const POLL_MS = 3000;
 /** Cosmetic pacing for the checklist — the analysis itself sets the real pace. */
-const STEP_MS = 6500;
+const STEP_MS = 5500;
 
 type Analysis = "running" | "done" | "failed";
 

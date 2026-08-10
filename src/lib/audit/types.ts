@@ -82,6 +82,13 @@ export interface PageSpeedSignals {
   tbtMs: number | null;
   /** True when the numbers come from real Chrome user data, not the lab run. */
   hasFieldData: boolean;
+  /**
+   * Lighthouse's final-screenshot: the page as it rendered on the emulated
+   * phone, as a data URI. This is what the design review looks at, and the
+   * report shows it beside the commentary so the reader can check every
+   * observation against the image itself.
+   */
+  screenshot: string | null;
 }
 
 export interface PlacesCompetitor {
@@ -148,6 +155,24 @@ export interface AuditNarrative {
   narrated: boolean;
 }
 
+// ─── Design review ───────────────────────────────────────────────────────────
+
+/**
+ * A qualitative read of the rendered page — design, colour, hierarchy, trust.
+ * Unlike findings, this is professional opinion rather than measurement, and
+ * the report labels it that way. Two rules keep it honest: it is only produced
+ * when there is a real screenshot for it to describe (shown alongside), and
+ * the prose is not allowed to contain numbers at all.
+ */
+export interface DesignReview {
+  /** One-sentence overall impression. */
+  headline: string;
+  /** Three to four specific observations. */
+  points: { title: string; body: string }[];
+  /** Dominant colours seen in the screenshot, as hex strings. */
+  palette: string[];
+}
+
 // ─── The stored record ───────────────────────────────────────────────────────
 
 export interface AuditRecord {
@@ -163,6 +188,7 @@ export interface AuditRecord {
   lead: AuditLead;
   signals: AuditSignals | null;
   narrative: AuditNarrative | null;
+  design?: DesignReview | null;
   createdAt: string;
   readyAt?: string;
   sentAt?: string;

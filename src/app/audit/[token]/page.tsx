@@ -67,6 +67,7 @@ export default async function AuditPage({
       <main>
         <AuditHeader record={record} />
         <Findings record={record} />
+        <DesignSection record={record} />
         <Gaps record={record} />
         <CallTopics record={record} />
         <ClaimSection record={record} />
@@ -224,6 +225,83 @@ const SEVERITY_STYLES: Record<
     icon: <MinusCircle className="h-3 w-3" />,
   },
 };
+
+function DesignSection({ record }: { record: AuditRecord }) {
+  const screenshot = record.signals?.pageSpeed?.screenshot;
+  const design = record.design;
+  if (!screenshot || !design) return null;
+
+  return (
+    <section className="border-y border-border/60 bg-muted/20">
+      <div className="mx-auto grid max-w-[860px] items-start gap-10 px-5 py-14 md:grid-cols-[260px_1fr] md:gap-12 md:px-8 md:py-16">
+        <figure className="mx-auto w-full max-w-[260px]">
+          <div className="overflow-hidden rounded-xl border border-border/60 bg-card p-1.5 shadow-card">
+            {/* A data URI straight from Lighthouse — next/image adds nothing here. */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={screenshot}
+              alt={`${record.lead.business} as it rendered on a phone`}
+              className="w-full rounded-lg"
+            />
+          </div>
+          <figcaption className="mt-2.5 text-center text-[12px] text-muted-foreground/75">
+            Your site on a phone, captured during the speed test
+          </figcaption>
+        </figure>
+
+        <div>
+          <h2 className="text-2xl font-semibold tracking-tight text-foreground md:text-3xl">
+            How it looks
+          </h2>
+          <p className="mt-3 max-w-[58ch] text-[15.5px] leading-relaxed text-muted-foreground">
+            This part is professional opinion rather than measurement — our
+            designer&rsquo;s read of the screenshot on the left, so you can
+            check every observation against it.
+          </p>
+
+          <p className="mt-6 text-[17px] font-medium leading-snug text-foreground">
+            {design.headline}
+          </p>
+
+          <div className="mt-6 grid gap-5">
+            {design.points.map((point) => (
+              <div key={point.title}>
+                <h3 className="text-[15.5px] font-semibold tracking-tight text-foreground">
+                  {point.title}
+                </h3>
+                <p className="mt-1.5 max-w-[60ch] text-[15px] leading-relaxed text-muted-foreground">
+                  {point.body}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          {design.palette.length > 0 && (
+            <div className="mt-7">
+              <h3 className="text-[12px] uppercase tracking-[0.1em] text-muted-foreground/75">
+                The palette we can see
+              </h3>
+              <div className="mt-2.5 flex flex-wrap gap-2">
+                {design.palette.map((hex) => (
+                  <span
+                    key={hex}
+                    className="inline-flex items-center gap-1.5 rounded-full border border-border/60 bg-card py-1 pl-1.5 pr-2.5 text-[12px] font-mono text-muted-foreground"
+                  >
+                    <span
+                      className="h-4 w-4 rounded-full ring-1 ring-border/60"
+                      style={{ backgroundColor: hex }}
+                    />
+                    {hex}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </section>
+  );
+}
 
 function Gaps({ record }: { record: AuditRecord }) {
   const gaps = record.signals?.gaps ?? [];

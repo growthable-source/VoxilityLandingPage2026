@@ -26,7 +26,10 @@ interface PsiResponse {
   };
   lighthouseResult?: {
     categories?: { performance?: { score?: number | null } };
-    audits?: Record<string, { numericValue?: number }>;
+    audits?: Record<
+      string,
+      { numericValue?: number; details?: { data?: string } }
+    >;
   };
 }
 
@@ -83,7 +86,22 @@ export async function fetchPageSpeed(url: string): Promise<PageSpeedSignals> {
         : roundOrNull(lab["cumulative-layout-shift"]?.numericValue, 2),
     tbtMs: roundOrNull(lab["total-blocking-time"]?.numericValue, 0),
     hasFieldData,
+    screenshot: extractScreenshot(lab),
   };
+}
+
+/**
+ * Lighthouse's final-screenshot — the rendered page on the emulated phone,
+ * already a `data:image/jpeg;base64,…` URI. This is the input to the design
+ * review, and the closest thing the audit has to eyes.
+ */
+function extractScreenshot(
+  audits: NonNullable<NonNullable<PsiResponse["lighthouseResult"]>["audits"]>,
+): string | null {
+  const data = audits["final-screenshot"]?.details?.data;
+  return typeof data === "string" && data.startsWith("data:image/")
+    ? data
+    : null;
 }
 
 function msToSeconds(ms: number | undefined): number | null {

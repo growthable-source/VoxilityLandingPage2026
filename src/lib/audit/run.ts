@@ -5,6 +5,7 @@
 // those removes one finding and adds a line to `gaps`, and the audit still
 // sends. The only hard failure is not being able to persist the result.
 
+import { reviewDesign } from "./design";
 import { fetchSite, normalizeSiteUrl, SiteFetchError } from "./fetchSite";
 import { buildNarrative } from "./findings";
 import { narrate } from "./narrate";
@@ -23,13 +24,21 @@ export async function runAudit(token: string): Promise<void> {
 
   try {
     const signals = await collectSignals(record);
-    const narrative = await narrate(buildNarrative(signals));
+    // The prose pass and the design review are independent Gemini calls, so
+    // they run together. Both fail soft — a null design just means the report
+    // ships without that section.
+    const screenshot = signals.pageSpeed?.screenshot ?? null;
+    const [narrative, design] = await Promise.all([
+      narrate(buildNarrative(signals)),
+      screenshot ? reviewDesign(screenshot) : Promise.resolve(null),
+    ]);
 
     await saveAudit({
       ...record,
       status: "ready",
       signals,
       narrative,
+      design,
       readyAt: new Date().toISOString(),
     });
 
