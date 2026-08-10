@@ -59,8 +59,34 @@ export async function POST(request: Request) {
 
   return NextResponse.json({
     ok: true,
-    bookingUrl: process.env.NEXT_PUBLIC_BOOKING_URL ?? null,
+    bookingUrl: buildBookingUrl(record),
   });
+}
+
+/**
+ * The GHL booking widget prefills its form from query params (first_name,
+ * last_name, email, phone), so the lead who just claimed doesn't retype
+ * details they gave us two minutes ago. The instant flow stores the company
+ * name as the lead name, so the split puts its first word in first_name and
+ * the rest in last_name — editable on the widget either way.
+ */
+function buildBookingUrl(record: AuditRecord): string | null {
+  const base = process.env.NEXT_PUBLIC_BOOKING_URL;
+  if (!base) return null;
+  try {
+    const url = new URL(base);
+    const nameParts = record.lead.name.trim().split(/\s+/);
+    const first = nameParts[0] ?? "";
+    const last = nameParts.slice(1).join(" ");
+    if (first) url.searchParams.set("first_name", first);
+    if (last) url.searchParams.set("last_name", last);
+    if (record.lead.email) url.searchParams.set("email", record.lead.email);
+    if (record.lead.phone) url.searchParams.set("phone", record.lead.phone);
+    return url.toString();
+  } catch {
+    // A malformed base URL still beats no redirect.
+    return base;
+  }
 }
 
 /**

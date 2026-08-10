@@ -237,6 +237,12 @@ export function InstantAuditFlow() {
         <div className="mt-5">
           <AnalysisProgress phase={analysis} />
         </div>
+        {analysis === "running" && (
+          <p className="mt-3 text-[12.5px] leading-relaxed text-muted-foreground">
+            Keep this page open — the analysis runs right here and your report
+            opens the moment you ask for it below.
+          </p>
+        )}
 
         <div className="mt-6 border-t border-border/60 pt-5">
           <h3 className="text-[16px] font-semibold tracking-tight text-foreground">

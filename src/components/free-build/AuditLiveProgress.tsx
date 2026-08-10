@@ -8,6 +8,12 @@ import { AnalysisProgress, type AnalysisPhase } from "@/components/free-build/An
 // report is ready, so the server render takes over with the full findings.
 
 const POLL_MS = 3000;
+/**
+ * Belt and braces under the polling: a full reload once a minute, so even if
+ * the poll loop dies (flaky connection, backgrounded tab throttling) the page
+ * still finds the finished report on its own.
+ */
+const HARD_REFRESH_MS = 60_000;
 
 export function AuditLiveProgress({
   token,
@@ -24,6 +30,7 @@ export function AuditLiveProgress({
       const id = setTimeout(() => window.location.reload(), 900);
       return () => clearTimeout(id);
     }
+    const refreshId = setTimeout(() => window.location.reload(), HARD_REFRESH_MS);
     const id = setInterval(async () => {
       try {
         const res = await fetch(
@@ -38,7 +45,10 @@ export function AuditLiveProgress({
         // Network blip — poll again.
       }
     }, POLL_MS);
-    return () => clearInterval(id);
+    return () => {
+      clearInterval(id);
+      clearTimeout(refreshId);
+    };
   }, [token, phase]);
 
   return (
@@ -56,7 +66,12 @@ export function AuditLiveProgress({
       </h1>
       <p className="mt-4 text-[15.5px] leading-relaxed text-muted-foreground">
         Every number in the report is measured on your live site — nothing is
-        guessed. This page will open it the moment it&rsquo;s ready.
+        guessed.{" "}
+        <span className="text-foreground/85">
+          Keep this page open: it updates itself and opens the report the
+          moment it&rsquo;s ready.
+        </span>{" "}
+        There&rsquo;s nothing you need to refresh.
       </p>
 
       <div className="mt-9 rounded-lg border border-border/60 bg-card p-6 shadow-card md:p-7">

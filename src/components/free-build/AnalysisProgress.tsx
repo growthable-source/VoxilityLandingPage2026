@@ -22,6 +22,13 @@ const MAX_BEFORE_DONE = 92;
 
 export type AnalysisPhase = "running" | "done" | "failed";
 
+function formatElapsed(ms: number): string {
+  const total = Math.floor(ms / 1000);
+  const minutes = Math.floor(total / 60);
+  const seconds = total % 60;
+  return `${minutes}:${String(seconds).padStart(2, "0")}`;
+}
+
 export function AnalysisProgress({ phase }: { phase: AnalysisPhase }) {
   const [elapsedMs, setElapsedMs] = useState(0);
 
@@ -51,7 +58,16 @@ export function AnalysisProgress({ phase }: { phase: AnalysisPhase }) {
       >
         <div className="flex items-baseline justify-between gap-3">
           <span className="text-[13px] font-medium text-foreground/85">
-            {phase === "running" ? "Analysing…" : "Analysis complete"}
+            {phase === "running" ? (
+              <>
+                Analysing…{" "}
+                <span className="font-mono text-[12px] text-muted-foreground">
+                  {formatElapsed(elapsedMs)}
+                </span>
+              </>
+            ) : (
+              "Analysis complete"
+            )}
           </span>
           <span className="font-mono text-[12px] text-primary">{percent}%</span>
         </div>
