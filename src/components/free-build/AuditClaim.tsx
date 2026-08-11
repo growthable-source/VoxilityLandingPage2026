@@ -30,7 +30,8 @@ export function AuditClaimButton({
   alreadyClaimed: boolean;
 }) {
   const [submitting, setSubmitting] = useState(false);
-  const [claimed, setClaimed] = useState(alreadyClaimed);
+  const [redirecting, setRedirecting] = useState(false);
+  const [claimed, setClaimed] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const claim = async () => {
@@ -50,17 +51,21 @@ export function AuditClaimButton({
       };
       if (!res.ok) throw new Error(json.error ?? "Something went wrong.");
 
-      setClaimed(true);
       trackFreeBuildClaimed();
 
+      // Straight to the calendar — no banner in between. The claimed state
+      // only shows when there is no booking URL to send them to.
       if (json.bookingUrl) {
+        setRedirecting(true);
         window.location.href = json.bookingUrl;
+        return;
       }
+      setClaimed(true);
+      setSubmitting(false);
     } catch (err) {
       setError(
         err instanceof Error ? err.message : "Couldn't do that. Please try again.",
       );
-    } finally {
       setSubmitting(false);
     }
   };
@@ -73,8 +78,7 @@ export function AuditClaimButton({
         </p>
         <p className="mx-auto mt-2 max-w-[46ch] text-[15px] leading-relaxed text-muted-foreground">
           We&rsquo;ve started on it. Your new site gets delivered the same day,
-          on a 15 minute call — if you haven&rsquo;t picked a time yet,
-          we&rsquo;ll be in touch to sort one out.
+          on a 15 minute call — we&rsquo;ll be in touch to sort a time.
         </p>
       </div>
     );
@@ -85,15 +89,21 @@ export function AuditClaimButton({
       <button
         type="button"
         onClick={claim}
-        disabled={submitting}
+        disabled={submitting || redirecting}
         className="inline-flex h-14 items-center justify-center gap-2.5 rounded-md bg-gradient-primary px-9 text-[17px] font-medium text-primary-foreground shadow-primary transition-smooth hover:scale-[1.02] hover:shadow-glow disabled:cursor-not-allowed disabled:opacity-70 disabled:hover:scale-100"
       >
-        {submitting ? (
+        {submitting || redirecting ? (
           <Loader2 className="h-4 w-4 animate-spin" />
         ) : (
           <ArrowRight className="h-4 w-4" />
         )}
-        {submitting ? "One moment…" : "Request my free new website build"}
+        {redirecting
+          ? "Opening the calendar…"
+          : submitting
+            ? "One moment…"
+            : alreadyClaimed
+              ? "Book my session"
+              : "Request my free new website build"}
       </button>
       {error && (
         <p role="alert" className="mt-3 text-[13px] text-destructive">

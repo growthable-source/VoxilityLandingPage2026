@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { upsertGhlContact } from "@/lib/ghl";
 import { capiContextFromRequest, sendMetaCapiEvents } from "@/lib/metaCapi";
+import { renderReportText } from "@/lib/audit/reportText";
 import { loadAudit, saveAuditLead } from "@/lib/audit/store";
 import type { AuditRecord } from "@/lib/audit/types";
 
@@ -100,6 +101,9 @@ export async function POST(request: Request) {
 
 async function forwardToCrm(record: AuditRecord): Promise<void> {
   const { attribution } = record.lead;
+  // Ready by gate time on most runs; when the analysis is still going, the
+  // claim forward carries the report instead.
+  const reportText = renderReportText(record) ?? undefined;
 
   // Direct upsert into the GHL subaccount via Private Integration Token —
   // this is what fires the speed-to-lead automations.
@@ -112,6 +116,7 @@ async function forwardToCrm(record: AuditRecord): Promise<void> {
     source: "Free AI Website + Teardown LP",
     tags: ["inbound", "free-website-build"],
     gclid: attribution.gclid,
+    auditReport: reportText,
     attribution: {
       auditToken: record.token,
       utmSource: attribution.utmSource,
@@ -128,6 +133,8 @@ async function forwardToCrm(record: AuditRecord): Promise<void> {
     ...record.lead,
     auditToken: record.token,
     source: "Free AI Website + Teardown LP",
+    // Mapped on the GHL side to {{contact.website_audit_report}}.
+    website_audit_report: reportText,
   };
 
   const webhookUrl =

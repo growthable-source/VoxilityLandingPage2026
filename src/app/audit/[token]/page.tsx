@@ -449,7 +449,11 @@ function ClaimSection({ record }: { record: AuditRecord }) {
           The site is yours to keep either way — no card, no lock-in contract.
         </p>
 
-        <div className="mt-9">
+        <p className="mx-auto mt-8 max-w-[44ch] text-[15px] font-medium text-foreground/90">
+          Book your session on the next screen — that&rsquo;s where your new
+          website gets delivered.
+        </p>
+        <div className="mt-5">
           <AuditClaimButton
             token={record.token}
             alreadyClaimed={record.status === "claimed"}

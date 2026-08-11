@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { capiContextFromRequest, sendMetaCapiEvents } from "@/lib/metaCapi";
+import { renderReportText } from "@/lib/audit/reportText";
 import { loadAudit, saveAudit } from "@/lib/audit/store";
 import type { AuditRecord } from "@/lib/audit/types";
 
@@ -112,6 +113,9 @@ async function forwardClaimToCrm(record: AuditRecord): Promise<void> {
     auditToken: record.token,
     claimedAt: new Date().toISOString(),
     source: "Free AI Website + Teardown LP",
+    // Mapped on the GHL side to {{contact.website_audit_report}} so the
+    // findings sit on the contact for the delivery call.
+    website_audit_report: renderReportText(record) ?? undefined,
   };
 
   const webhookUrl =

@@ -36,6 +36,12 @@ export interface GhlLead {
    * Serialised into one custom field when GHL_ATTRIBUTION_FIELD_ID is set.
    */
   attribution?: Record<string, string | undefined>;
+  /**
+   * Plain-text audit report. Written to the contact when
+   * GHL_AUDIT_REPORT_FIELD_ID is set (a multi-line custom field), so the
+   * findings are readable as {{contact.website_audit_report}}.
+   */
+  auditReport?: string;
 }
 
 export function isGhlConfigured(): boolean {
@@ -62,6 +68,10 @@ export async function upsertGhlContact(lead: GhlLead): Promise<void> {
   const gclidFieldId = process.env.GHL_GCLID_FIELD_ID;
   if (gclidFieldId && lead.gclid) {
     customFields.push({ id: gclidFieldId, field_value: lead.gclid });
+  }
+  const auditReportFieldId = process.env.GHL_AUDIT_REPORT_FIELD_ID;
+  if (auditReportFieldId && lead.auditReport) {
+    customFields.push({ id: auditReportFieldId, field_value: lead.auditReport });
   }
   const attributionFieldId = process.env.GHL_ATTRIBUTION_FIELD_ID;
   if (attributionFieldId && lead.attribution) {
