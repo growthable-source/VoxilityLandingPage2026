@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { upsertGhlContact } from "@/lib/ghl";
+import { isPlausibleName, isValidAuPhone } from "@/lib/leadValidation";
 import { capiContextFromRequest, sendMetaCapiEvents } from "@/lib/metaCapi";
 import { renderReportText } from "@/lib/audit/reportText";
 import { loadAudit, saveAuditLead } from "@/lib/audit/store";
@@ -21,9 +22,6 @@ interface ContactPayload {
 
 function isValidEmail(s: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s);
-}
-function digitCount(s: string): number {
-  return (s.match(/\d/g) || []).length;
 }
 function clamp(s: string, max: number): string {
   return s.slice(0, max).trim();
@@ -54,11 +52,20 @@ export async function POST(request: Request) {
       { status: 422 },
     );
   }
+  if (!isPlausibleName(business)) {
+    return NextResponse.json(
+      { error: "That doesn't look like a business name." },
+      { status: 422 },
+    );
+  }
   if (!isValidEmail(email)) {
     return NextResponse.json({ error: "Invalid email." }, { status: 422 });
   }
-  if (digitCount(phone) < 8) {
-    return NextResponse.json({ error: "Invalid phone." }, { status: 422 });
+  if (!isValidAuPhone(phone)) {
+    return NextResponse.json(
+      { error: "Check the number — Australian mobiles look like 0412 345 678." },
+      { status: 422 },
+    );
   }
 
   const record = await loadAudit(body.token);

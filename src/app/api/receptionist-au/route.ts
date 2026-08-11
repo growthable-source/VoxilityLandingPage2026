@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { capiContextFromRequest, sendMetaCapiEvents } from "@/lib/metaCapi";
 import { upsertGhlContact } from "@/lib/ghl";
+import { isPlausibleName, isValidAuPhone } from "@/lib/leadValidation";
 
 const MIN_FORM_DURATION_MS = 3000;
 
@@ -28,9 +29,6 @@ interface CallbackPayload {
 
 function isValidEmail(s: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s);
-}
-function digitCount(s: string): number {
-  return (s.match(/\d/g) || []).length;
 }
 function clamp(s: string, max: number): string {
   return s.slice(0, max).trim();
@@ -69,11 +67,20 @@ export async function POST(request: Request) {
       { status: 422 },
     );
   }
+  if (!isPlausibleName(name) || !isPlausibleName(business)) {
+    return NextResponse.json(
+      { error: "That doesn't look like a real name." },
+      { status: 422 },
+    );
+  }
   if (!isValidEmail(email)) {
     return NextResponse.json({ error: "Invalid email." }, { status: 422 });
   }
-  if (digitCount(phone) < 7) {
-    return NextResponse.json({ error: "Invalid phone." }, { status: 422 });
+  if (!isValidAuPhone(phone)) {
+    return NextResponse.json(
+      { error: "Check the number — Australian mobiles look like 0412 345 678." },
+      { status: 422 },
+    );
   }
 
   const utm = body.utm ?? {};

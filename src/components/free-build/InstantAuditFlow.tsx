@@ -7,6 +7,7 @@ import {
   AnalysisProgress,
   type AnalysisPhase,
 } from "@/components/free-build/AnalysisProgress";
+import { isPlausibleName, isValidAuPhone } from "@/lib/leadValidation";
 import {
   newMetaEventId,
   readUtmParams,
@@ -129,9 +130,13 @@ export function InstantAuditFlow() {
   const submitContact = async (event: React.FormEvent) => {
     event.preventDefault();
     const errors: typeof gateErrors = {};
-    if (business.trim().length < 2) errors.business = "What's the business called?";
+    if (!isPlausibleName(business)) {
+      errors.business = "That doesn't look like a business name";
+    }
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) errors.email = "Check that email address";
-    if ((phone.match(/\d/g) || []).length < 8) errors.phone = "We need a mobile for the delivery call";
+    if (!isValidAuPhone(phone)) {
+      errors.phone = "Check the number — Australian mobiles look like 0412 345 678";
+    }
     setGateErrors(errors);
     if (Object.keys(errors).length > 0 || !token) return;
 

@@ -3,6 +3,7 @@
 import { useId, useRef, useState } from "react";
 import { Check, Loader2 } from "lucide-react";
 import { cn } from "@/lib/cn";
+import { isPlausibleName, isValidAuPhone } from "@/lib/leadValidation";
 import { newMetaEventId, readUtmParams, trackReceptionistAuLead } from "@/lib/tracking";
 
 const CALL_HANDLING_OPTIONS = [
@@ -32,9 +33,6 @@ const INITIAL: FormState = {
 function emailLooksValid(s: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s);
 }
-function phoneLooksValid(s: string): boolean {
-  return (s.match(/\d/g) || []).length >= 8;
-}
 
 export function CallbackForm() {
   const [data, setData] = useState<FormState>(INITIAL);
@@ -57,9 +55,13 @@ export function CallbackForm() {
 
   const validate = (): boolean => {
     const next: Partial<Record<keyof FormState, string>> = {};
-    if (data.name.trim().length < 2) next.name = "Pop your name in";
-    if (data.business.trim().length < 2) next.business = "What's the business called?";
-    if (!phoneLooksValid(data.phone)) next.phone = "We need a number to ring you back on";
+    if (!isPlausibleName(data.name)) next.name = "Pop your name in";
+    if (!isPlausibleName(data.business)) {
+      next.business = "That doesn't look like a business name";
+    }
+    if (!isValidAuPhone(data.phone)) {
+      next.phone = "Check the number — Australian mobiles look like 0412 345 678";
+    }
     if (!emailLooksValid(data.email)) next.email = "Check that email address";
     if (!data.callHandling) next.callHandling = "Pick the closest one";
     setErrors(next);
