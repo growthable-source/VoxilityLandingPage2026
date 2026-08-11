@@ -75,6 +75,15 @@ function buildBookingUrl(record: AuditRecord): string | null {
   if (!base) return null;
   try {
     const url = new URL(base);
+    // A misconfigured value (e.g. the whole "NAME=value" line pasted into the
+    // env var) must degrade to no redirect, never to sending a fresh lead to
+    // a 404 — the claim is still recorded and we follow up by phone.
+    if (url.protocol !== "https:" && url.protocol !== "http:") {
+      console.error(
+        "[audit] NEXT_PUBLIC_BOOKING_URL is not an http(s) URL — skipping the booking redirect.",
+      );
+      return null;
+    }
     const nameParts = record.lead.name.trim().split(/\s+/);
     const first = nameParts[0] ?? "";
     const last = nameParts.slice(1).join(" ");
@@ -84,8 +93,10 @@ function buildBookingUrl(record: AuditRecord): string | null {
     if (record.lead.phone) url.searchParams.set("phone", record.lead.phone);
     return url.toString();
   } catch {
-    // A malformed base URL still beats no redirect.
-    return base;
+    console.error(
+      "[audit] NEXT_PUBLIC_BOOKING_URL did not parse as a URL — skipping the booking redirect.",
+    );
+    return null;
   }
 }
 
