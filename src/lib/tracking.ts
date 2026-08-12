@@ -302,19 +302,32 @@ export function trackInstantAuditStart() {
 }
 
 /**
+ * Send-to label for a "free build lead" Google Ads conversion action (the
+ * gate submit — the form-fill moment). Create the action in Google Ads
+ * (Goals → Conversions → New → Website, category "Submit lead form"), paste
+ * its label here as NEXT_PUBLIC_ADS_LEAD_SEND_TO in Vercel, and this fires —
+ * a no-op until then. During a low-volume test this is the conversion with
+ * enough volume for Google to learn on; the claim conversion below is the
+ * deeper signal.
+ */
+const ADS_LEAD_SEND_TO = process.env.NEXT_PUBLIC_ADS_LEAD_SEND_TO;
+
+/**
  * A submitted free-build request. `metaEventId` should be the id the caller
  * also sent to /api/free-build, which mirrors this event server-side with
  * hashed contact details.
  *
- * This is the campaign's *proxy* conversion, not its real one — the audit
- * click and the claim are what separate a curious form fill from a booked
- * call. Optimize on FreeBuildClaimed once it has volume.
+ * This is the campaign's *proxy* conversion — the claim is what separates a
+ * curious form fill from a booked call, and fires its own Ads conversion.
  */
 export function trackFreeBuildLead(pain: string, metaEventId?: string) {
   const eventId = metaEventId ?? newMetaEventId();
   fbqEvent("track", "Lead", { content_name: "free-website-build" }, eventId);
   fbqEvent("trackCustom", "FreeBuildRequest", { pain }, eventId);
   gtagEvent("free_build_request", { pain });
+  if (ADS_LEAD_SEND_TO) {
+    gtagEvent("conversion", { send_to: ADS_LEAD_SEND_TO });
+  }
   pushDataLayer("free_build_request", { pain });
 }
 
