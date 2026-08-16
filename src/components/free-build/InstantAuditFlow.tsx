@@ -7,7 +7,12 @@ import {
   AnalysisProgress,
   type AnalysisPhase,
 } from "@/components/free-build/AnalysisProgress";
-import { isPlausibleName, isValidAuPhone } from "@/lib/leadValidation";
+import {
+  isFullName,
+  isPlausibleName,
+  isValidAuPhone,
+  isWebsiteLike,
+} from "@/lib/leadValidation";
 import {
   newMetaEventId,
   readUtmParams,
@@ -31,10 +36,12 @@ export function InstantAuditFlow() {
   const [token, setToken] = useState<string | null>(null);
   const [analysis, setAnalysis] = useState<Analysis>("running");
 
+  const [personName, setPersonName] = useState("");
   const [business, setBusiness] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [gateErrors, setGateErrors] = useState<{
+    personName?: string;
     business?: string;
     email?: string;
     phone?: string;
@@ -42,7 +49,7 @@ export function InstantAuditFlow() {
 
   /** Update a gate field and clear its error as soon as the fix is typed. */
   const updateGate = (
-    key: "business" | "email" | "phone",
+    key: "personName" | "business" | "email" | "phone",
     setter: (value: string) => void,
   ) => {
     return (value: string) => {
@@ -86,8 +93,12 @@ export function InstantAuditFlow() {
 
   const start = async (event: React.FormEvent) => {
     event.preventDefault();
-    if (website.trim().length < 4) {
-      setUrlError("Pop your web address in — like thompsonplumbing.com.au");
+    if (!isWebsiteLike(website)) {
+      setUrlError(
+        website.includes("@")
+          ? "That's an email address — we need your website, like thompsonplumbing.com.au"
+          : "Pop your web address in — like thompsonplumbing.com.au",
+      );
       return;
     }
     setStarting(true);
@@ -130,6 +141,9 @@ export function InstantAuditFlow() {
   const submitContact = async (event: React.FormEvent) => {
     event.preventDefault();
     const errors: typeof gateErrors = {};
+    if (!isFullName(personName)) {
+      errors.personName = "First and last name, please";
+    }
     if (!isPlausibleName(business)) {
       errors.business = "That doesn't look like a business name";
     }
@@ -149,6 +163,7 @@ export function InstantAuditFlow() {
         headers: { "content-type": "application/json" },
         body: JSON.stringify({
           token,
+          name: personName.trim(),
           business: business.trim(),
           email: email.trim(),
           phone: phone.trim(),
@@ -270,6 +285,15 @@ export function InstantAuditFlow() {
           </p>
 
           <form onSubmit={submitContact} noValidate className="mt-4 space-y-3.5">
+            <GateField
+              id="gate-name"
+              label="First and last name"
+              placeholder="Dave Thompson"
+              autoComplete="name"
+              value={personName}
+              onChange={updateGate("personName", setPersonName)}
+              error={gateErrors.personName}
+            />
             <GateField
               id="gate-business"
               label="Company name"

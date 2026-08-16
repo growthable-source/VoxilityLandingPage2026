@@ -3,7 +3,7 @@
 import { useId, useRef, useState } from "react";
 import { Check, Loader2 } from "lucide-react";
 import { cn } from "@/lib/cn";
-import { isPlausibleName, isValidAuPhone } from "@/lib/leadValidation";
+import { isFullName, isPlausibleName, isValidAuPhone } from "@/lib/leadValidation";
 import { newMetaEventId, readUtmParams, trackReceptionistAuLead } from "@/lib/tracking";
 
 const CALL_HANDLING_OPTIONS = [
@@ -55,7 +55,7 @@ export function CallbackForm() {
 
   const validate = (): boolean => {
     const next: Partial<Record<keyof FormState, string>> = {};
-    if (!isPlausibleName(data.name)) next.name = "Pop your name in";
+    if (!isFullName(data.name)) next.name = "First and last name, please";
     if (!isPlausibleName(data.business)) {
       next.business = "That doesn't look like a business name";
     }

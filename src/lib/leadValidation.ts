@@ -39,6 +39,29 @@ export function isValidAuPhone(raw: string): boolean {
 }
 
 /**
+ * A person's actual name: passes the plausibility rules AND has at least two
+ * words — a first name and a surname (an initial counts).
+ */
+export function isFullName(raw: string): boolean {
+  if (!isPlausibleName(raw)) return false;
+  const words = raw.trim().split(/\s+/);
+  return words.length >= 2 && words.every((w) => /[a-zA-Z]/.test(w));
+}
+
+/**
+ * Looks like a website, not an email or free text: no @ (rejects
+ * "gunkbusters@outlook.com" typed into the website box), no spaces, and a
+ * host with a real TLD once any scheme is stripped. Paths are fine —
+ * "facebook.com/gunkbusters" passes.
+ */
+export function isWebsiteLike(raw: string): boolean {
+  const s = raw.trim().toLowerCase();
+  if (!s || s.includes("@") || /\s/.test(s)) return false;
+  const host = s.replace(/^https?:\/\//, "").split(/[/?#]/)[0];
+  return /^[a-z0-9][a-z0-9.-]*\.[a-z]{2,}$/.test(host);
+}
+
+/**
  * A plausible person or business name: at least two letters, not mostly
  * digits (a phone number pasted in the wrong box), and not a URL or email.
  */

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { after } from "next/server";
 import { normalizeSiteUrl } from "@/lib/audit/fetchSite";
+import { isWebsiteLike } from "@/lib/leadValidation";
 import { runAudit } from "@/lib/audit/run";
 import { newAuditToken, saveAudit } from "@/lib/audit/store";
 import type { AuditRecord } from "@/lib/audit/types";
@@ -45,10 +46,17 @@ export async function POST(request: Request) {
   }
 
   const website = (body.website ?? "").slice(0, 300).trim();
-  const siteUrl = normalizeSiteUrl(website);
+  // isWebsiteLike catches what URL parsing happily swallows — an email
+  // address parses as userinfo@host and would send the audit off to analyse
+  // outlook.com.
+  const siteUrl = isWebsiteLike(website) ? normalizeSiteUrl(website) : null;
   if (!siteUrl) {
     return NextResponse.json(
-      { error: "That doesn't look like a web address — check it and try again." },
+      {
+        error: website.includes("@")
+          ? "That's an email address — we need your website, like thompsonplumbing.com.au."
+          : "That doesn't look like a web address — check it and try again.",
+      },
       { status: 422 },
     );
   }

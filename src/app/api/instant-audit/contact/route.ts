@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { upsertGhlContact } from "@/lib/ghl";
-import { isPlausibleName, isValidAuPhone } from "@/lib/leadValidation";
+import { isFullName, isPlausibleName, isValidAuPhone } from "@/lib/leadValidation";
 import { capiContextFromRequest, sendMetaCapiEvents } from "@/lib/metaCapi";
 import { renderReportText } from "@/lib/audit/reportText";
 import { loadAudit, saveAuditLead } from "@/lib/audit/store";
@@ -11,6 +11,8 @@ import type { AuditRecord } from "@/lib/audit/types";
 
 interface ContactPayload {
   token?: string;
+  /** The person's first and last name. */
+  name?: string;
   business?: string;
   email?: string;
   phone?: string;
@@ -42,13 +44,20 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Missing token." }, { status: 400 });
   }
 
+  const name = clamp(body.name ?? "", 80);
   const business = clamp(body.business ?? "", 120);
   const email = clamp(body.email ?? "", 200);
   const phone = clamp(body.phone ?? "", 40);
 
-  if (!business || !email || !phone) {
+  if (!name || !business || !email || !phone) {
     return NextResponse.json(
       { error: "Missing required fields." },
+      { status: 422 },
+    );
+  }
+  if (!isFullName(name)) {
+    return NextResponse.json(
+      { error: "First and last name, please." },
       { status: 422 },
     );
   }
@@ -77,13 +86,11 @@ export async function POST(request: Request) {
   // never merged into the main record on disk, so the analysis finishing a
   // moment later can't overwrite it (Blob reads can be stale for up to a
   // minute, which made read-modify-write here a lost-update machine).
-  // The gate asks for company name rather than a personal name, so the
-  // business stands in for both until the call.
-  await saveAuditLead(body.token, { name: business, business, email, phone });
+  await saveAuditLead(body.token, { name, business, email, phone });
 
   const updated: AuditRecord = {
     ...record,
-    lead: { ...record.lead, name: business, business, email, phone },
+    lead: { ...record.lead, name, business, email, phone },
   };
 
   await forwardToCrm(updated);
@@ -94,7 +101,7 @@ export async function POST(request: Request) {
         name: "Lead",
         eventId: body.metaEventId,
         customData: { content_name: "free-website-build" },
-        userData: { email, phone, firstName: business },
+        userData: { email, phone, firstName: name.split(/\s+/)[0] },
       },
     ],
     capiContextFromRequest(request, {
@@ -113,9 +120,10 @@ async function forwardToCrm(record: AuditRecord): Promise<void> {
   const reportText = renderReportText(record) ?? undefined;
 
   // Direct upsert into the GHL subaccount via Private Integration Token —
-  // this is what fires the speed-to-lead automations.
+  // this is what fires the speed-to-lead automations. Person name and
+  // company map to their own GHL fields.
   await upsertGhlContact({
-    name: record.lead.business,
+    name: record.lead.name,
     email: record.lead.email,
     phone: record.lead.phone,
     business: record.lead.business,

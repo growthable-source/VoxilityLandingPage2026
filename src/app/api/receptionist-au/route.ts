@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { capiContextFromRequest, sendMetaCapiEvents } from "@/lib/metaCapi";
 import { upsertGhlContact } from "@/lib/ghl";
-import { isPlausibleName, isValidAuPhone } from "@/lib/leadValidation";
+import { isFullName, isPlausibleName, isValidAuPhone } from "@/lib/leadValidation";
 
 const MIN_FORM_DURATION_MS = 3000;
 
@@ -67,9 +67,15 @@ export async function POST(request: Request) {
       { status: 422 },
     );
   }
-  if (!isPlausibleName(name) || !isPlausibleName(business)) {
+  if (!isFullName(name)) {
     return NextResponse.json(
-      { error: "That doesn't look like a real name." },
+      { error: "First and last name, please." },
+      { status: 422 },
+    );
+  }
+  if (!isPlausibleName(business)) {
+    return NextResponse.json(
+      { error: "That doesn't look like a business name." },
       { status: 422 },
     );
   }
