@@ -16,6 +16,7 @@ import {
 import {
   newMetaEventId,
   readUtmParams,
+  trackFreeBuildClaimed,
   trackFreeBuildLead,
   trackInstantAuditStart,
 } from "@/lib/tracking";
@@ -28,7 +29,7 @@ const POLL_MS = 3000;
 type Analysis = AnalysisPhase;
 
 export function InstantAuditFlow() {
-  const [stage, setStage] = useState<"url" | "analysing">("url");
+  const [stage, setStage] = useState<"url" | "analysing" | "no-site">("url");
   const [website, setWebsite] = useState("");
   const [urlError, setUrlError] = useState<string | null>(null);
   const [starting, setStarting] = useState(false);
@@ -138,6 +139,62 @@ export function InstantAuditFlow() {
     }
   };
 
+  // ── The no-website fast path: contact straight to the booking calendar ─────
+  const [noSiteDone, setNoSiteDone] = useState(false);
+
+  const submitNoWebsite = async (event: React.FormEvent) => {
+    event.preventDefault();
+    const errors: typeof gateErrors = {};
+    if (!isFullName(personName)) errors.personName = "First and last name, please";
+    if (!isPlausibleName(business)) errors.business = "That doesn't look like a business name";
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) errors.email = "Check that email address";
+    if (!isValidAuPhone(phone)) {
+      errors.phone = "Check the number — Australian mobiles look like 0412 345 678";
+    }
+    setGateErrors(errors);
+    if (Object.keys(errors).length > 0) return;
+
+    setSubmitting(true);
+    setServerError(null);
+    const metaEventId = newMetaEventId();
+    try {
+      const utm = readUtmParams();
+      const res = await fetch("/api/instant-audit/no-website", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          name: personName.trim(),
+          business: business.trim(),
+          email: email.trim(),
+          phone: phone.trim(),
+          metaEventId,
+          attribution: { ...utm, landingPage: window.location.href },
+          homepage: honeypot,
+          formStartTime: formStartTime.current,
+        }),
+      });
+      const json = (await res.json().catch(() => ({}))) as {
+        error?: string;
+        bookingUrl?: string | null;
+      };
+      if (!res.ok) throw new Error(json.error ?? "Something went wrong.");
+
+      trackFreeBuildLead("no-website", metaEventId);
+      trackFreeBuildClaimed();
+      if (json.bookingUrl) {
+        window.location.href = json.bookingUrl;
+        return;
+      }
+      setNoSiteDone(true);
+      setSubmitting(false);
+    } catch (err) {
+      setServerError(
+        err instanceof Error ? err.message : "Couldn't send. Please try again.",
+      );
+      setSubmitting(false);
+    }
+  };
+
   const submitContact = async (event: React.FormEvent) => {
     event.preventDefault();
     const errors: typeof gateErrors = {};
@@ -244,9 +301,121 @@ export function InstantAuditFlow() {
 
           <p className="mt-3.5 text-center text-[12px] leading-relaxed text-muted-foreground">
             A real analysis of your live site — every number measured, nothing
-            guessed. No website yet? Enter your Facebook page instead; the
-            free build still stands.
+            guessed.
           </p>
+
+          <button
+            type="button"
+            onClick={() => setStage("no-site")}
+            className="mt-4 w-full rounded-md border border-border/60 py-2.5 text-center text-[14px] font-medium text-foreground/85 transition-fast hover:border-primary/40 hover:text-foreground"
+          >
+            I don&rsquo;t have a website yet
+          </button>
+        </form>
+      </div>
+    );
+  }
+
+  // ── The no-website fast path ───────────────────────────────────────────────
+  if (stage === "no-site") {
+    if (noSiteDone) {
+      return (
+        <div className="gradient-border rounded-lg" id="claim">
+          <div className="rounded-lg bg-card p-8 text-center shadow-card">
+            <h2 className="text-2xl font-semibold tracking-tight text-foreground">
+              You&rsquo;re in, {personName.split(/\s+/)[0]}.
+            </h2>
+            <p className="mx-auto mt-3 max-w-[42ch] text-[15px] leading-relaxed text-muted-foreground">
+              Your first website is in the queue. We&rsquo;ll ring you on{" "}
+              <span className="text-foreground/90">{phone}</span> to sort a
+              time for the 15 minute delivery call.
+            </p>
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <div className="gradient-border rounded-lg" id="claim">
+        <form onSubmit={submitNoWebsite} noValidate className="rounded-lg bg-card p-6 shadow-card md:p-7">
+          <h2 className="text-[21px] font-semibold tracking-tight text-foreground">
+            Your first website, built free
+          </h2>
+          <p className="mt-1.5 text-[14px] text-muted-foreground">
+            Even better — a blank slate, and nothing to tear down. Tell us
+            where to send the build and pick a call time on the next screen.
+          </p>
+
+          <Honeypot value={honeypot} onChange={setHoneypot} />
+
+          <div className="mt-5 space-y-3.5">
+            <GateField
+              id="nosite-name"
+              label="First and last name"
+              placeholder="Dave Thompson"
+              autoComplete="name"
+              value={personName}
+              onChange={updateGate("personName", setPersonName)}
+              error={gateErrors.personName}
+            />
+            <GateField
+              id="nosite-business"
+              label="Company name"
+              placeholder="Thompson Plumbing"
+              autoComplete="organization"
+              value={business}
+              onChange={updateGate("business", setBusiness)}
+              error={gateErrors.business}
+            />
+            <GateField
+              id="nosite-email"
+              label="Email"
+              type="email"
+              inputMode="email"
+              placeholder="dave@outlook.com"
+              autoComplete="email"
+              value={email}
+              onChange={updateGate("email", setEmail)}
+              error={gateErrors.email}
+            />
+            <GateField
+              id="nosite-phone"
+              label="Mobile"
+              type="tel"
+              inputMode="tel"
+              placeholder="0412 345 678"
+              autoComplete="tel"
+              value={phone}
+              onChange={updateGate("phone", setPhone)}
+              error={gateErrors.phone}
+            />
+          </div>
+
+          {serverError && (
+            <p
+              role="alert"
+              className="mt-4 rounded-md border border-destructive/40 bg-destructive/10 px-3 py-2 text-[13px] text-destructive"
+            >
+              {serverError}
+            </p>
+          )}
+
+          <button
+            type="submit"
+            disabled={submitting}
+            className="mt-5 inline-flex h-13 w-full items-center justify-center gap-2 rounded-md bg-gradient-primary px-6 py-3.5 text-[16px] font-medium text-primary-foreground shadow-primary transition-smooth hover:scale-[1.01] hover:shadow-glow disabled:cursor-not-allowed disabled:opacity-70 disabled:hover:scale-100"
+          >
+            {submitting && <Loader2 className="h-4 w-4 animate-spin" />}
+            {submitting ? "One moment…" : "Get my free website"}
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setStage("url")}
+            className="mt-3 w-full text-center text-[13px] text-muted-foreground transition-fast hover:text-foreground"
+          >
+            I do have a website — analyse it instead
+          </button>
         </form>
       </div>
     );

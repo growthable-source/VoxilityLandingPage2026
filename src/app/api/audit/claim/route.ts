@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { buildBookingUrl } from "@/lib/booking";
 import { capiContextFromRequest, sendMetaCapiEvents } from "@/lib/metaCapi";
 import { renderReportText } from "@/lib/audit/reportText";
 import { loadAudit, saveAudit } from "@/lib/audit/store";
@@ -60,45 +61,8 @@ export async function POST(request: Request) {
 
   return NextResponse.json({
     ok: true,
-    bookingUrl: buildBookingUrl(record),
+    bookingUrl: buildBookingUrl(record.lead),
   });
-}
-
-/**
- * The GHL booking widget prefills its form from query params (first_name,
- * last_name, email, phone), so the lead who just claimed doesn't retype
- * details they gave us two minutes ago. The instant flow stores the company
- * name as the lead name, so the split puts its first word in first_name and
- * the rest in last_name — editable on the widget either way.
- */
-function buildBookingUrl(record: AuditRecord): string | null {
-  const base = process.env.NEXT_PUBLIC_BOOKING_URL;
-  if (!base) return null;
-  try {
-    const url = new URL(base);
-    // A misconfigured value (e.g. the whole "NAME=value" line pasted into the
-    // env var) must degrade to no redirect, never to sending a fresh lead to
-    // a 404 — the claim is still recorded and we follow up by phone.
-    if (url.protocol !== "https:" && url.protocol !== "http:") {
-      console.error(
-        "[audit] NEXT_PUBLIC_BOOKING_URL is not an http(s) URL — skipping the booking redirect.",
-      );
-      return null;
-    }
-    const nameParts = record.lead.name.trim().split(/\s+/);
-    const first = nameParts[0] ?? "";
-    const last = nameParts.slice(1).join(" ");
-    if (first) url.searchParams.set("first_name", first);
-    if (last) url.searchParams.set("last_name", last);
-    if (record.lead.email) url.searchParams.set("email", record.lead.email);
-    if (record.lead.phone) url.searchParams.set("phone", record.lead.phone);
-    return url.toString();
-  } catch {
-    console.error(
-      "[audit] NEXT_PUBLIC_BOOKING_URL did not parse as a URL — skipping the booking redirect.",
-    );
-    return null;
-  }
 }
 
 /**
